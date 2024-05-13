@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
+    // 일반 공격 스테이트
     public class AtkState : BaseState
     {
         protected Character _character;

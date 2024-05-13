@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
+    // Idle 스테이트
     public class IdleState : BaseState
     {
         protected Character _character;

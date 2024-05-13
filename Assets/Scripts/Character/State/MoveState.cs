@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
+    // Move 스테이트
     public class MoveState : BaseState
     {
         protected Character _character;
