@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // 승리 스테이트
-    public class CharVictoryState : BaseState
+    public class CharVictoryState : CharacterState
     {
-        public CharVictoryState(Unit unit) : base(unit)
+        public CharVictoryState(Character character) : base(character)
         {
-            _unit = unit;
+            _character = character;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Character.VICTORY);
+            _character.ChangeAnimationState(EnumState.Character.VICTORY);
         }
 
         public override void OnUpdateState()
@@ -23,6 +23,10 @@
 
         public override void OnExitState()
         {
+        }
+        public override void CheckChangeState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

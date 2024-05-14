@@ -1,20 +1,23 @@
-﻿namespace LineUpHeros
+﻿using UnityEngine;
+
+namespace LineUpHeros
 {
     // 죽음 스테이트
-    public class CharDeadState : BaseState
+    public class CharDeadState : CharacterState
     {
-        public CharDeadState(Unit unit) : base(unit)
+        public CharDeadState(Character character) : base(character)
         {
-            _unit = unit;
+            _character = character;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Character.DEAD);
+            _character.ChangeAnimationState(EnumState.Character.DEAD);
         }
 
         public override void OnUpdateState()
         {
+            Debug.Log(_character.gameObject.name + " Dead State!");
         }
 
         public override void OnFixedUpdateState()
@@ -23,6 +26,10 @@
 
         public override void OnExitState()
         {
+        }
+        public override void CheckChangeState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

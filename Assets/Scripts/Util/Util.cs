@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace LineUpHeros
 {
@@ -19,5 +20,41 @@ namespace LineUpHeros
         {
             return new Vector3(vec.x, vec.y, z);
         }
+        
+        // 밑에있는 GetDetectList 함수를 사용하려 했으나 인터페이스에 사용하기가 복잡스러워서 그냥 만듬 (Component[]로 리턴해서 변환해줘야함)
+        public static List<IDamagable> GetDetectDamagableList(Vector3 centerPosition, float radius, LayerMask targetLayerMask)
+        {
+            Collider2D[] detectColliderList = new Collider2D[100];
+            Physics2D.OverlapCircleNonAlloc(centerPosition, radius, detectColliderList, targetLayerMask);
+            List<IDamagable> targetList = new List<IDamagable>();
+            foreach(var detect in detectColliderList){
+                if(detect == null) break;
+                Component[] target = detect.GetComponents(typeof(IDamagable));
+                if (target.Length != 0)
+                {
+                    targetList.Add((IDamagable)(target[0]));
+                }
+            }
+
+            return targetList;
+        }
+        // gameobject.ㅎetComponent로 불러올수 있는 컴포넌트만 됨, 인터페이스 안됨
+        public static List<T> GetDetectList<T>(Vector3 centerPosition, float radius, LayerMask targetLayerMask)
+        {
+            Collider2D[] detectColliderList = new Collider2D[100];
+            Physics2D.OverlapCircleNonAlloc(centerPosition, radius, detectColliderList, targetLayerMask);
+            List<T> targetList = new List<T>();
+            foreach(var detect in detectColliderList){
+                if(detect == null) break;
+                T target = detect.gameObject.GetComponent<T>();
+                if (target != null)
+                {
+                    targetList.Add(target);
+                }
+            }
+
+            return targetList;
+        }
+        
     }
 }

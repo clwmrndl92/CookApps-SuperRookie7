@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // Idle 스테이트
-    public class MonIdleState : BaseState
+    public class MonIdleState : MonsterState
     {
-        public MonIdleState(Unit unit) : base(unit)
+        public MonIdleState(Monster monster) : base(monster)
         {
-            _unit = unit;
+            _monster = monster;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Monster.IDLE);
+            _monster.ChangeAnimationState(EnumState.Monster.IDLE);
         }
 
         public override void OnUpdateState()
@@ -23,6 +23,11 @@
 
         public override void OnExitState()
         {
+        }
+
+        public override void CheckChangeState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

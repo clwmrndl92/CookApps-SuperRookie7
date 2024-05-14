@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // 일반 공격 스테이트
-    public class MonAtkState : BaseState
+    public class MonAtkState : MonsterState
     {
-        public MonAtkState(Unit unit) : base(unit)
+        public MonAtkState(Monster monster) : base(monster)
         {
-            _unit = unit;
+            _monster = monster;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Character.ATK);
+            _monster.ChangeAnimationState(EnumState.Character.ATK);
         }
 
         public override void OnUpdateState()
@@ -23,6 +23,11 @@
 
         public override void OnExitState()
         {
+        }
+
+        public override void CheckChangeState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

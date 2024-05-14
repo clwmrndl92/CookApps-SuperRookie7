@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Zenject;
 
 namespace LineUpHeros
@@ -11,13 +12,19 @@ namespace LineUpHeros
 
         protected override void InitStatus()
         {
-            _status = new CahracterStatus(_settings);
+            _status = new CharacterStatus(_settings);
         }
 
-        private void Start()
+        public override bool SpecialAttack(List<IDamagable> atkRangeTargetList)
         {
-            Debug.Log(gameObject.name);
-            Debug.Log(_status.maxHp);
+            if (atkRangeTargetList.Count == 0) return false;
+
+            foreach (var target in atkRangeTargetList)
+            {
+                target.TakeDamage((int)(status.atk * 1.0f));
+            }
+            return true;
         }
+
     }
 }

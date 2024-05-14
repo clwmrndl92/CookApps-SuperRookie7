@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // 죽음 스테이트
-    public class MonDeadState : BaseState
+    public class MonDeadState : MonsterState
     {
-        public MonDeadState(Unit unit) : base(unit)
+        public MonDeadState(Monster monster) : base(monster)
         {
-            _unit = unit;
+            _monster = monster;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Monster.DEAD);
+            _monster.ChangeAnimationState(EnumState.Monster.DEAD);
         }
 
         public override void OnUpdateState()
@@ -23,6 +23,12 @@
 
         public override void OnExitState()
         {
+        }
+
+        public override void CheckChangeState()
+        {
+            
+            
         }
     }
 }

@@ -22,7 +22,7 @@ namespace LineUpHeros
         }
     }
 
-    public static partial class EnumAnimState
+    public static partial class EnumState
     {
     }
 }

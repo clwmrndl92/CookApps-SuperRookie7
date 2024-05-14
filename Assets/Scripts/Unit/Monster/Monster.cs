@@ -4,24 +4,22 @@ namespace LineUpHeros
 {
     public abstract class Monster : Unit
     {
-        
         protected override void InitStateMachine()
         {
-            _stateMachine = new StateMachine(EnumAnimState.Monster.IDLE, new MonIdleState(this));
-            _stateMachine.AddState(EnumAnimState.Monster.MOVE, new MonMoveState(this));
-            _stateMachine.AddState(EnumAnimState.Monster.ATK, new MonAtkState(this));
-            _stateMachine.AddState(EnumAnimState.Monster.DEAD, new MonDeadState(this));
+            _stateMachine = new StateMachine(EnumState.Monster.IDLE, new MonIdleState(this));
+            _stateMachine.AddState(EnumState.Monster.MOVE, new MonMoveState(this));
+            _stateMachine.AddState(EnumState.Monster.ATK, new MonAtkState(this));
+            _stateMachine.AddState(EnumState.Monster.DEAD, new MonDeadState(this));
         }
 
         #region Status
-        protected class MonsterStatus : UnitStatus
+        protected class MonsterStatus : Status
         {
-            public MonsterStatus(UnitSettings settings) : base(settings)
+            public MonsterStatus(StatSettings settings) : base(settings)
             {
             }
 
         }
-        #endregion
         
         // Scriptable Object Installer 세팅 값
         [Serializable]
@@ -32,9 +30,27 @@ namespace LineUpHeros
             public int baseAtkRange;
             public float baseAtkPerSec;
         }
+        #endregion
+
+
+        public override void TakeHeal(int healAmount)
+        {
+            // Monster는 힐을 받지 않는다! 나중엔 받을지도 모르지만
+            // _status.tmpHp += healAmount;
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            _status.tmpHp -= damage;
+        }
+        public override void TakeStun(float stunTime)
+        {
+            
+            
+        }
         
     }
-    public static partial class EnumAnimState
+    public static partial class EnumState
     {
         public static class Monster
         {

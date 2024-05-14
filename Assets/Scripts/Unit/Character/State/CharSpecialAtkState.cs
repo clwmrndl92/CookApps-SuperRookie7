@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // 스킬 사용 스테이트
-    public class CharSpecialAtkState : BaseState
+    public class CharSpecialAtkState : CharacterState
     {
-        public CharSpecialAtkState(Unit unit) : base(unit)
+        public CharSpecialAtkState(Character character) : base(character)
         {
-            _unit = unit;
+            _character = character;
         }
 
         public override void OnEnterState()
         {
-            _unit.ChangeAnimationState(EnumAnimState.Character.SPECIAL_ATK);
+            _character.ChangeAnimationState(EnumState.Character.SPECIAL_ATK);
         }
 
         public override void OnUpdateState()
@@ -23,6 +23,11 @@
 
         public override void OnExitState()
         {
+        }
+
+        public override void CheckChangeState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

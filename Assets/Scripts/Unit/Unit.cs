@@ -3,16 +3,36 @@ using System;
 
 namespace LineUpHeros
 {
-    public abstract partial class Unit : MonoBehaviour
+    public abstract partial class Unit : MonoBehaviour, IDamagable
     {
         protected StateMachine _stateMachine;
-        protected UnitStatus _status;
+        public StateMachine stateMachine { get => _stateMachine; set=> _stateMachine = value; }
+        protected Status _status;
+        public Status status { get => _status; set=> _status = value; }
+
+        #region Componets
+        public Vector3 position
+        {
+            get => transform.position;
+            set => transform.position = value;
+        }
+        #endregion
 
         #region MonoBehaviour Method
 
         private void Awake()
         {
             Init();
+        }
+
+        private void Update()
+        {
+            stateMachine.UpdateState();
+        }
+
+        private void FixedUpdate()
+        {
+            stateMachine.FixedUpdateState();
         }
 
         #endregion
@@ -30,65 +50,14 @@ namespace LineUpHeros
         // InitStatus()에서 _status에 새 Status 인스턴스 할당 필요
         protected abstract void InitStatus();
         #endregion
+        
+        #region Interface
 
+        public abstract void TakeHeal(int healAmount);
+        public abstract void TakeDamage(int damage);
+        public abstract void TakeStun(float stunTime);
+
+        #endregion
     }
-    #region Status
-    public class UnitStatus
-    {
-        private int _tmpHp;
-        public int tmpHp
-        {
-            get => _tmpHp;
-            set => _tmpHp = Mathf.Max(0, Mathf.Min(value, maxHp)); // 0 <= tmpHp <= maxHP
-        }
-
-        // Final Stat Property
-        public int maxHp => (int) GetFinalStat(_baseHp, _addHp, _addPerHp);
-        public int atk => (int) GetFinalStat(_baseAtk, _addAtk, _addPerAtk);
-        public int atkRange => (int) GetFinalStat(_baseAtkRange, _addAtkRange, _addPerAtkRange);
-        public float atkCool => (int) GetFinalStat(_baseAtkCool, _addAtkCool, _addPerAtkCool);
-        
-        // Base Stat, 영구 성장치 적용
-        private int _baseHp;
-        private int _baseAtk;
-        private int _baseAtkRange;
-        private float _baseAtkCool;
-        
-        // Additional Stat, 아이템, 버프 등 일시적 성장치
-        private int _addHp;
-        private int _addAtk;
-        private int _addAtkRange;
-        private float _addAtkCool;
-        
-        // Additional Percent Stat, 아이템, 버프 등 일시적 성장치 (퍼센트)
-        private int _addPerHp;
-        private int _addPerAtk;
-        private int _addPerAtkRange;
-        private float _addPerAtkCool;
-
-        public UnitStatus(UnitSettings settings)
-        {
-            _baseHp = settings.baseHp;
-            _baseAtk = settings.baseAtk;
-            _baseAtkRange = settings.baseAtkRange;
-            _baseAtkCool = settings.baseAtkCool;
-        }
-
-        protected float GetFinalStat(float baseStat, float addStat, float addPerStat)
-        {
-            // Final Stat 계산식
-            return baseStat + addStat + ((baseStat + addStat) * (addPerStat / 100));
-        }
-    }
-    #endregion
     
-    // Scriptable Object Installer 세팅 값
-    [Serializable]
-    public class UnitSettings
-    {
-        public int baseHp;
-        public int baseAtk;
-        public int baseAtkRange;
-        public float baseAtkCool;
-    }
 }
