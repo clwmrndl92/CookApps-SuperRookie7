@@ -10,7 +10,12 @@ namespace LineUpHeros
         private Settings _settings;
         protected override void InitStatus()
         {
-            _status = new MonsterStatus(_settings);
+            UnitSettings unitSettings = new UnitSettings();
+            unitSettings.baseHp = _settings.baseHp;
+            unitSettings.baseAtk = _settings.baseAtk;
+            unitSettings.baseAtkRange = _settings.baseAtkRange;
+            unitSettings.baseAtkCool = 1 / _settings.baseAtkPerSec;
+            _status = new MonsterStatus(unitSettings);
         }
 
         private void Start()

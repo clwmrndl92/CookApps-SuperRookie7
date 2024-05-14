@@ -25,8 +25,12 @@ namespace LineUpHeros
         
         // Scriptable Object Installer 세팅 값
         [Serializable]
-        public class Settings : UnitSettings
+        public class Settings
         {
+            public int baseHp;
+            public int baseAtk;
+            public int baseAtkRange;
+            public float baseAtkPerSec;
         }
         
     }

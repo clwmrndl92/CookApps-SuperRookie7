@@ -44,7 +44,11 @@ MonoBehaviour:
       baseSkillRange: 4
       baseSkillCool: 6
   monsterSettings:
-    baseHp: 100
-    baseAtk: 10
-    baseAtkRange: 1
-    baseAtkCool: 1
+    monsterControllerSettings:
+      monsterSpawnPeriod: 5
+      monsterMaxSpawnNum: 5
+    goblinSettings:
+      baseHp: 100
+      baseAtk: 10
+      baseAtkRange: 1
+      baseAtkPerSec: 1
