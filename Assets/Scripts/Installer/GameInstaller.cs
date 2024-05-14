@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 using Zenject;
 
 namespace LineUpHeros
@@ -9,7 +7,7 @@ namespace LineUpHeros
     public class GameInstaller : MonoInstaller
     {
         [Inject] 
-        private Settings _settings = null;
+        private Settings _settings;
 
         public override void InstallBindings()
         {

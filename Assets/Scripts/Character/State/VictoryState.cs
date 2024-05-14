@@ -1,22 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace LineUpHeros
+﻿namespace LineUpHeros
 {
     // 승리 스테이트
     public class VictoryState : BaseState
     {
-        protected Character _character;
-        
         public VictoryState(Character character) : base(character)
         {
             _character = character;
         }
 
-        public override void OnEnterState(){}
-        public override void OnUpdateState(){}
-        public override void OnFixedUpdateState(){}
-        public override void OnExitState(){}
+        public override void OnEnterState()
+        {
+            _character.ChangeAnimationState(EnumAnimState.VICTORY);
+        }
+
+        public override void OnUpdateState()
+        {
+        }
+
+        public override void OnFixedUpdateState()
+        {
+        }
+
+        public override void OnExitState()
+        {
+        }
     }
 }

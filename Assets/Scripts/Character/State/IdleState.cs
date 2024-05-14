@@ -1,14 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace LineUpHeros
+﻿namespace LineUpHeros
 {
     // Idle 스테이트
     public class IdleState : BaseState
     {
-        protected Character _character;
-        
         public IdleState(Character character) : base(character)
         {
             _character = character;
@@ -18,8 +12,17 @@ namespace LineUpHeros
         {
             _character.ChangeAnimationState(EnumAnimState.IDLE);
         }
-        public override void OnUpdateState(){}
-        public override void OnFixedUpdateState(){}
-        public override void OnExitState(){}
+
+        public override void OnUpdateState()
+        {
+        }
+
+        public override void OnFixedUpdateState()
+        {
+        }
+
+        public override void OnExitState()
+        {
+        }
     }
 }

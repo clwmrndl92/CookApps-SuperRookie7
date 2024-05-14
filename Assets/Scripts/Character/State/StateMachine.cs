@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace LineUpHeros
 {
@@ -15,19 +13,20 @@ namespace LineUpHeros
         Hurt,
         Victory
     }
-    
+
     // 스테이트 추가, 제거, 전환 하는 스테이트머신 클래스
     public class StateMachine
     {
-        public BaseState currentState { get; private set; }
         // 생성된 스테이트 담는 딕셔너리
-        private readonly Dictionary<EnumState, BaseState> _states = new Dictionary<EnumState, BaseState>();
+        private readonly Dictionary<EnumState, BaseState> _states = new();
 
         public StateMachine(EnumState stateName, BaseState state)
         {
             AddState(stateName, state);
             currentState = GetState(stateName);
         }
+
+        public BaseState currentState { get; private set; }
 
         public void AddState(EnumState stateName, BaseState state)
         {
@@ -41,19 +40,13 @@ namespace LineUpHeros
 
         public void DeleteState(EnumState removeStateName)
         {
-            if (_states.ContainsKey(removeStateName))
-            {
-                _states.Remove(removeStateName);
-            }
+            if (_states.ContainsKey(removeStateName)) _states.Remove(removeStateName);
         }
 
         public void ChangeState(EnumState nextStateName)
         {
             currentState?.OnExitState();
-            if (_states.TryGetValue(nextStateName, out BaseState newState))
-            {
-                currentState = newState;
-            }
+            if (_states.TryGetValue(nextStateName, out var newState)) currentState = newState;
             currentState?.OnEnterState();
         }
 
@@ -67,5 +60,4 @@ namespace LineUpHeros
             currentState?.OnFixedUpdateState();
         }
     }
-    
 }
