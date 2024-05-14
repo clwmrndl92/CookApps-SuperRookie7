@@ -4,20 +4,20 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public class HealerCharacter : Character
+    public class ShortRangeDealerCharacter : Character
     {
-        [Inject(Id = "Healer")]
+        [Inject(Id = "ShortRangeDealer")]
         private Settings _settings;
 
         protected override void InitStatus()
         {
-            _status = new Status(_settings);
+            _status = new CahracterStatus(_settings);
         }
 
         private void Start()
         {
             Debug.Log(gameObject.name);
-            Debug.Log(_status.hp);
+            Debug.Log(_status.maxHp);
         }
     }
 }

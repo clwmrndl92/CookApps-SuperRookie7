@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
-    // Idle 스테이트
-    public class IdleState : BaseState
+    // Move 스테이트
+    public class CharMoveState : BaseState
     {
-        public IdleState(Character character) : base(character)
+        public CharMoveState(Unit unit) : base(unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumAnimState.IDLE);
+            _unit.ChangeAnimationState(EnumAnimState.Character.MOVE);
         }
 
         public override void OnUpdateState()

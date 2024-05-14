@@ -43,3 +43,8 @@ MonoBehaviour:
       baseAtkCool: 1
       baseSkillRange: 4
       baseSkillCool: 6
+  monsterSettings:
+    baseHp: 100
+    baseAtk: 10
+    baseAtkRange: 1
+    baseAtkCool: 1

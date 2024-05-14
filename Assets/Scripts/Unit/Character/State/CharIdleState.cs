@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
-    // 스킬 사용 스테이트
-    public class SpecialAtkState : BaseState
+    // Idle 스테이트
+    public class CharIdleState : BaseState
     {
-        public SpecialAtkState(Character character) : base(character)
+        public CharIdleState(Unit unit) : base(unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumAnimState.SPECIAL_ATK);
+            _unit.ChangeAnimationState(EnumAnimState.Character.IDLE);
         }
 
         public override void OnUpdateState()

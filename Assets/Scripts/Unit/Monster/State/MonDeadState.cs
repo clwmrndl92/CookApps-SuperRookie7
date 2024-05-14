@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
-    // 승리 스테이트
-    public class VictoryState : BaseState
+    // 죽음 스테이트
+    public class MonDeadState : BaseState
     {
-        public VictoryState(Character character) : base(character)
+        public MonDeadState(Unit unit) : base(unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumAnimState.VICTORY);
+            _unit.ChangeAnimationState(EnumAnimState.Monster.DEAD);
         }
 
         public override void OnUpdateState()

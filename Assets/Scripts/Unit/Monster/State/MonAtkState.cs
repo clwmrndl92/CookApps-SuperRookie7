@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
     // 일반 공격 스테이트
-    public class AtkState : BaseState
+    public class MonAtkState : BaseState
     {
-        public AtkState(Character character) : base(character)
+        public MonAtkState(Unit unit) : base(unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumAnimState.ATK);
+            _unit.ChangeAnimationState(EnumAnimState.Character.ATK);
         }
 
         public override void OnUpdateState()

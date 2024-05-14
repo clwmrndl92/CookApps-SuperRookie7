@@ -3,11 +3,11 @@ namespace LineUpHeros
     // FSM 베이스 스테이트
     public abstract class BaseState
     {
-        protected Character _character;
+        protected Unit _unit;
 
-        protected BaseState(Character character)
+        protected BaseState(Unit unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public abstract void OnEnterState();

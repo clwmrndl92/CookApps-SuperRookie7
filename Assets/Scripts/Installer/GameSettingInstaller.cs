@@ -8,10 +8,11 @@ namespace LineUpHeros
     public class GameSettingInstaller : ScriptableObjectInstaller<GameSettingInstaller>
     {
         public GameInstaller.Settings gameInstallerSettings;
-        public CharacterSettings characterSettings;
+        public AllCharacterSettings characterSettings;
+        public Monster.Settings monsterSettings;
 
         [Serializable]
-        public class CharacterSettings
+        public class AllCharacterSettings
         {
             public Character.Settings TankerSettings;
             public Character.Settings ShortRangeDealerSettings;
@@ -22,11 +23,15 @@ namespace LineUpHeros
 
         public override void InstallBindings()
         {
+            // Game
             Container.BindInstance(gameInstallerSettings);
+            // Character
             Container.BindInstance(characterSettings.TankerSettings).WithId("Tanker");
             Container.BindInstance(characterSettings.ShortRangeDealerSettings).WithId("ShortRangeDealer");
             Container.BindInstance(characterSettings.LongRangeDealerSettings).WithId("LongRangeDealer");
             Container.BindInstance(characterSettings.HealerSettings).WithId("Healer");
+            // Monster
+            Container.BindInstance(monsterSettings).WithId("Goblin");
         }
     }
 }

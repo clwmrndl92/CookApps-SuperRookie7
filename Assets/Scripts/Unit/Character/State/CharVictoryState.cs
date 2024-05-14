@@ -1,16 +1,16 @@
 ﻿namespace LineUpHeros
 {
-    // Move 스테이트
-    public class MoveState : BaseState
+    // 승리 스테이트
+    public class CharVictoryState : BaseState
     {
-        public MoveState(Character character) : base(character)
+        public CharVictoryState(Unit unit) : base(unit)
         {
-            _character = character;
+            _unit = unit;
         }
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumAnimState.MOVE);
+            _unit.ChangeAnimationState(EnumAnimState.Character.VICTORY);
         }
 
         public override void OnUpdateState()

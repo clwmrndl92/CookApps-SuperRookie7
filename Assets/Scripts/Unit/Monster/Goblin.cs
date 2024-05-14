@@ -4,20 +4,19 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public class ShortRangeDealerCharacter : Character
+    public class Goblin : Monster
     {
-        [Inject(Id = "ShortRangeDealer")]
+        [Inject(Id = "Goblin")]
         private Settings _settings;
-
         protected override void InitStatus()
         {
-            _status = new Status(_settings);
+            _status = new MonsterStatus(_settings);
         }
 
         private void Start()
         {
             Debug.Log(gameObject.name);
-            Debug.Log(_status.hp);
+            Debug.Log(_status.maxHp);
         }
     }
 }
