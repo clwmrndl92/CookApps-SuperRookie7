@@ -23,6 +23,10 @@ namespace LineUpHeros
         public override void InstallBindings()
         {
             Container.BindInstance(gameInstallerSettings);
+            Container.BindInstance(characterSettings.TankerSettings).WithId("Tanker");
+            Container.BindInstance(characterSettings.ShortRangeDealerSettings).WithId("ShortRangeDealer");
+            Container.BindInstance(characterSettings.LongRangeDealerSettings).WithId("LongRangeDealer");
+            Container.BindInstance(characterSettings.HealerSettings).WithId("Healer");
         }
     }
 }

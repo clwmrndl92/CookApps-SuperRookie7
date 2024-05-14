@@ -3,21 +3,25 @@ using System;
 
 namespace LineUpHeros
 {
-    public partial class Character : MonoBehaviour
+    public abstract partial class Character : MonoBehaviour
     {
-        private StateMachine _stateMachine;
+        protected StateMachine _stateMachine;
+        protected Status _status;
 
         #region MonoBehaviour Method
+
         private void Awake()
         {
             InitAnim();
             InitStateMachine();
+            InitStatus();
         }
 
-        private void Update()
-        {
-        }
         #endregion
+        
+        // InitStatus()에서 _status에 새 Status 인스턴스 할당 필요
+        protected abstract void InitStatus();
+        // protected abstract void Skill();
         
         // StateMachine
         private void InitStateMachine()

@@ -12,8 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2fe16001ca48909ff5ddaf8d3d5f71, type: 3}
   m_Name: GameSettingInstallerObject
   m_EditorClassIdentifier: 
-  GameInstallerSettings:
-    ExplosionPrefab: {fileID: 0}
-    BrokenPlayerPrefab: {fileID: 0}
-    AsteroidPrefab: {fileID: 0}
-    PlayerPrefab: {fileID: 0}
+  gameInstallerSettings:
+    KnightPrefab: {fileID: 0}
+  characterSettings:
+    TankerSettings:
+      baseHp: 400
+      baseAtk: 5
+      baseAtkRange: 1
+      baseAtkCool: 1.5
+      baseSkillRange: 1
+      baseSkillCool: 3
+    ShortRangeDealerSettings:
+      baseHp: 200
+      baseAtk: 10
+      baseAtkRange: 1
+      baseAtkCool: 1
+      baseSkillRange: 2
+      baseSkillCool: 3
+    LongRangeDealerSettings:
+      baseHp: 100
+      baseAtk: 15
+      baseAtkRange: 4
+      baseAtkCool: 1
+      baseSkillRange: 4
+      baseSkillCool: 4
+    HealerSettings:
+      baseHp: 100
+      baseAtk: 10
+      baseAtkRange: 4
+      baseAtkCool: 1
+      baseSkillRange: 4
+      baseSkillCool: 6
