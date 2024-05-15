@@ -14,14 +14,11 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log(_character.gameObject.name + " Idle Enter!");
             _character.ChangeAnimationState(EnumState.Character.IDLE);
-            ((CharacterFSMGlobalParameter)_character.stateMachine.parameters).detectTargetList = null;
         }
 
         public override void OnUpdateState()
         {
-            Debug.Log(_character.gameObject.name + " Idle State!");
             CheckChangeState();
         }
 
@@ -34,13 +31,12 @@ namespace LineUpHeros
         }
         public override void CheckChangeState()
         {
+            // Detect 범위내에 몬스터가 있는지 체크, 있으면 Move State로 전환
             // todo : 일단 하드코딩 나중에 바꿔야됨, detect range 설정
             List<IDamagable> detectList = _character.DetectMonsters(10);
             if (detectList.Count != 0)
             {
-                ((CharacterFSMGlobalParameter)_character.stateMachine.parameters).detectTargetList = detectList;
                 _character.stateMachine.ChangeState(EnumState.Character.MOVE);
-                Debug.Log(_character.gameObject.name + " change to Move State!");
             }
         }
     }

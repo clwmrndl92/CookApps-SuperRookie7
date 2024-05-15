@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LineUpHeros
@@ -35,6 +36,8 @@ namespace LineUpHeros
                     targetList.Add((IDamagable)(target[0]));
                 }
             }
+            // 거리순 정렬
+            targetList = targetList.OrderBy(item => Vector3.Distance(centerPosition, item.gameObjectIDamagable.transform.position)).ToList();
 
             return targetList;
         }

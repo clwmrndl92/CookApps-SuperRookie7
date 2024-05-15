@@ -5,6 +5,7 @@ namespace LineUpHeros
 {
     public interface IDamagable
     {
+        GameObject gameObjectIDamagable { get; }
         Status status { get; set; }
         void TakeHeal(int healAmount);
 
@@ -51,6 +52,7 @@ namespace LineUpHeros
             _baseAtk = settings.baseAtk;
             _baseAtkRange = settings.baseAtkRange;
             _baseAtkCool = settings.baseAtkCool;
+            tmpHp = maxHp;
         }
         protected float GetFinalStat(float baseStat, float addStat, float addPerStat)
         {

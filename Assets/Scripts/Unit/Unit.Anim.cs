@@ -4,7 +4,6 @@ namespace LineUpHeros
 {
     public partial class Unit
     {
-        private string _currentState;
         private Animator _animator;
 
         protected void InitAnim()
@@ -14,11 +13,7 @@ namespace LineUpHeros
 
         public void ChangeAnimationState(string newState)
         {
-            if (_currentState == newState) return;
-
             _animator.Play(newState);
-
-            _currentState = newState;
         }
     }
 

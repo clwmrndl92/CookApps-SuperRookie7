@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace LineUpHeros
 {
@@ -42,6 +43,7 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp -= damage;
+            Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
         }
         public override void TakeStun(float stunTime)
         {

@@ -120,7 +120,7 @@ namespace LineUpHeros
             public const string VICTORY = "victory";
         }
     }
-    
+    // todo : 안쓸것 같으면 삭제하기
     public class CharacterFSMGlobalParameter : FSMGlobalParameter
     {
         public List<IDamagable> detectTargetList;

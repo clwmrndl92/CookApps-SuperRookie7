@@ -15,15 +15,8 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            _character.ChangeAnimationState(EnumState.Character.ATK);
             _timer = 0;
             _attackTargetList = null;
-        }
-        
-        public void OnEnterState(List<IDamagable> attackTargetList)
-        {
-            OnEnterState();
-            _attackTargetList = attackTargetList;
         }
 
         public override void OnUpdateState()
@@ -32,10 +25,7 @@ namespace LineUpHeros
             CheckChangeState();
             if (_timer <= 0)
             {
-                if (_attackTargetList == null)
-                {
-                    _attackTargetList = Util.GetDetectDamagableList(_character.position, _character.status.atkRange, LayerMasks.Monster);
-                }
+                _character.ChangeAnimationState(EnumState.Character.ATK);
                 _character.Attack(_attackTargetList);
                 _timer = _character.status.atkCool;
             }
@@ -55,10 +45,10 @@ namespace LineUpHeros
             List<IDamagable> attackList = _character.DetectMonsters(_character.status.atkRange);
             if (attackList.Count == 0)
             {
-                ((CharacterFSMGlobalParameter)_character.stateMachine.parameters).attackTargetList = null;
-                _character.stateMachine.ChangeState(EnumState.Character.MOVE);
-                Debug.Log(_character.gameObject.name + " change to Move State!");
+                _character.stateMachine.ChangeState(EnumState.Character.IDLE);
+                return;
             }
+            _attackTargetList = attackList;
         }
     }
 }

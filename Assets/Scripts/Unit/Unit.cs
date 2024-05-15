@@ -8,6 +8,7 @@ namespace LineUpHeros
         protected StateMachine _stateMachine;
         public StateMachine stateMachine { get => _stateMachine; set=> _stateMachine = value; }
         protected Status _status;
+        public GameObject gameObjectIDamagable { get => gameObject; }
         public Status status { get => _status; set=> _status = value; }
 
         #region Componets
