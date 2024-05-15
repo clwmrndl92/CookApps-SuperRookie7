@@ -43,7 +43,6 @@ namespace LineUpHeros
 
         public void ChangeState(string nextStateName)
         {
-            Debug.Log("changeState " + nextStateName);
             currentState?.OnExitState();
             if (_states.TryGetValue(nextStateName, out var newState)) currentState = newState;
             currentState?.OnEnterState();

@@ -22,13 +22,15 @@ MonoBehaviour:
       detectRange: 10
     goblinSetting:
       baseHp: 100
-      baseAtk: 1
+      baseAtk: 100
       baseAtkRange: 1
+      baseAtkCool: 1
       baseAtkPerSec: 1
   characterSettings:
     globalSettings:
       detectRange: 10
       moveVelocity: 1
+      revivalTime: 5
     tankerSettings:
       baseHp: 400
       baseAtk: 5

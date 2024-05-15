@@ -7,6 +7,6 @@ namespace LineUpHeros
         public abstract void OnUpdateState();
         public abstract void OnFixedUpdateState();
         public abstract void OnExitState();
-        public abstract void CheckChangeState();
+        public abstract bool CheckChangeState();
     }
 }

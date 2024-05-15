@@ -19,7 +19,7 @@ namespace LineUpHeros
 
         public override void OnUpdateState()
         {
-            CheckChangeState();
+            if(CheckChangeState()) return;
         }
 
         public override void OnFixedUpdateState()
@@ -29,14 +29,22 @@ namespace LineUpHeros
         public override void OnExitState()
         {
         }
-        public override void CheckChangeState()
+        public override bool CheckChangeState()
         {
+            // 체력이 0 이하로 떨어지면 Dead State로 전환
+            if (_character.isDead)
+            {
+                _character.stateMachine.ChangeState(EnumState.Character.DEAD);
+                return true;
+            }
             // Detect 범위내에 몬스터가 있는지 체크, 있으면 Move State로 전환
             List<IDamagable> detectList = _character.DetectMonsters(_character.status.detectRange);
             if (detectList.Count != 0)
             {
                 _character.stateMachine.ChangeState(EnumState.Character.MOVE);
+                return true;
             }
+            return false;
         }
     }
 }

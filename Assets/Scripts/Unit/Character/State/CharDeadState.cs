@@ -5,6 +5,8 @@ namespace LineUpHeros
     // 죽음 스테이트
     public class CharDeadState : CharacterState
     {
+        private float _stateEnterTime;
+
         public CharDeadState(Character character) : base(character)
         {
             _character = character;
@@ -12,12 +14,23 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            _stateEnterTime = Time.time;
             _character.ChangeAnimationState(EnumState.Character.DEAD);
         }
 
         public override void OnUpdateState()
         {
-            Debug.Log(_character.gameObject.name + " Dead State!");
+            // Debug.Log(_character.gameObject.name + " Dead State!");
+            
+            // 0이었던 체력을 부활 시간에 맞게 보간하여 설정
+            float progress = Time.time - _stateEnterTime;
+            progress /= _character.status.revivalTime;
+            progress = progress > 1f ? 1f : progress;
+            
+            int tmpHp = Mathf.FloorToInt(progress * _character.status.maxHp * (1 - Mathf.Epsilon));
+            _character.status.tmpHp = tmpHp;
+                
+            if(CheckChangeState()) return;
         }
 
         public override void OnFixedUpdateState()
@@ -26,10 +39,19 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
+            // todo: 부활하는 이펙트?
         }
-        public override void CheckChangeState()
+
+        public override bool CheckChangeState()
         {
-            throw new System.NotImplementedException();
+            // Dead State로 전환된 이후 3초가 경과했으면 Idle State로 전환
+            if (Time.time - _stateEnterTime >= _character.status.revivalTime)
+            {
+                _character.isDead = false;
+                _character.stateMachine.ChangeState(EnumState.Character.IDLE);
+                return true;
+            }
+            return false;
         }
     }
 }

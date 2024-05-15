@@ -21,7 +21,7 @@ namespace LineUpHeros
 
         public override void OnUpdateState()
         {
-            CheckChangeState();
+            if(CheckChangeState()) return;
             if (_timer <= 0)
             {
                 _character.ChangeAnimationState(EnumState.Character.ATK);
@@ -41,16 +41,23 @@ namespace LineUpHeros
         {
         }
 
-        public override void CheckChangeState()
+        public override bool CheckChangeState()
         {
+            // 체력이 0 이하로 떨어지면 Dead State로 전환
+            if (_character.isDead)
+            {
+                _character.stateMachine.ChangeState(EnumState.Character.DEAD);
+                return true;
+            }
             // attack 범위내에 몬스터가 있는지 체크, 없으면 Idle state로 전환
             List<IDamagable> attackList = _character.DetectMonsters(_character.status.atkRange);
             if (attackList.Count == 0)
             {
                 _character.stateMachine.ChangeState(EnumState.Character.IDLE);
-                return;
+                return true;
             }
             _attackTargetList = attackList;
+            return false;
         }
     }
 }

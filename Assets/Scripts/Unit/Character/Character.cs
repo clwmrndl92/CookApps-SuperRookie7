@@ -12,6 +12,8 @@ namespace LineUpHeros
         public CharacterStatus status => (CharacterStatus)_status;
         public bool canAttack { get; private set; }
         public bool canSkill { get; private set; }
+        private bool _isDead = false;
+        public bool isDead { get => _isDead;  set => _isDead = value; }
         
         protected override void InitStateMachine()
         {
@@ -35,11 +37,16 @@ namespace LineUpHeros
         {
             _status.tmpHp -= damage; 
             Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
+            if (_status.tmpHp <= 0)
+            {
+                Die();
+            }
         }
         public override void TakeStun(float stunTime)
         {
         }
 
+        #endregion
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
@@ -48,19 +55,27 @@ namespace LineUpHeros
             atkRangeTargetList[0].TakeDamage(status.atk);
             return true;
         }
-        
         // return true : 스킬 사용함, return false : 스킬 사용 안함
         public virtual bool SpecialAttack(List<IDamagable> atkRangeTargetList)
         {
             return false;
         }
-        #endregion
+        public virtual void Die()
+        {
+            _isDead = true;
+        }
 
         #region Util
 
         public List<IDamagable> DetectMonsters(float radius)
         { 
-            return Util.GetDetectDamagableList(position, radius, LayerMasks.Monster);
+            List<IDamagable> aliveCharacterList = new List<IDamagable>();
+            foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Monster))
+            {
+                if (character.isDead) continue;
+                aliveCharacterList.Add(character);
+            }
+            return aliveCharacterList;
         }
 
         private void OnDrawGizmos()
@@ -86,6 +101,7 @@ namespace LineUpHeros
         private CharacterGlobalSetting _globalSetting;
         public float detectRange => _globalSetting.detectRange;
         public float moveVelocity => _globalSetting.moveVelocity;
+        public float revivalTime => _globalSetting.revivalTime;
 
         // 스킬 관련 스탯 추가
         public int skillRange => (int) GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange);
@@ -131,6 +147,7 @@ namespace LineUpHeros
         // 몬스터 감지 범위
         public float detectRange;
         public float moveVelocity;
+        public float revivalTime;
     }
     #endregion
     

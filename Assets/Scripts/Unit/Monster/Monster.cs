@@ -7,6 +7,8 @@ namespace LineUpHeros
 {
     public abstract class Monster : Unit
     {
+        public bool _isDead = false;
+        public bool isDead { get => _isDead; set => _isDead = value; }
         public MonsterStatus status => (MonsterStatus)_status;
         protected override void InitStateMachine()
         {
@@ -21,8 +23,14 @@ namespace LineUpHeros
         #region Util
 
         public List<IDamagable> DetectCharacters(float radius)
-        { 
-            return Util.GetDetectDamagableList(position, radius, LayerMasks.Character);
+        {
+            List<IDamagable> aliveCharacterList = new List<IDamagable>();
+            foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Character))
+            {
+                if (character.isDead) continue;
+                aliveCharacterList.Add(character);
+            }
+            return aliveCharacterList;
         }
 
         private void OnDrawGizmos()
@@ -50,13 +58,20 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp -= damage;
-            Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
+            // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
+            if (_status.tmpHp <= 0)
+            {
+                Die();
+            }
         }
         public override void TakeStun(float stunTime)
         {
             
         }
         
+        #endregion
+
+        #region publicMethod
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
@@ -65,8 +80,12 @@ namespace LineUpHeros
             atkRangeTargetList[0].TakeDamage(status.atk);
             return true;
         }
-        #endregion
         
+        public virtual void Die()
+        {
+            _isDead = true;
+        }
+        #endregion
     }
     
     #region Status

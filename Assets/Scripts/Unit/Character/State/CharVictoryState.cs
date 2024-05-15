@@ -24,7 +24,7 @@
         public override void OnExitState()
         {
         }
-        public override void CheckChangeState()
+        public override bool CheckChangeState()
         {
             throw new System.NotImplementedException();
         }

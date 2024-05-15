@@ -15,13 +15,14 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            Debug.Log("monster atk state");
             _timer = 0;
             _attackTargetList = null;
         }
 
         public override void OnUpdateState()
         {
-            CheckChangeState();
+            if(CheckChangeState()) return;
             if (_timer <= 0)
             {
                 _monster.ChangeAnimationState(EnumState.Monster.ATK);
@@ -41,16 +42,22 @@ namespace LineUpHeros
         {
         }
 
-        public override void CheckChangeState()
+        public override bool CheckChangeState()
         {
             // attack 범위내에 캐릭터 있는지 체크, 없으면 Idle state로 전환
             List<IDamagable> attackList = _monster.DetectCharacters(_monster.status.atkRange);
             if (attackList.Count == 0)
             {
                 _monster.stateMachine.ChangeState(EnumState.Monster.IDLE);
-                return;
+                return true;
+            }
+            if (Mathf.Abs(_monster.position.y - attackList[0].gameObjectIDamagable.transform.position.y) > 0.1f)
+            {
+                _monster.stateMachine.ChangeState(EnumState.Monster.MOVE);
+                return true;
             }
             _attackTargetList = attackList;
+            return false;
         }
     }
 }

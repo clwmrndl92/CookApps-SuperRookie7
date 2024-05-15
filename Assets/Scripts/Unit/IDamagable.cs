@@ -6,6 +6,7 @@ namespace LineUpHeros
     public interface IDamagable
     {
         GameObject gameObjectIDamagable { get; }
+        public bool isDead { get; set; }
         Status status { get; set; }
         void TakeHeal(int healAmount);
 
