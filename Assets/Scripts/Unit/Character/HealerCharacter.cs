@@ -8,11 +8,13 @@ namespace LineUpHeros
     public class HealerCharacter : Character
     {
         [Inject(Id = "Healer")]
-        private Settings _settings;
+        private CharacterSetting _settings;
+        [Inject]
+        private CharacterGlobalSetting _globalSettings;
 
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings);
+            _status = new CharacterStatus(_settings, _globalSettings);
         }
 
         private void Start()

@@ -14,41 +14,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameInstallerSettings:
     KnightPrefab: {fileID: 0}
+  monsterSettings:
+    monsterControllerSetting:
+      monsterSpawnPeriod: 5
+      monsterMaxSpawnNum: 5
+    monsterGlobalSetting:
+      detectRange: 10
+    goblinSetting:
+      baseHp: 100
+      baseAtk: 1
+      baseAtkRange: 1
+      baseAtkPerSec: 1
   characterSettings:
-    TankerSettings:
+    globalSettings:
+      detectRange: 10
+      moveVelocity: 1
+    tankerSettings:
       baseHp: 400
       baseAtk: 5
       baseAtkRange: 1
       baseAtkCool: 1.5
       baseSkillRange: 1
       baseSkillCool: 3
-    ShortRangeDealerSettings:
+    shortRangeDealerSettings:
       baseHp: 200
       baseAtk: 10
       baseAtkRange: 1
       baseAtkCool: 1
       baseSkillRange: 2
       baseSkillCool: 3
-    LongRangeDealerSettings:
+    longRangeDealerSettings:
       baseHp: 100
       baseAtk: 15
       baseAtkRange: 4
       baseAtkCool: 1
       baseSkillRange: 4
       baseSkillCool: 4
-    HealerSettings:
+    healerSettings:
       baseHp: 100
       baseAtk: 10
       baseAtkRange: 4
       baseAtkCool: 1
       baseSkillRange: 4
       baseSkillCool: 6
-  monsterSettings:
-    monsterControllerSettings:
-      monsterSpawnPeriod: 5
-      monsterMaxSpawnNum: 5
-    goblinSettings:
-      baseHp: 100
-      baseAtk: 10
-      baseAtkRange: 1
-      baseAtkPerSec: 1

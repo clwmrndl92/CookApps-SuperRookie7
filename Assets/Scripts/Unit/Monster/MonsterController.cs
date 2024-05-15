@@ -7,7 +7,7 @@ namespace LineUpHeros
     public class MonsterController
     {
         [Serializable]
-        public class Settings
+        public class MonsterControllerSetting
         {
             public float monsterSpawnPeriod;
             public float monsterMaxSpawnNum;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 using System;
+using UnityEngine.Serialization;
 
 namespace LineUpHeros
 {
@@ -14,16 +15,18 @@ namespace LineUpHeros
         [Serializable]
         public class CharacterSettings
         {
-            public Character.Settings TankerSettings;
-            public Character.Settings ShortRangeDealerSettings;
-            public Character.Settings LongRangeDealerSettings;
-            public Character.Settings HealerSettings;
+            public CharacterGlobalSetting globalSettings;
+            public CharacterSetting tankerSettings;
+            public CharacterSetting shortRangeDealerSettings;
+            public CharacterSetting longRangeDealerSettings;
+            public CharacterSetting healerSettings;
         }
         [Serializable]
         public class MonsterSettings
         {
-            public MonsterController.Settings monsterControllerSettings;
-            public Monster.Settings goblinSettings;
+            public MonsterController.MonsterControllerSetting monsterControllerSetting;
+            public MonsterGlobalSetting monsterGlobalSetting;
+            public MonsterSetting goblinSetting;
         }
 
 
@@ -32,13 +35,15 @@ namespace LineUpHeros
             // Game
             Container.BindInstance(gameInstallerSettings);
             // Character
-            Container.BindInstance(characterSettings.TankerSettings).WithId("Tanker");
-            Container.BindInstance(characterSettings.ShortRangeDealerSettings).WithId("ShortRangeDealer");
-            Container.BindInstance(characterSettings.LongRangeDealerSettings).WithId("LongRangeDealer");
-            Container.BindInstance(characterSettings.HealerSettings).WithId("Healer");
+            Container.BindInstance(characterSettings.globalSettings).AsSingle();
+            Container.BindInstance(characterSettings.tankerSettings).WithId("Tanker");
+            Container.BindInstance(characterSettings.shortRangeDealerSettings).WithId("ShortRangeDealer");
+            Container.BindInstance(characterSettings.longRangeDealerSettings).WithId("LongRangeDealer");
+            Container.BindInstance(characterSettings.healerSettings).WithId("Healer");
             // Monster
-            Container.BindInstance(monsterSettings.monsterControllerSettings);
-            Container.BindInstance(monsterSettings.goblinSettings).WithId("Goblin");
+            Container.BindInstance(monsterSettings.monsterControllerSetting).AsSingle();
+            Container.BindInstance(monsterSettings.monsterGlobalSetting).AsSingle();
+            Container.BindInstance(monsterSettings.goblinSetting).WithId("Goblin");
         }
     }
 }

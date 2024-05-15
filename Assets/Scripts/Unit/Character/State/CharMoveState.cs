@@ -21,7 +21,8 @@ namespace LineUpHeros
         public override void OnUpdateState()
         {
             CheckChangeState();
-            // todo : _detectTargetList 사용하여 이동 목표 방향 설정 추가
+            GameObject target = _detectTargetList[0].gameObjectIDamagable;
+            _character.position += _character.status.moveVelocity * Time.deltaTime * (target.transform.position - _character.position).normalized;
         }
 
         public override void OnFixedUpdateState()
@@ -34,8 +35,7 @@ namespace LineUpHeros
         public override void CheckChangeState()
         {   
             // Detect 범위내에 몬스터가 있는지 체크, 없으면 Attack State로 전환
-            // todo : detect range설정
-            List<IDamagable> detectList = _character.DetectMonsters(10);
+            List<IDamagable> detectList = _character.DetectMonsters(_character.status.detectRange);
             if (detectList.Count == 0)
             {
                 _detectTargetList = null;

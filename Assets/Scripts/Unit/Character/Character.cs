@@ -1,11 +1,18 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using LineUpHeros;
+using Zenject;
 
 namespace LineUpHeros
 {
     public abstract class Character : Unit, IDamagable
     {
+        
+        public CharacterStatus status => (CharacterStatus)_status;
+        public bool canAttack { get; private set; }
+        public bool canSkill { get; private set; }
+        
         protected override void InitStateMachine()
         {
             _stateMachine = new StateMachine(EnumState.Character.IDLE, new CharIdleState(this), new CharacterFSMGlobalParameter());
@@ -18,45 +25,6 @@ namespace LineUpHeros
             _stateMachine.ChangeState(EnumState.Character.IDLE);
         }
         
-        #region Status
-        public bool canAttack { get; private set; }
-        public bool canSkill { get; private set; }
-        protected class CharacterStatus : Status
-        {
-            // 스킬 관련 스탯 추가
-            public int skillRange => (int) GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange);
-            public float skillCool => (int) GetFinalStat(_baseSkillCool, _addSkillCool, _addPerSkillCool);
-            
-            // Base Stat, 영구 성장치 적용
-            private int _baseSkillRange;
-            private float _baseSkillCool;
-            
-            // Additional Stat, 아이템, 버프 등 일시적 성장치
-            private int _addSkillRange;
-            private float _addSkillCool;
-            
-            // Additional Percent Stat, 아이템, 버프 등 일시적 성장치 (퍼센트)
-            private int _addPerSkillRange;
-            private float _addPerSkillCool;
-
-            public CharacterStatus(Settings settings) : base(settings)
-            {
-                _baseSkillRange = settings.baseSkillRange;
-                _baseSkillCool = settings.baseSkillCool;
-            }
-
-        }
-        
-        // Scriptable Object Installer 세팅 값
-        [Serializable]
-        public class Settings : StatSettings
-        {
-            // 스킬 관련 변수 추가
-            public int baseSkillRange;
-            public float baseSkillCool;
-        }
-        #endregion
-        
         #region IDamagable
         public override void TakeHeal(int healAmount)
         {
@@ -65,7 +33,8 @@ namespace LineUpHeros
 
         public override void TakeDamage(int damage)
         {
-            _status.tmpHp -= damage;
+            _status.tmpHp -= damage; 
+            Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
         }
         public override void TakeStun(float stunTime)
         {
@@ -94,8 +63,6 @@ namespace LineUpHeros
             return Util.GetDetectDamagableList(position, radius, LayerMasks.Monster);
         }
 
-        #endregion
-
         private void OnDrawGizmos()
         {
             #if UNITY_EDITOR
@@ -103,10 +70,70 @@ namespace LineUpHeros
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(position, status.atkRange);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(position, status.detectRange);
             }
             #endif
         }
+
+        #endregion
     }
+            
+    #region Status
+
+    public class CharacterStatus : Status
+    {
+        private CharacterGlobalSetting _globalSetting;
+        public float detectRange => _globalSetting.detectRange;
+        public float moveVelocity => _globalSetting.moveVelocity;
+
+        // 스킬 관련 스탯 추가
+        public int skillRange => (int) GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange);
+        public float skillCool => (int) GetFinalStat(_baseSkillCool, _addSkillCool, _addPerSkillCool);
+                
+        // Base Stat, 영구 성장치 적용
+        private int _baseSkillRange;
+        private float _baseSkillCool;
+                
+        // Additional Stat, 아이템, 버프 등 일시적 성장치
+        private int _addSkillRange;
+        private float _addSkillCool;
+                
+        // Additional Percent Stat, 아이템, 버프 등 일시적 성장치 (퍼센트)
+        private int _addPerSkillRange;
+        private float _addPerSkillCool;
+
+        public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting) : base(settings)
+        {
+            _baseSkillRange = settings.baseSkillRange;
+            _baseSkillCool = settings.baseSkillCool;
+
+            _globalSetting = globalSetting;
+        }
+
+    }
+    #endregion
+    
+    #region setting
+    // Scriptable Object Installer 세팅 값
+    [Serializable]
+    public class CharacterSetting : StatSettings
+    {
+        // 스킬 관련 변수 추가
+        public int baseSkillRange;
+        public float baseSkillCool;
+    }
+
+    // Scriptable Object Installer 세팅 값
+    [Serializable]
+    public class CharacterGlobalSetting
+    {
+        // 몬스터 감지 범위
+        public float detectRange;
+        public float moveVelocity;
+    }
+    #endregion
+    
     public static partial class EnumState
     {
         public static class Character
@@ -120,6 +147,7 @@ namespace LineUpHeros
             public const string VICTORY = "victory";
         }
     }
+    
     // todo : 안쓸것 같으면 삭제하기
     public class CharacterFSMGlobalParameter : FSMGlobalParameter
     {

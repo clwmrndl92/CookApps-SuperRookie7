@@ -8,11 +8,13 @@ namespace LineUpHeros
     public class TankerCharacter : Character
     {
         [Inject(Id = "Tanker")]
-        private Settings _settings;
+        private CharacterSetting _settings;
+        [Inject]
+        private CharacterGlobalSetting _globalSettings;
 
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings);
+            _status = new CharacterStatus(_settings, _globalSettings);
         }
         
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList)

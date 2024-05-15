@@ -1,4 +1,6 @@
-﻿namespace LineUpHeros
+﻿using System.Collections.Generic;
+
+namespace LineUpHeros
 {
     // Idle 스테이트
     public class MonIdleState : MonsterState
@@ -15,6 +17,7 @@
 
         public override void OnUpdateState()
         {
+            CheckChangeState();
         }
 
         public override void OnFixedUpdateState()
@@ -27,7 +30,12 @@
 
         public override void CheckChangeState()
         {
-            throw new System.NotImplementedException();
+            // Detect 범위내에 캐릭터가 있는지 체크, 있으면 Move State로 전환
+            List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
+            if (detectList.Count != 0)
+            {
+                _monster.stateMachine.ChangeState(EnumState.Monster.MOVE);
+            }
         }
     }
 }

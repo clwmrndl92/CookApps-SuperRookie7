@@ -21,13 +21,14 @@ namespace LineUpHeros
 
         public override void OnUpdateState()
         {
-            // todo : 로직 수정 필요
             CheckChangeState();
             if (_timer <= 0)
             {
                 _character.ChangeAnimationState(EnumState.Character.ATK);
-                _character.Attack(_attackTargetList);
-                _timer = _character.status.atkCool;
+                if (_character.Attack(_attackTargetList))
+                {
+                    _timer = _character.status.atkCool;
+                }
             }
             _timer -= Time.deltaTime;
         }
@@ -42,6 +43,7 @@ namespace LineUpHeros
 
         public override void CheckChangeState()
         {
+            // attack 범위내에 몬스터가 있는지 체크, 없으면 Idle state로 전환
             List<IDamagable> attackList = _character.DetectMonsters(_character.status.atkRange);
             if (attackList.Count == 0)
             {

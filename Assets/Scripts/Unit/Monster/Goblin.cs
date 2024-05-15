@@ -7,15 +7,12 @@ namespace LineUpHeros
     public class Goblin : Monster
     {
         [Inject(Id = "Goblin")]
-        private Settings _settings;
+        private MonsterSetting _monsterSetting;
+        [Inject]
+        private MonsterGlobalSetting _globalSetting;
         protected override void InitStatus()
         {
-            StatSettings statSettings = new StatSettings();
-            statSettings.baseHp = _settings.baseHp;
-            statSettings.baseAtk = _settings.baseAtk;
-            statSettings.baseAtkRange = _settings.baseAtkRange;
-            statSettings.baseAtkCool = 1 / _settings.baseAtkPerSec;
-            _status = new MonsterStatus(statSettings);
+            _status = new MonsterStatus(_monsterSetting, _globalSetting);
         }
 
         private void Start()

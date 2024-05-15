@@ -32,8 +32,7 @@ namespace LineUpHeros
         public override void CheckChangeState()
         {
             // Detect 범위내에 몬스터가 있는지 체크, 있으면 Move State로 전환
-            // todo : 일단 하드코딩 나중에 바꿔야됨, detect range 설정
-            List<IDamagable> detectList = _character.DetectMonsters(10);
+            List<IDamagable> detectList = _character.DetectMonsters(_character.status.detectRange);
             if (detectList.Count != 0)
             {
                 _character.stateMachine.ChangeState(EnumState.Character.MOVE);
