@@ -7,6 +7,9 @@ namespace LineUpHeros
     public class MonAtkState : MonsterState
     {
         private float _timer;
+        private bool canAttack => !_isCool && !_isAttacking;
+        private bool _isCool;
+        private bool _isAttacking;
         private List<IDamagable> _attackTargetList;
         public MonAtkState(Monster monster) : base(monster)
         {
@@ -17,19 +20,32 @@ namespace LineUpHeros
         {
             Debug.Log("monster atk state");
             _timer = 0;
-            _attackTargetList = null;
+            _isCool = false;
+            _isAttacking = false;
+            _attackTargetList = new List<IDamagable>();
         }
 
         public override void OnUpdateState()
         {
-            if(CheckChangeState()) return;
+            if(_isAttacking == false && CheckChangeState()) return;
             if (_timer <= 0)
             {
-                _monster.ChangeAnimationState(EnumState.Monster.ATK);
-                if (_monster.Attack(_attackTargetList))
+                _isCool = false;
+            }
+            if (canAttack && _attackTargetList.Count != 0)
+            {
+                // todo: flip 나중에 unit으로 옮기기
+                if (_attackTargetList[0].gameObjectIDamagable.transform.position.x < _monster.position.x)
                 {
-                    _timer = _monster.status.atkCool;
+                    _monster.scale = _monster.scale.X((Mathf.Abs(_monster.scale.x) * -1));
                 }
+                else if(_attackTargetList[0].gameObjectIDamagable.transform.position.x > _monster.position.x)
+                {
+                    _monster.scale = _monster.scale.X(Mathf.Abs(_monster.scale.x));
+                }
+                _monster.ChangeAnimationState(EnumState.Monster.ATK);
+                _timer = _monster.status.atkCool;
+                _isAttacking = true;
             }
             _timer -= Time.deltaTime;
         }
@@ -58,6 +74,13 @@ namespace LineUpHeros
             }
             _attackTargetList = attackList;
             return false;
+        }
+        
+        
+        public void Attack()
+        {
+            _monster.Attack(_attackTargetList);
+            _isAttacking = false;
         }
     }
 }

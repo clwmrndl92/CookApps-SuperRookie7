@@ -36,7 +36,7 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp -= damage; 
-            Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
+            // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
             if (_status.tmpHp <= 0)
             {
                 Die();

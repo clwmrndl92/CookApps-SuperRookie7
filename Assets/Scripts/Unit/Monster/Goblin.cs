@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Zenject;
 
 namespace LineUpHeros
@@ -20,5 +21,15 @@ namespace LineUpHeros
             Debug.Log(gameObject.name);
             Debug.Log(_status.maxHp);
         }
+
+        protected override void AnimEventAttack()
+        {
+            BaseState attackState = _stateMachine.GetState(EnumState.Monster.ATK);
+            if (_stateMachine.currentState == attackState)
+            {
+                ((MonAtkState) attackState).Attack();
+            }
+        }
+
     }
 }

@@ -26,8 +26,18 @@ namespace LineUpHeros
 
             if (Vector3.Distance(_monster.position, target.transform.position) > _monster.status.atkRange)
             {
+                Vector3 direction = (target.transform.position - _monster.position).normalized;
                 _monster.position += _monster.status.moveVelocity * Time.deltaTime *
-                                     (target.transform.position - _monster.position).normalized;
+                                     direction;
+                // todo: flip 나중에 unit으로 옮기기
+                if (direction.x < 0)
+                {
+                    _monster.scale = _monster.scale.X((Mathf.Abs(_monster.scale.x) * -1));
+                }
+                else if(direction.x > 0)
+                {
+                    _monster.scale = _monster.scale.X(Mathf.Abs(_monster.scale.x));
+                }
             }
 
             if (Mathf.Abs(_monster.position.y - target.transform.position.y) > _epsilon)
@@ -49,7 +59,6 @@ namespace LineUpHeros
         {
             // Detect 범위내에 캐릭터가 있는지 체크, 없으면 Attack State로 전환
             List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
-                Debug.Log(detectList.Count);
             if (detectList.Count == 0)
             {
                 _detectTargetList = null;

@@ -18,6 +18,11 @@ namespace LineUpHeros
             get => transform.position;
             set => transform.position = value;
         }
+        public Vector3 scale
+        {
+            get => transform.localScale;
+            set => transform.localScale = value;
+        }
         #endregion
 
         #region MonoBehaviour Method
@@ -53,7 +58,7 @@ namespace LineUpHeros
         protected abstract void InitStatus();
         #endregion
         
-        #region Interface
+        #region IDamagable
 
         public abstract void TakeHeal(int healAmount);
         public abstract void TakeDamage(int damage);
