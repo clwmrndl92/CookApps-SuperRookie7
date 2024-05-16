@@ -36,6 +36,7 @@ namespace LineUpHeros
             List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
             if (detectList.Count != 0)
             {
+                _globalParameter.detectTargetList = detectList;
                 _monster.stateMachine.ChangeState(EnumState.Monster.MOVE);
                 return true;
             }

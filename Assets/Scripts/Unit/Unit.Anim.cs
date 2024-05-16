@@ -15,6 +15,8 @@ namespace LineUpHeros
 
         public void ChangeAnimationState(string newState)
         {
+            // 이미 실행중인 스테이트면 리턴
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName(newState)) return;
             _animator.Play(newState);
         }
         

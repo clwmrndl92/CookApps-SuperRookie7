@@ -11,17 +11,12 @@ namespace LineUpHeros
         // 생성된 스테이트 담는 딕셔너리
         private readonly Dictionary<string, BaseState> _states = new();
 
-        public StateMachine(string stateName, BaseState state)
+        public StateMachine()
         {
-            parameters = new FSMGlobalParameter();
-            AddState(stateName, state);
-            currentState = GetState(stateName);
         }
-        public StateMachine(string stateName, BaseState state, FSMGlobalParameter fsmParameters)
+        public StateMachine(FSMGlobalParameter fsmParameters)
         {
             parameters = fsmParameters;
-            AddState(stateName, state);
-            currentState = GetState(stateName);
         }
 
         public BaseState currentState { get; private set; }

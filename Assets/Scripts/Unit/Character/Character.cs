@@ -8,7 +8,6 @@ namespace LineUpHeros
 {
     public abstract class Character : Unit, IDamagable
     {
-        
         public CharacterStatus status => (CharacterStatus)_status;
         public bool canAttack { get; private set; }
         public bool canSkill { get; private set; }
@@ -17,7 +16,8 @@ namespace LineUpHeros
         
         protected override void InitStateMachine()
         {
-            _stateMachine = new StateMachine(EnumState.Character.IDLE, new CharIdleState(this), new CharacterFSMGlobalParameter());
+            _stateMachine = new StateMachine( new FSMCharacterGlobalParameter());
+            _stateMachine.AddState(EnumState.Character.IDLE, new CharIdleState(this));
             _stateMachine.AddState(EnumState.Character.MOVE, new CharMoveState(this));
             _stateMachine.AddState(EnumState.Character.ATK, new CharAtkState(this));
             _stateMachine.AddState(EnumState.Character.SPECIAL_ATK, new CharSpecialAtkState(this));
@@ -178,9 +178,8 @@ namespace LineUpHeros
     }
     
     // todo : 안쓸것 같으면 삭제하기
-    public class CharacterFSMGlobalParameter : FSMGlobalParameter
+    public class FSMCharacterGlobalParameter : FSMGlobalParameter
     {
         public List<IDamagable> detectTargetList;
-        public List<IDamagable> attackTargetList;
     }
 }

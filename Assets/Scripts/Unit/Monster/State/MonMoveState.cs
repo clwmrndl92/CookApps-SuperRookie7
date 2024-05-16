@@ -16,6 +16,8 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            Debug.Log("monster move state");
+            _detectTargetList = _globalParameter.detectTargetList;
             _monster.ChangeAnimationState(EnumState.Monster.MOVE);
         }
 
@@ -27,8 +29,7 @@ namespace LineUpHeros
             if (Vector3.Distance(_monster.position, target.transform.position) > _monster.status.atkRange)
             {
                 Vector3 direction = (target.transform.position - _monster.position).normalized;
-                _monster.position += _monster.status.moveVelocity * Time.deltaTime *
-                                     direction;
+                _monster.position += _monster.status.moveVelocity * Time.deltaTime * direction;
                 
                 _monster.FlipToTarget(target);
             }
@@ -50,24 +51,24 @@ namespace LineUpHeros
 
         public override bool CheckChangeState()
         {
-            // Detect 범위내에 캐릭터가 있는지 체크, 없으면 Attack State로 전환
-            List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
-            if (detectList.Count == 0)
+            // Detect 범위내에 캐릭터가 있는지 체크, 없으면 Idle State로 전환
+            if (_detectTargetList.Count == 0)
             {
                 _detectTargetList = null;
                 _monster.stateMachine.ChangeState(EnumState.Monster.IDLE);
                 return true;
             }
-            // 제일 가까운 캐릭터가 Attck 범위내에 있는지 체크, 있으면 Attack State로 전환
-            // if (Vector3.Distance(_monster.position, detectList[0].gameObjectIDamagable.transform.position) <= _monster.status.atkRange)
-            Vector3 targetPosition = detectList[0].gameObjectIDamagable.transform.position;
-            if (Mathf.Abs(_monster.position.y-targetPosition.y) <= _epsilon 
-                && Vector3.Distance(_monster.position, targetPosition) <= _monster.status.atkRange)
+            // 제일 가까운 캐릭터가 공격 가능 범위내에 있는지 체크, 있으면 Attack State로 전환
+            Vector3 targetPosition = _detectTargetList[0].gameObjectIDamagable.transform.position;
+            bool isTargetInSameLine =
+                Mathf.Abs(_monster.position.y - targetPosition.y) <= FSMMonsterGlobalParameter.EPSILON;
+            bool isTargetInAttackRange =
+                Vector3.Distance(_monster.position, targetPosition) <= _monster.status.atkRange;
+            if ( isTargetInSameLine && isTargetInAttackRange)
             {
                 _monster.stateMachine.ChangeState(EnumState.Monster.ATK);
                 return true;
             }
-            _detectTargetList = detectList;
             return false;
         }
     }

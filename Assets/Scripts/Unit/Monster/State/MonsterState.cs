@@ -5,9 +5,11 @@
     {
         
         protected Monster _monster;
+        protected FSMMonsterGlobalParameter _globalParameter;
         protected MonsterState(Monster monster)
         {
             _monster = monster;
+            _globalParameter = (FSMMonsterGlobalParameter)_monster.stateMachine.parameters;
         }
     }
 }
