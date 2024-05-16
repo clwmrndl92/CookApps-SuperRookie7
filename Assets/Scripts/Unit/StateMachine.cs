@@ -57,6 +57,7 @@ namespace LineUpHeros
         {
             currentState?.OnFixedUpdateState();
         }
+        
     }
 
     public class FSMGlobalParameter

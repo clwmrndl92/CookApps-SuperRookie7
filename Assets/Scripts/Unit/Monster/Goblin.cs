@@ -22,7 +22,7 @@ namespace LineUpHeros
             Debug.Log(_status.maxHp);
         }
 
-        protected override void AnimEventAttack()
+        public override void AnimEventAttack()
         {
             BaseState attackState = _stateMachine.GetState(EnumState.Monster.ATK);
             if (_stateMachine.currentState == attackState)

@@ -29,15 +29,8 @@ namespace LineUpHeros
                 Vector3 direction = (target.transform.position - _monster.position).normalized;
                 _monster.position += _monster.status.moveVelocity * Time.deltaTime *
                                      direction;
-                // todo: flip 나중에 unit으로 옮기기
-                if (direction.x < 0)
-                {
-                    _monster.scale = _monster.scale.X((Mathf.Abs(_monster.scale.x) * -1));
-                }
-                else if(direction.x > 0)
-                {
-                    _monster.scale = _monster.scale.X(Mathf.Abs(_monster.scale.x));
-                }
+                
+                _monster.FlipToTarget(target);
             }
 
             if (Mathf.Abs(_monster.position.y - target.transform.position.y) > _epsilon)

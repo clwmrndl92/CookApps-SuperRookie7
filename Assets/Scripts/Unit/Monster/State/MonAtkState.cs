@@ -34,15 +34,7 @@ namespace LineUpHeros
             }
             if (canAttack && _attackTargetList.Count != 0)
             {
-                // todo: flip 나중에 unit으로 옮기기
-                if (_attackTargetList[0].gameObjectIDamagable.transform.position.x < _monster.position.x)
-                {
-                    _monster.scale = _monster.scale.X((Mathf.Abs(_monster.scale.x) * -1));
-                }
-                else if(_attackTargetList[0].gameObjectIDamagable.transform.position.x > _monster.position.x)
-                {
-                    _monster.scale = _monster.scale.X(Mathf.Abs(_monster.scale.x));
-                }
+                _monster.FlipToTarget(_attackTargetList[0].gameObjectIDamagable);
                 _monster.ChangeAnimationState(EnumState.Monster.ATK);
                 _timer = _monster.status.atkCool;
                 _isAttacking = true;
