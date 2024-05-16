@@ -1,4 +1,5 @@
 ﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace LineUpHeros
@@ -7,7 +8,7 @@ namespace LineUpHeros
     {
         // 프로퍼티
         GameObject gameObjectIDamagable { get; }
-        public bool isDead { get; set; }
+        public ReactiveProperty<bool> isDead { get; set; }
         Status status { get; set; }
         // 메소드
         void TakeHeal(int healAmount);
@@ -17,13 +18,8 @@ namespace LineUpHeros
     
     public class Status
     {
-        private int _tmpHp;
-        public int tmpHp
-        {
-            get => _tmpHp;
-            set => _tmpHp = Mathf.Max(0, Mathf.Min(value, maxHp)); // 0 < tmpHp < maxHP
-        }
-
+        public ReactiveProperty<int> tmpHp;
+        
         // Final Stat Property
         public int maxHp => (int) GetFinalStat(_baseHp, _addHp, _addPerHp);
         public int atk => (int) GetFinalStat(_baseAtk, _addAtk, _addPerAtk);
@@ -54,7 +50,13 @@ namespace LineUpHeros
             _baseAtk = settings.baseAtk;
             _baseAtkRange = settings.baseAtkRange;
             _baseAtkCool = settings.baseAtkCool;
-            tmpHp = maxHp;
+            // UI에 업데이트 될 값
+            tmpHp = new ReactiveProperty<int>(maxHp);
+            tmpHp.Where(value => value < 0 || value > maxHp)
+                .Subscribe(_ =>
+                { 
+                    tmpHp.Value = Mathf.Clamp(tmpHp.Value, 0, maxHp);
+                });
         }
         protected float GetFinalStat(float baseStat, float addStat, float addPerStat)
         {

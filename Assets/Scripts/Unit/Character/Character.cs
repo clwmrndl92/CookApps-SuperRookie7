@@ -9,8 +9,6 @@ namespace LineUpHeros
     public abstract class Character : Unit, IDamagable
     {
         public CharacterStatus status => (CharacterStatus)_status;
-        private bool _isDead = false;
-        public bool isDead => _isDead;
         
         public bool canSkill
         {
@@ -44,13 +42,13 @@ namespace LineUpHeros
         #region IDamagable
         public override void TakeHeal(int healAmount)
         {
-            _status.tmpHp += healAmount;
+            _status.tmpHp.Value += healAmount;
         }
 
         public override void TakeDamage(int damage)
         {
-            _status.tmpHp -= damage; 
-            if (_status.tmpHp <= 0)
+            _status.tmpHp.Value -= damage; 
+            if (_status.tmpHp.Value <= 0)
             {
                 Die();
             }
@@ -94,11 +92,12 @@ namespace LineUpHeros
         }
         public virtual void Die()
         {
-            _isDead = true;
+            isDead.Value = true;
         }
         public virtual void Revive()
         {
-            _isDead = false;
+            status.tmpHp.Value = status.maxHp;
+            isDead.Value = false;
         }
         #endregion
 
@@ -109,7 +108,7 @@ namespace LineUpHeros
             List<IDamagable> aliveMonsterList = new List<IDamagable>();
             foreach (var monster in Util.GetDetectDamagableList(position, radius, LayerMasks.Monster))
             {
-                if (monster.isDead) continue;
+                if (monster.isDead.Value) continue;
                 aliveMonsterList.Add(monster);
             }
             return aliveMonsterList;

@@ -7,8 +7,6 @@ namespace LineUpHeros
 {
     public abstract class Monster : Unit
     {
-        public bool _isDead = false;
-        public bool isDead { get => _isDead; set => _isDead = value; }
         public bool isStun { get; set; }
         public MonsterStatus status => (MonsterStatus)_status;
         protected override void InitStateMachine()
@@ -31,8 +29,8 @@ namespace LineUpHeros
 
         public override void TakeDamage(int damage)
         {
-            _status.tmpHp -= damage;
-            if (_status.tmpHp <= 0)
+            _status.tmpHp.Value -= damage;
+            if (_status.tmpHp.Value <= 0)
             {
                 Die();
             }
@@ -68,7 +66,7 @@ namespace LineUpHeros
         
         public virtual void Die()
         {
-            _isDead = true;
+            isDead.Value = true;
         }
         #endregion
         
@@ -79,7 +77,7 @@ namespace LineUpHeros
             List<IDamagable> aliveCharacterList = new List<IDamagable>();
             foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Character))
             {
-                if (character.isDead) continue;
+                if (character.isDead.Value) continue;
                 aliveCharacterList.Add(character);
             }
             return aliveCharacterList;

@@ -33,7 +33,7 @@ namespace LineUpHeros
         public override bool CheckChangeState()
         {
             // 체력이 0 이하로 떨어지면 Dead State로 전환
-            if (_character.isDead)
+            if (_character.isDead.Value)
             {
                 _character.stateMachine.ChangeState(EnumState.Character.DEAD);
                 return true;

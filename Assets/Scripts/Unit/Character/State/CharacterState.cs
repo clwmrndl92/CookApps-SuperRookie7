@@ -17,7 +17,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            // Debug.Log(_character.gameObject.name+ "enter"+ _stateMachine.currentState);
+            Debug.Log(_character.gameObject.name+ "enter"+ _stateMachine.currentState);
         }
     }
 }

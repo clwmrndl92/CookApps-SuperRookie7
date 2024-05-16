@@ -11,6 +11,8 @@ namespace LineUpHeros
 
         public override void InstallBindings()
         {
+            // Container.BindFactory<Transform, ExplosionFactory>()
+            //     .FromComponentInNewPrefab(_settings.ExplosionPrefab);
         }
 
 

@@ -29,7 +29,7 @@ namespace LineUpHeros
             progress = progress > 1f ? 1f : progress;
             
             int tmpHp = Mathf.FloorToInt(progress * _character.status.maxHp * (1 - Mathf.Epsilon));
-            _character.status.tmpHp = tmpHp;
+            _character.status.tmpHp.Value = tmpHp;
                 
         }
 

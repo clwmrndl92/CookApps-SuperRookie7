@@ -42,15 +42,15 @@ namespace LineUpHeros
             int minHp = Int32.MaxValue;
             foreach (var target in atkRangeTargetList)
             {
-                if (target.status.tmpHp == target.status.maxHp) continue;
-                if (minHp > target.status.tmpHp)
+                if (target.status.tmpHp.Value == target.status.maxHp) continue;
+                if (minHp > target.status.tmpHp.Value)
                 {
-                    minHp = target.status.tmpHp;
+                    minHp = target.status.tmpHp.Value;
                     minHpTarget = target;
                 }
             }
             // 풀피 아닐때만 치유스킬 사용
-            if (minHpTarget != null && minHpTarget.status.tmpHp < minHpTarget.status.maxHp)
+            if (minHpTarget != null && minHpTarget.status.tmpHp.Value < minHpTarget.status.maxHp)
             {
                 minHpTarget?.TakeHeal((int)(status.atk * 2.5f));
                 return true;
@@ -64,7 +64,7 @@ namespace LineUpHeros
             List<IDamagable> aliveCharacterList = new List<IDamagable>();
             foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Character))
             {
-                if (character.isDead) continue;
+                if (character.isDead.Value) continue;
                 aliveCharacterList.Add(character);
             }
             return aliveCharacterList;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UniRx;
 
 namespace LineUpHeros
 {
@@ -9,7 +10,7 @@ namespace LineUpHeros
         protected Status _status;
         
         public StateMachine stateMachine { get => _stateMachine; set=> _stateMachine = value; }
-        public bool isDead { get; set; }
+        public ReactiveProperty<bool> isDead { get; set; } = new ReactiveProperty<bool>();
 
         #region Componets
         public Vector3 position
