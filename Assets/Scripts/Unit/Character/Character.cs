@@ -9,14 +9,12 @@ namespace LineUpHeros
     public abstract class Character : Unit, IDamagable
     {
         public CharacterStatus status => (CharacterStatus)_status;
-        public bool canAttack { get; private set; }
-        public bool canSkill { get; private set; }
         private bool _isDead = false;
-        public bool isDead { get => _isDead;  set => _isDead = value; }
+        public bool isDead { get => _isDead; }
         
         protected override void InitStateMachine()
         {
-            _stateMachine = new StateMachine( new FSMCharacterGlobalParameter());
+            _stateMachine = new StateMachine( new FSMCharacterGlobalVariables());
             _stateMachine.AddState(EnumState.Character.IDLE, new CharIdleState(this));
             _stateMachine.AddState(EnumState.Character.MOVE, new CharMoveState(this));
             _stateMachine.AddState(EnumState.Character.ATK, new CharAtkState(this));
@@ -36,7 +34,6 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp -= damage; 
-            // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
             if (_status.tmpHp <= 0)
             {
                 Die();
@@ -49,7 +46,7 @@ namespace LineUpHeros
         #endregion
         
         #region public Methods
-        
+        // Animation Event에서 호출하는 함수
         public override void AnimEventAttack()
         {
             BaseState attackState = _stateMachine.GetState(EnumState.Character.ATK);
@@ -75,10 +72,14 @@ namespace LineUpHeros
         {
             _isDead = true;
         }
+        public virtual void Revive()
+        {
+            _isDead = false;
+        }
         #endregion
 
         #region Util
-
+        // 범위내 살아있는 몬스터 리스트 찾아서 리턴 (거리순 정렬)
         public List<IDamagable> DetectMonsters(float radius)
         { 
             List<IDamagable> aliveCharacterList = new List<IDamagable>();
@@ -94,9 +95,11 @@ namespace LineUpHeros
         {
             #if UNITY_EDITOR
             if (status != null)
-            {
+            { 
+                // 공격범위 파랑
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(position, status.atkRange);
+                // 감지범위 노랑
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(position, status.detectRange);
             }
@@ -107,7 +110,6 @@ namespace LineUpHeros
     }
             
     #region Status
-
     public class CharacterStatus : Status
     {
         private CharacterGlobalSetting _globalSetting;
@@ -138,7 +140,6 @@ namespace LineUpHeros
 
             _globalSetting = globalSetting;
         }
-
     }
     #endregion
     
@@ -152,13 +153,14 @@ namespace LineUpHeros
         public float baseSkillCool;
     }
 
-    // Scriptable Object Installer 세팅 값
     [Serializable]
     public class CharacterGlobalSetting
     {
         // 몬스터 감지 범위
         public float detectRange;
+        // 이동속도
         public float moveVelocity;
+        // 부활시간
         public float revivalTime;
     }
     #endregion
@@ -177,8 +179,8 @@ namespace LineUpHeros
         }
     }
     
-    // todo : 안쓸것 같으면 삭제하기
-    public class FSMCharacterGlobalParameter : FSMGlobalParameter
+    // Character 스테이트머신 글로벌 변수
+    public class FSMCharacterGlobalVariables : FSMGlobalVariables
     {
         public List<IDamagable> detectTargetList;
     }

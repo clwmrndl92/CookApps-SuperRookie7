@@ -7,19 +7,21 @@ namespace LineUpHeros
     public class StateMachine
     {
         // FSM 전역 변수 담는 클래스
-        public FSMGlobalParameter parameters;
+        public FSMGlobalVariables globalVariables;
         // 생성된 스테이트 담는 딕셔너리
         private readonly Dictionary<string, BaseState> _states = new();
 
+        public BaseState currentState { get; private set; }
+        
         public StateMachine()
         {
+            globalVariables = new FSMGlobalVariables();
         }
-        public StateMachine(FSMGlobalParameter fsmParameters)
+        public StateMachine(FSMGlobalVariables fsmGlobalVariables)
         {
-            parameters = fsmParameters;
+            globalVariables = fsmGlobalVariables;
         }
 
-        public BaseState currentState { get; private set; }
 
         public void AddState(string stateName, BaseState state)
         {
@@ -55,7 +57,7 @@ namespace LineUpHeros
         
     }
 
-    public class FSMGlobalParameter
+    public class FSMGlobalVariables
     {
     }
 }

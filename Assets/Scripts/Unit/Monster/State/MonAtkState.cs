@@ -7,9 +7,10 @@ namespace LineUpHeros
     // 일반 공격 스테이트
     public class MonAtkState : MonsterState
     {
+        // 쿨타임 시작 시간
         private float _coolStartTime = float.MinValue;
-        
         public bool isCool => Time.time - _coolStartTime < _monster.status.atkCool;
+        
         private bool _isAttacking;
         private bool canAttack => !isCool && !_isAttacking;
         
@@ -21,9 +22,8 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log("monster atk state");
             _isAttacking = false;
-            _monster.ChangeAnimationState(EnumState.Monster.IDLE);
+            _monster.ChangeAnimationState(EnumState.Monster.IDLE); // 정지 애니메이션
         }
 
         public override void OnUpdateState()
@@ -61,7 +61,7 @@ namespace LineUpHeros
             return false;
         }
         
-        
+        // Animation Event에서 호출되는 함수
         public void Attack()
         {
             _monster.Attack(_attackTargetList);

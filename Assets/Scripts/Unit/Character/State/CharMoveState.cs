@@ -15,14 +15,16 @@ namespace LineUpHeros
         public override void OnEnterState()
         {
             _character.ChangeAnimationState(EnumState.Character.MOVE);
-            _detectTargetList = _globalParameter.detectTargetList;
+            _detectTargetList = globalVariables.detectTargetList;
         }
 
         public override void OnUpdateState()
         {
             if(CheckChangeState()) return;
+            // flip
             GameObject target = _detectTargetList[0].gameObjectIDamagable;
             _character.FlipToTarget(target);
+            // move
             Vector3 direction = (target.transform.position - _character.position).normalized;
             _character.position += _character.status.moveVelocity * Time.deltaTime * direction;
         }
@@ -49,7 +51,9 @@ namespace LineUpHeros
                 return true;
             }
             // 제일 가까운 몬스터가 Attack 범위내에 있는지 체크, 있으면 Attack State로 전환
-            if (Vector3.Distance(_character.position, _detectTargetList[0].gameObjectIDamagable.transform.position) <= _character.status.atkRange)
+            GameObject target = _detectTargetList[0].gameObjectIDamagable;
+            bool canAttack = Vector3.Distance(_character.position, target.transform.position) <= _character.status.atkRange;
+            if (canAttack)
             {
                 _character.stateMachine.ChangeState(EnumState.Character.ATK);
                 return true;

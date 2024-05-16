@@ -22,7 +22,7 @@ namespace LineUpHeros
             if (atkRangeTargetList.Count == 0) return false;
 
             atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
-            // 기절 만들기
+            // todo : 기절 만들기
             return true;
         }
 

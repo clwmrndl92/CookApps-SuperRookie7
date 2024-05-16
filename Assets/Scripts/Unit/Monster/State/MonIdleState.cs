@@ -13,7 +13,6 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log("monster IDle state");
             _monster.ChangeAnimationState(EnumState.Monster.IDLE);
         }
 
@@ -36,7 +35,8 @@ namespace LineUpHeros
             List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
             if (detectList.Count != 0)
             {
-                _globalParameter.detectTargetList = detectList;
+                // 다른 스테이트로 detectList 전달
+                globalVariables.detectTargetList = detectList;
                 _monster.stateMachine.ChangeState(EnumState.Monster.MOVE);
                 return true;
             }

@@ -15,12 +15,5 @@ namespace LineUpHeros
         {
             _status = new MonsterStatus(_monsterSetting, _globalSetting);
         }
-
-        private void Start()
-        {
-            Debug.Log(gameObject.name);
-            Debug.Log(_status.maxHp);
-        }
-
     }
 }

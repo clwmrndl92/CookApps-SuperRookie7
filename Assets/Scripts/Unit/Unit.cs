@@ -6,11 +6,10 @@ namespace LineUpHeros
     public abstract partial class Unit : MonoBehaviour, IDamagable
     {
         protected StateMachine _stateMachine;
+        protected Status _status;
+        
         public StateMachine stateMachine { get => _stateMachine; set=> _stateMachine = value; }
         public bool isDead { get; set; }
-        protected Status _status;
-        public GameObject gameObjectIDamagable { get => gameObject; }
-        public Status status { get => _status; set=> _status = value; }
 
         #region Componets
         public Vector3 position
@@ -59,6 +58,8 @@ namespace LineUpHeros
         #endregion
         
         #region IDamagable
+        public Status status { get => _status; set=> _status = value; }
+        public GameObject gameObjectIDamagable { get => gameObject; }
 
         public abstract void TakeHeal(int healAmount);
         public abstract void TakeDamage(int damage);

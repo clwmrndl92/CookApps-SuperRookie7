@@ -20,11 +20,8 @@ namespace LineUpHeros
             _animator.Play(newState);
         }
         
-        // Attack Animation에서 호출하는 함수
-        public virtual void AnimEventAttack()
-        {
-            // TakeDamage 실행, 이펙트, 소리 등
-        }
+        // Attack Animation에서 호출하는 함수, TakeDamage 실행, 이펙트, 소리 등
+        public virtual void AnimEventAttack() { }
         
         #region util
         // todo : 안쓸것 같으면 삭제

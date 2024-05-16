@@ -5,11 +5,12 @@
     {
         
         protected Monster _monster;
-        protected FSMMonsterGlobalParameter _globalParameter;
+        // 몬스터 스테이트머신 공용 변수
+        protected FsmMonsterGlobalVariables globalVariables;
         protected MonsterState(Monster monster)
         {
             _monster = monster;
-            _globalParameter = (FSMMonsterGlobalParameter)_monster.stateMachine.parameters;
+            globalVariables = (FsmMonsterGlobalVariables)_monster.stateMachine.globalVariables;
         }
     }
 }

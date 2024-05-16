@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
-    // Move 스테이트
+    // Stun 스테이트
     public class MonStunState : MonsterState
     {
         public float stunTime = 5f;

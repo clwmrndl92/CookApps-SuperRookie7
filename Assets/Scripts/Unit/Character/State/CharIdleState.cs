@@ -41,7 +41,8 @@ namespace LineUpHeros
             List<IDamagable> detectList = _character.DetectMonsters(_character.status.detectRange);
             if (detectList.Count != 0)
             {
-                _globalParameter.detectTargetList = detectList;
+                // 다른 스테이트로 detectList 전달
+                globalVariables.detectTargetList = detectList;
                 _character.stateMachine.ChangeState(EnumState.Character.MOVE);
                 return true;
             }

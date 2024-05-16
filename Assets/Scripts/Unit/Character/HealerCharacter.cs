@@ -16,12 +16,6 @@ namespace LineUpHeros
         {
             _status = new CharacterStatus(_settings, _globalSettings);
         }
-
-        private void Start()
-        {
-            Debug.Log(gameObject.name);
-            Debug.Log(_status.maxHp);
-        }
         
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList)
         {
@@ -39,7 +33,7 @@ namespace LineUpHeros
                     minHpTarget = target;
                 }
             }
-
+            // 풀피 아닐때만 치유스킬 사용
             if (minHpTarget != null && minHpTarget.status.tmpHp < minHpTarget.status.maxHp)
             {
                 minHpTarget?.TakeHeal((int)(status.atk * 2.5f));

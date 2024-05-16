@@ -14,7 +14,6 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log("Character dead");
             _stateEnterTime = Time.time;
             _character.ChangeAnimationState(EnumState.Character.DEAD);
         }
@@ -39,7 +38,6 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
-            // todo: 부활하는 이펙트?
         }
 
         public override bool CheckChangeState()
@@ -47,7 +45,7 @@ namespace LineUpHeros
             // 부활시간이 되었으면 Idle State로 전환
             if (Time.time - _stateEnterTime >= _character.status.revivalTime)
             {
-                _character.isDead = false;
+                _character.Revive();
                 _character.stateMachine.ChangeState(EnumState.Character.IDLE);
                 return true;
             }

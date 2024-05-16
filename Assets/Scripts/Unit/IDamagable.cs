@@ -5,11 +5,12 @@ namespace LineUpHeros
 {
     public interface IDamagable
     {
+        // 프로퍼티
         GameObject gameObjectIDamagable { get; }
         public bool isDead { get; set; }
         Status status { get; set; }
+        // 메소드
         void TakeHeal(int healAmount);
-
         void TakeDamage(int damage);
         void TakeStun(float stunTime);
     }
@@ -20,7 +21,7 @@ namespace LineUpHeros
         public int tmpHp
         {
             get => _tmpHp;
-            set => _tmpHp = Mathf.Max(0, Mathf.Min(value, maxHp)); // 0 <= tmpHp <= maxHP
+            set => _tmpHp = Mathf.Max(0, Mathf.Min(value, maxHp)); // 0 < tmpHp < maxHP
         }
 
         // Final Stat Property

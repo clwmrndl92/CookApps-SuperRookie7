@@ -13,7 +13,7 @@ namespace LineUpHeros
         public MonsterStatus status => (MonsterStatus)_status;
         protected override void InitStateMachine()
         {
-            _stateMachine = new StateMachine(new FSMMonsterGlobalParameter());
+            _stateMachine = new StateMachine(new FsmMonsterGlobalVariables());
             _stateMachine.AddState(EnumState.Monster.IDLE, new MonIdleState(this));
             _stateMachine.AddState(EnumState.Monster.MOVE, new MonMoveState(this));
             _stateMachine.AddState(EnumState.Monster.ATK, new MonAtkState(this));
@@ -145,7 +145,7 @@ namespace LineUpHeros
         }
     }
 
-    public class FSMMonsterGlobalParameter : FSMGlobalParameter
+    public class FsmMonsterGlobalVariables : FSMGlobalVariables
     {
         public List<IDamagable> detectTargetList;
         public const float EPSILON = 0.1f;

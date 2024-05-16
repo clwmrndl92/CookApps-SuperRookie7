@@ -1,14 +1,16 @@
 ﻿namespace LineUpHeros
 {
-    // 일반 공격 스테이트
     public abstract class CharacterState : BaseState
     {
-        protected FSMCharacterGlobalParameter _globalParameter;
         protected Character _character;
+        protected StateMachine _stateMachine;
+        // 스테이트 머신 공용 변수
+        protected FSMCharacterGlobalVariables globalVariables;
         protected CharacterState(Character character)
         {
             _character = character;
-            _globalParameter = (FSMCharacterGlobalParameter)_character.stateMachine.parameters;
+            _stateMachine = _character.stateMachine;
+            globalVariables = (FSMCharacterGlobalVariables)_character.stateMachine.globalVariables;
         }
     }
 }
