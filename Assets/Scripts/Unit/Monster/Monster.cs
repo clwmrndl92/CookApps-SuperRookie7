@@ -9,6 +9,7 @@ namespace LineUpHeros
     {
         public bool _isDead = false;
         public bool isDead { get => _isDead; set => _isDead = value; }
+        public bool isStun { get; set; }
         public MonsterStatus status => (MonsterStatus)_status;
         protected override void InitStateMachine()
         {
@@ -16,37 +17,9 @@ namespace LineUpHeros
             _stateMachine.AddState(EnumState.Monster.MOVE, new MonMoveState(this));
             _stateMachine.AddState(EnumState.Monster.ATK, new MonAtkState(this));
             _stateMachine.AddState(EnumState.Monster.DEAD, new MonDeadState(this));
+            _stateMachine.AddState(EnumState.Monster.STUN, new MonStunState(this));
             _stateMachine.ChangeState(EnumState.Monster.IDLE);
         }
-
-
-        #region Util
-
-        public List<IDamagable> DetectCharacters(float radius)
-        {
-            List<IDamagable> aliveCharacterList = new List<IDamagable>();
-            foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Character))
-            {
-                if (character.isDead) continue;
-                aliveCharacterList.Add(character);
-            }
-            return aliveCharacterList;
-        }
-
-        private void OnDrawGizmos()
-        {
-            #if UNITY_EDITOR
-            if (status != null)
-            {
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawWireSphere(position, status.atkRange);
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(position, status.detectRange);
-            }
-            #endif
-        }
-
-        #endregion
 
         #region IDamagable
         public override void TakeHeal(int healAmount)
@@ -66,12 +39,23 @@ namespace LineUpHeros
         }
         public override void TakeStun(float stunTime)
         {
-            
+            ((MonStunState)_stateMachine.GetState(EnumState.Monster.STUN)).stunTime = stunTime;
+            _stateMachine.ChangeState(EnumState.Monster.STUN);
         }
         
         #endregion
 
         #region publicMethod
+        
+        public override void AnimEventAttack()
+        {
+            BaseState attackState = _stateMachine.GetState(EnumState.Monster.ATK);
+            if (_stateMachine.currentState == attackState)
+            {
+                ((MonAtkState) attackState).Attack();
+            }
+        }
+
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
@@ -85,6 +69,34 @@ namespace LineUpHeros
         {
             _isDead = true;
         }
+        #endregion
+        
+        #region Util
+
+        public List<IDamagable> DetectCharacters(float radius)
+        {
+            List<IDamagable> aliveCharacterList = new List<IDamagable>();
+            foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Character))
+            {
+                if (character.isDead) continue;
+                aliveCharacterList.Add(character);
+            }
+            return aliveCharacterList;
+        }
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            if (status != null)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(position, status.atkRange);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(position, status.detectRange);
+            }
+#endif
+        }
+
         #endregion
     }
     
@@ -128,6 +140,7 @@ namespace LineUpHeros
             public const string MOVE = "Run";
             public const string ATK = "Attack";
             public const string DEAD = "Death";
+            public const string STUN = "Idle";
         }
 }
 }

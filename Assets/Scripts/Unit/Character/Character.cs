@@ -47,6 +47,17 @@ namespace LineUpHeros
         }
 
         #endregion
+        
+        #region public Methods
+        
+        public override void AnimEventAttack()
+        {
+            BaseState attackState = _stateMachine.GetState(EnumState.Character.ATK);
+            if (_stateMachine.currentState == attackState)
+            {
+                ((CharAtkState) attackState).Attack();
+            }
+        }
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
@@ -64,6 +75,7 @@ namespace LineUpHeros
         {
             _isDead = true;
         }
+        #endregion
 
         #region Util
 

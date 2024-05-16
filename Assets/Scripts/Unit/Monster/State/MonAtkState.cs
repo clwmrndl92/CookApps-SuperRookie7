@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LineUpHeros
@@ -6,7 +7,7 @@ namespace LineUpHeros
     // 일반 공격 스테이트
     public class MonAtkState : MonsterState
     {
-        private float _timer;
+        private float _coolStartTime;
         private bool canAttack => !_isCool && !_isAttacking;
         private bool _isCool;
         private bool _isAttacking;
@@ -18,8 +19,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log("monster atk state");
-            _timer = 0;
+            _coolStartTime = Time.time;
             _isCool = false;
             _isAttacking = false;
             _attackTargetList = new List<IDamagable>();
@@ -27,8 +27,8 @@ namespace LineUpHeros
 
         public override void OnUpdateState()
         {
-            if(_isAttacking == false && CheckChangeState()) return;
-            if (_timer <= 0)
+            if(CheckChangeState()) return;
+            if (Time.time - _coolStartTime >= _monster.status.atkCool)
             {
                 _isCool = false;
             }
@@ -36,10 +36,10 @@ namespace LineUpHeros
             {
                 _monster.FlipToTarget(_attackTargetList[0].gameObjectIDamagable);
                 _monster.ChangeAnimationState(EnumState.Monster.ATK);
-                _timer = _monster.status.atkCool;
                 _isAttacking = true;
+                _coolStartTime = Time.time;
+                _isCool = true;
             }
-            _timer -= Time.deltaTime;
         }
 
         public override void OnFixedUpdateState()
@@ -54,12 +54,12 @@ namespace LineUpHeros
         {
             // attack 범위내에 캐릭터 있는지 체크, 없으면 Idle state로 전환
             List<IDamagable> attackList = _monster.DetectCharacters(_monster.status.atkRange);
-            if (attackList.Count == 0)
+            if (_isAttacking == false && attackList.Count == 0)
             {
                 _monster.stateMachine.ChangeState(EnumState.Monster.IDLE);
                 return true;
             }
-            if (Mathf.Abs(_monster.position.y - attackList[0].gameObjectIDamagable.transform.position.y) > 0.1f)
+            if (_isAttacking == false && Mathf.Abs(_monster.position.y - attackList[0].gameObjectIDamagable.transform.position.y) > 0.1f)
             {
                 _monster.stateMachine.ChangeState(EnumState.Monster.MOVE);
                 return true;

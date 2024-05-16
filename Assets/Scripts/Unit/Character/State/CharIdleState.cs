@@ -14,6 +14,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            Debug.Log("Character idle");
             _character.ChangeAnimationState(EnumState.Character.IDLE);
         }
 

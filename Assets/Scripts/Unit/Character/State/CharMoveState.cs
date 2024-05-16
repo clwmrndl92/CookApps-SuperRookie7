@@ -15,6 +15,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            Debug.Log("Character move");
             _character.ChangeAnimationState(EnumState.Character.MOVE);
             _detectTargetList = null;
         }

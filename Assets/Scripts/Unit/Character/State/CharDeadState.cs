@@ -14,13 +14,14 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            Debug.Log("Character dead");
             _stateEnterTime = Time.time;
             _character.ChangeAnimationState(EnumState.Character.DEAD);
         }
 
         public override void OnUpdateState()
         {
-            // Debug.Log(_character.gameObject.name + " Dead State!");
+            if(CheckChangeState()) return;
             
             // 0이었던 체력을 부활 시간에 맞게 보간하여 설정
             float progress = Time.time - _stateEnterTime;
@@ -30,7 +31,6 @@ namespace LineUpHeros
             int tmpHp = Mathf.FloorToInt(progress * _character.status.maxHp * (1 - Mathf.Epsilon));
             _character.status.tmpHp = tmpHp;
                 
-            if(CheckChangeState()) return;
         }
 
         public override void OnFixedUpdateState()
@@ -44,7 +44,7 @@ namespace LineUpHeros
 
         public override bool CheckChangeState()
         {
-            // Dead State로 전환된 이후 3초가 경과했으면 Idle State로 전환
+            // 부활시간이 되었으면 Idle State로 전환
             if (Time.time - _stateEnterTime >= _character.status.revivalTime)
             {
                 _character.isDead = false;
