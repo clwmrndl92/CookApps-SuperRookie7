@@ -20,6 +20,7 @@ namespace LineUpHeros
         {
             _isAttacking = false;
             _attackTargetList = new List<IDamagable>();
+            _character.ChangeAnimationState(EnumState.Character.IDLE);
         }
 
         public override void OnUpdateState()
