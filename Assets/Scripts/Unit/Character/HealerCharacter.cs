@@ -33,9 +33,9 @@ namespace LineUpHeros
             _status = new CharacterStatus(_settings, _globalSettings);
         }
         
-        public override bool SpecialAttack(List<IDamagable> atkRangeTargetList)
+        public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
         {
-            if (atkRangeTargetList.Count == 0) return false;
+            atkRangeTargetList = DetectCharacters(status.skillRange);
             
             // 가장 체력이 낮은 아군 찾기
             IDamagable minHpTarget = null;

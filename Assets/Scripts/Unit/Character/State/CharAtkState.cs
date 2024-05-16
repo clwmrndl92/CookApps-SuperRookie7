@@ -21,6 +21,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            base.OnEnterState();
             _isAttacking = false;
             _attackTargetList = new List<IDamagable>();
             _character.ChangeAnimationState(EnumState.Character.IDLE);
@@ -46,6 +47,7 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
+            _isAttacking = false;
         }
 
         public override bool CheckChangeState()

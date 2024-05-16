@@ -15,7 +15,6 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            Debug.Log("monsterStun! " + stunTime);
             _stateEnterTime = Time.time;
             // todo : 스턴 이펙트 켜주기
             _monster.ChangeAnimationState(EnumState.Monster.STUN);
@@ -32,7 +31,6 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
-            Debug.Log("monsterStun 해제");
             // todo : 스턴 이펙트 꺼주기
         }
 

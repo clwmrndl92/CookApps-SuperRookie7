@@ -14,6 +14,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            base.OnEnterState();
             _stateEnterTime = Time.time;
             _character.ChangeAnimationState(EnumState.Character.DEAD);
         }

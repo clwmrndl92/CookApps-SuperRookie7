@@ -22,7 +22,7 @@ MonoBehaviour:
       detectRange: 10
     goblinSetting:
       baseHp: 100
-      baseAtk: 100
+      baseAtk: 10
       baseAtkRange: 1
       baseAtkCool: 1
       baseAtkPerSec: 1

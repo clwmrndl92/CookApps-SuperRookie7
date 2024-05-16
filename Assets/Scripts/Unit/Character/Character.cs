@@ -88,7 +88,7 @@ namespace LineUpHeros
             return true;
         }
         // return true : 스킬 사용함, return false : 스킬 사용 안함
-        public virtual bool SpecialAttack(List<IDamagable> atkRangeTargetList)
+        public virtual bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
         {
             return false;
         }

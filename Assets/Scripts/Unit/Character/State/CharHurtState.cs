@@ -12,6 +12,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
+            base.OnEnterState();
             _character.ChangeAnimationState(EnumState.Character.HURT);
         }
 
