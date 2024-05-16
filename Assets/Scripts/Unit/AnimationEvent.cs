@@ -15,5 +15,9 @@ namespace LineUpHeros
         {
             _unit.AnimEventAttack();
         }
+        public void AnimationEventSpecialAttack()
+        {
+            _unit.AnimEventSpecialAttack();
+        }
     }
 }

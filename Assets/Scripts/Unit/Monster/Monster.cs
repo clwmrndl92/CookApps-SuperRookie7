@@ -32,7 +32,7 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp -= damage;
-            // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
+            Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
             if (_status.tmpHp <= 0)
             {
                 Die();
@@ -141,7 +141,7 @@ namespace LineUpHeros
             public const string MOVE = "Run";
             public const string ATK = "Attack";
             public const string DEAD = "Death";
-            public const string STUN = "Idle";
+            public const string STUN = "Stun";
         }
     }
 

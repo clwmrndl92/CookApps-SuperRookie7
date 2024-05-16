@@ -38,6 +38,7 @@ MonoBehaviour:
       baseAtkCool: 1.5
       baseSkillRange: 1
       baseSkillCool: 3
+      stunTime: 1
     shortRangeDealerSettings:
       baseHp: 200
       baseAtk: 10

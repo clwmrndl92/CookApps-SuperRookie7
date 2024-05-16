@@ -8,9 +8,10 @@ namespace LineUpHeros
     public class TankerCharacter : Character
     {
         [Inject(Id = "Tanker")]
-        private CharacterSetting _settings;
+        private TankerSetting _settings;
         [Inject]
         private CharacterGlobalSetting _globalSettings;
+        
 
         protected override void InitStatus()
         {
@@ -22,9 +23,17 @@ namespace LineUpHeros
             if (atkRangeTargetList.Count == 0) return false;
 
             atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
-            // todo : 기절 만들기
+            atkRangeTargetList[0].TakeStun(_settings.stunTime);
             return true;
         }
 
     }
+    
+    [Serializable]
+    public class TankerSetting : CharacterSetting
+    {
+        // 스킬 관련 변수 추가
+        public float stunTime;
+    }
+
 }

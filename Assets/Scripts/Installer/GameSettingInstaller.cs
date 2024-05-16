@@ -16,7 +16,7 @@ namespace LineUpHeros
         public class CharacterSettings
         {
             public CharacterGlobalSetting globalSettings;
-            public CharacterSetting tankerSettings;
+            public TankerSetting tankerSettings;
             public CharacterSetting shortRangeDealerSettings;
             public CharacterSetting longRangeDealerSettings;
             public CharacterSetting healerSettings;

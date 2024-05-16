@@ -50,6 +50,12 @@ namespace LineUpHeros
                 _character.stateMachine.ChangeState(EnumState.Character.IDLE);
                 return true;
             }
+            // 제일 가까운 몬스터가 Skill 범위내에 있고 사용 가능한지 체크, 있으면 SpecialAttack State로 전환
+            if (_character.canSkill)
+            {
+                _character.stateMachine.ChangeState(EnumState.Character.SPECIAL_ATK);
+                return true;
+            }
             // 제일 가까운 몬스터가 Attack 범위내에 있는지 체크, 있으면 Attack State로 전환
             GameObject target = _detectTargetList[0].gameObjectIDamagable;
             bool canAttack = Vector3.Distance(_character.position, target.transform.position) <= _character.status.atkRange;

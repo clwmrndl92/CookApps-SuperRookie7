@@ -10,7 +10,23 @@ namespace LineUpHeros
     {
         public CharacterStatus status => (CharacterStatus)_status;
         private bool _isDead = false;
-        public bool isDead { get => _isDead; }
+        public bool isDead => _isDead;
+        
+        public bool canSkill
+        {
+            get
+            {
+                // 스킬 범위내 몬스터 체크
+                List<IDamagable> monsters = DetectMonsters(status.skillRange);
+                if (monsters.Count == 0) return false;
+                bool isInRange = Vector3.Distance(position, monsters[0].gameObjectIDamagable.transform.position) <=
+                                 status.skillRange;
+                // 스킬 쿨타임 체크
+                CharSpecialAtkState skillState = (CharSpecialAtkState)_stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
+                
+                return isInRange && skillState.isCool == false;
+            }
+        }
         
         protected override void InitStateMachine()
         {
@@ -55,6 +71,14 @@ namespace LineUpHeros
                 ((CharAtkState) attackState).Attack();
             }
         }
+        public override void AnimEventSpecialAttack()
+        {
+            BaseState specialAttackState = _stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
+            if (_stateMachine.currentState == specialAttackState)
+            {
+                ((CharSpecialAtkState) specialAttackState).SpecialAttack();
+            }
+        }
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
@@ -82,13 +106,13 @@ namespace LineUpHeros
         // 범위내 살아있는 몬스터 리스트 찾아서 리턴 (거리순 정렬)
         public List<IDamagable> DetectMonsters(float radius)
         { 
-            List<IDamagable> aliveCharacterList = new List<IDamagable>();
-            foreach (var character in Util.GetDetectDamagableList(position, radius, LayerMasks.Monster))
+            List<IDamagable> aliveMonsterList = new List<IDamagable>();
+            foreach (var monster in Util.GetDetectDamagableList(position, radius, LayerMasks.Monster))
             {
-                if (character.isDead) continue;
-                aliveCharacterList.Add(character);
+                if (monster.isDead) continue;
+                aliveMonsterList.Add(monster);
             }
-            return aliveCharacterList;
+            return aliveMonsterList;
         }
 
         private void OnDrawGizmos()

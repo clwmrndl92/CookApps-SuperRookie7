@@ -22,6 +22,7 @@ namespace LineUpHeros
         
         // Attack Animation에서 호출하는 함수, TakeDamage 실행, 이펙트, 소리 등
         public virtual void AnimEventAttack() { }
+        public virtual void AnimEventSpecialAttack() { }
         
         #region util
         // todo : 안쓸것 같으면 삭제
