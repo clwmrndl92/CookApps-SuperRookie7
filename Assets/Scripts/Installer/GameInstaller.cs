@@ -8,18 +8,27 @@ namespace LineUpHeros
     {
         [Inject] 
         private Settings _settings;
+        [Inject] 
+        private Canvas _canvas;
 
         public override void InstallBindings()
         {
-            // Container.BindFactory<Transform, ExplosionFactory>()
-            //     .FromComponentInNewPrefab(_settings.ExplosionPrefab);
+            Container.BindFactory<FloatingText, FloatingText.Factory>()
+                .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
+                                                                    .FromComponentInNewPrefab(_settings.FloatingTextPrefab)
+                                                                    .UnderTransform(_canvas.transform));
         }
 
 
         [Serializable]
         public class Settings
         {
-            public GameObject KnightPrefab;
+            public GameObject FloatingTextPrefab;
+        }
+        
+        
+        class FloatingTextPool : MonoPoolableMemoryPool<IMemoryPool, FloatingText>
+        {
         }
     }
 }

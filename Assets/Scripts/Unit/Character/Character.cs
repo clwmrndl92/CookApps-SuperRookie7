@@ -9,6 +9,9 @@ namespace LineUpHeros
     public abstract class Character : Unit, IDamagable
     {
         public CharacterStatus status => (CharacterStatus)_status;
+        [Inject]
+        private FloatingText.Factory _floatTextFactory;
+        private Vector3 _floatingTextOffset = new Vector3(0,2f,0);
         
         public bool canSkill
         {
@@ -43,11 +46,20 @@ namespace LineUpHeros
         public override void TakeHeal(int healAmount)
         {
             _status.tmpHp.Value += healAmount;
+            
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + _floatingTextOffset;
+            floatText.SetText(healAmount.ToString(),textPos, 0x00FF00);
         }
 
         public override void TakeDamage(int damage)
         {
             _status.tmpHp.Value -= damage; 
+            
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + _floatingTextOffset;
+            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+            
             if (_status.tmpHp.Value <= 0)
             {
                 Die();

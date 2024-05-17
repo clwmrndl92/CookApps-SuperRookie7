@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LineUpHeros;
 using UnityEngine;
+using Zenject;
 
 namespace LineUpHeros
 {
@@ -9,6 +10,10 @@ namespace LineUpHeros
     {
         public bool isStun { get; set; }
         public MonsterStatus status => (MonsterStatus)_status;
+        [Inject]
+        private FloatingText.Factory _floatTextFactory;
+        private Vector3 _floatingTextOffset = new Vector3(0,1f,0);
+        
         protected override void InitStateMachine()
         {
             _stateMachine = new StateMachine(new FsmMonsterGlobalVariables());
@@ -30,6 +35,11 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp.Value -= damage;
+            
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + _floatingTextOffset;
+            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+            
             if (_status.tmpHp.Value <= 0)
             {
                 Die();
@@ -40,6 +50,10 @@ namespace LineUpHeros
         {
             ((MonStunState)_stateMachine.GetState(EnumState.Monster.STUN)).stunTime = stunTime;
             _stateMachine.ChangeState(EnumState.Monster.STUN);
+            
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + _floatingTextOffset;
+            floatText.SetText("Stun",textPos, 0xFFFF00);
         }
         
         #endregion
@@ -96,6 +110,11 @@ namespace LineUpHeros
 #endif
         }
 
+        public void ChangeSpriteColor(Color color)
+        {
+            _spriteModel.GetComponent<SpriteRenderer>().color = color;
+        }
+        
         #endregion
     }
     
