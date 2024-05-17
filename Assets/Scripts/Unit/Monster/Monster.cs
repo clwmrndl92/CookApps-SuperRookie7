@@ -127,8 +127,8 @@ namespace LineUpHeros
         void ChangeOrderInLayer()
         {
             SpriteRenderer renderer = _spriteModel.GetComponent<SpriteRenderer>();
-            int y = (int)(position.y * 1000);
-            renderer.sortingOrder = -(y * 10) + (renderer.sortingOrder%10);
+            int y = (int)(position.y * 100);
+            renderer.sortingOrder = 10000 -(y * 10) + renderer.sortingOrder%10;
         }
         #endregion
 

@@ -156,8 +156,8 @@ namespace LineUpHeros
             SpriteRenderer[] children = parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer renderer in children)
             {
-                int y = (int)(position.y * 1000);
-                renderer.sortingOrder = -(y * 10) + (renderer.sortingOrder%10);
+                int y = (int)(position.y * 100);
+                renderer.sortingOrder = 10000 -(y * 10) + renderer.sortingOrder%10;
             }
         }
 

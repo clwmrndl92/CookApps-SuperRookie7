@@ -27,8 +27,8 @@ namespace LineUpHeros
             slotCharacter = new Dictionary<Transform, int>
             {
                 { _tanker.gameObjectIDamagable.transform, 0 },
-                { _shortRangeDealer.gameObjectIDamagable.transform, 2 },
-                { _longRangeDealer.gameObjectIDamagable.transform, 1 },
+                { _shortRangeDealer.gameObjectIDamagable.transform, 1 },
+                { _longRangeDealer.gameObjectIDamagable.transform, 2 },
                 { _healer.gameObjectIDamagable.transform, 3 }
             };
         }
