@@ -46,6 +46,12 @@ namespace LineUpHeros
 
         public override bool CheckChangeState()
         {
+            // 체력이 0 이하로 떨어지면 Dead State로 전환
+            if (_monster.isDead.Value)
+            {
+                _monster.stateMachine.ChangeState(EnumState.Monster.DEAD);
+                return true;
+            }
             // 스턴 시간 지나면 Idle state로 전환
             if (Time.time - _stateEnterTime >= stunTime)
             {

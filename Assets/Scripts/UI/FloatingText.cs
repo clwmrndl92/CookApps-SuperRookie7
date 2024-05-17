@@ -24,7 +24,7 @@ namespace LineUpHeros
         {
             transform.Translate(new Vector3(0, _moveSpeed * Time.deltaTime, 0));
         
-            _color.a = Mathf.Lerp(_color.a, 0, Time.deltaTime * _alphaSpeed);
+            _color.a = Mathf.Lerp(1, 0, _alphaSpeed * (Time.time - _startTime) / _destroyTime);
             _text.color = _color;
             if (Time.time - _startTime > _destroyTime)
             {
@@ -32,7 +32,7 @@ namespace LineUpHeros
             }
         }
 
-        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 5.0f, float destroyTime = 1.0f)
+        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 3.0f, float destroyTime = 1.0f)
         {
             _moveSpeed = moveSpeed;
             _alphaSpeed = alphaSpeed;

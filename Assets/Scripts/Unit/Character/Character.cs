@@ -41,7 +41,13 @@ namespace LineUpHeros
             _stateMachine.AddState(EnumState.Character.VICTORY, new CharVictoryState(this));
             _stateMachine.ChangeState(EnumState.Character.IDLE);
         }
-        
+
+        private void LateUpdate()
+        {
+            ChangeOrderInLayer(_spriteModel.transform);
+        }
+
+
         #region IDamagable
         public override void TakeHeal(int healAmount)
         {
@@ -139,6 +145,17 @@ namespace LineUpHeros
                 Gizmos.DrawWireSphere(position, status.detectRange);
             }
             #endif
+        }
+        
+        
+        void ChangeOrderInLayer(Transform parent)
+        {
+            SpriteRenderer[] children = parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in children)
+            {
+                int y = (int)(position.y * 1000);
+                renderer.sortingOrder = -(y * 10) + (renderer.sortingOrder%10);
+            }
         }
 
         #endregion

@@ -23,6 +23,13 @@ namespace LineUpHeros
             get => transform.localScale;
             set => transform.localScale = value;
         }
+
+        private Collider2D _collider;
+        public Collider2D collider
+        {
+            get { return _collider; }
+        }
+
         #endregion
 
         #region MonoBehaviour Method
@@ -45,12 +52,18 @@ namespace LineUpHeros
         #endregion
         
         #region Initialize
-        private void Init()
+        protected void Init()
         {
+            InitComponent();
             // 지켜야할 순서 Anim -> StateMachine
             InitAnim();
             InitStateMachine();
             InitStatus();
+        }
+        
+        protected void InitComponent()
+        {
+            _collider = GetComponent<Collider2D>();
         }
         // InitStateMachine()에서 _stateMachine 새 StateMachine 인스턴스 할당 필요
         protected abstract void InitStateMachine();

@@ -6,14 +6,14 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public abstract class Monster : Unit
+    public abstract class Monster : Unit, IPoolable<IMemoryPool>
     {
-        public bool isStun { get; set; }
         public MonsterStatus status => (MonsterStatus)_status;
         [Inject]
         private FloatingText.Factory _floatTextFactory;
         private Vector3 _floatingTextOffset = new Vector3(0,1f,0);
         
+        private IMemoryPool _pool;
         protected override void InitStateMachine()
         {
             _stateMachine = new StateMachine(new FsmMonsterGlobalVariables());
@@ -23,6 +23,11 @@ namespace LineUpHeros
             _stateMachine.AddState(EnumState.Monster.DEAD, new MonDeadState(this));
             _stateMachine.AddState(EnumState.Monster.STUN, new MonStunState(this));
             _stateMachine.ChangeState(EnumState.Monster.IDLE);
+        }
+
+        private void LateUpdate()
+        {
+            ChangeOrderInLayer();
         }
 
         #region IDamagable
@@ -82,6 +87,10 @@ namespace LineUpHeros
         {
             isDead.Value = true;
         }
+        public void DespawnMonster()
+        {
+            _pool.Despawn(this);
+        }
         #endregion
         
         #region Util
@@ -115,6 +124,32 @@ namespace LineUpHeros
             _spriteModel.GetComponent<SpriteRenderer>().color = color;
         }
         
+        void ChangeOrderInLayer()
+        {
+            SpriteRenderer renderer = _spriteModel.GetComponent<SpriteRenderer>();
+            int y = (int)(position.y * 1000);
+            renderer.sortingOrder = -(y * 10) + (renderer.sortingOrder%10);
+        }
+        #endregion
+
+        #region Factory
+
+        public void OnDespawned()
+        {
+        }
+
+        public void OnSpawned(IMemoryPool p1)
+        {
+            isDead.Value  = false;
+            Init();
+            // todo : 포지션 정해주기, hp 초기화, state초기화, status초기화
+            _pool = p1;
+        }
+        
+        public class Factory : PlaceholderFactory<Monster>
+        {
+                
+        }
         #endregion
     }
     

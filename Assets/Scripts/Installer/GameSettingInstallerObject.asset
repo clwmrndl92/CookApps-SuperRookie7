@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameInstallerSettings:
     FloatingTextPrefab: {fileID: 2053661189213447618, guid: b9445caacab16044294e302eac6c5b52, type: 3}
+    GoblinPrefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
   monsterSettings:
     monsterControllerSetting:
       monsterSpawnPeriod: 5
@@ -21,8 +22,8 @@ MonoBehaviour:
     monsterGlobalSetting:
       detectRange: 10
     goblinSetting:
-      baseHp: 10000000
-      baseAtk: 100
+      baseHp: 100
+      baseAtk: 10
       baseAtkRange: 1
       baseAtkCool: 1
       baseAtkPerSec: 1

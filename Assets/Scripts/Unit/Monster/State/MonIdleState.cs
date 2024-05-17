@@ -31,6 +31,12 @@ namespace LineUpHeros
 
         public override bool CheckChangeState()
         {
+            // 체력이 0 이하로 떨어지면 Dead State로 전환
+            if (_monster.isDead.Value)
+            {
+                _monster.stateMachine.ChangeState(EnumState.Monster.DEAD);
+                return true;
+            }
             // Detect 범위내에 캐릭터가 있는지 체크, 있으면 Move State로 전환
             List<IDamagable> detectList = _monster.DetectCharacters(_monster.status.detectRange);
             if (detectList.Count != 0)

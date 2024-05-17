@@ -46,10 +46,17 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
+            _isAttacking = false;
         }
 
         public override bool CheckChangeState()
         {
+            // 체력이 0 이하로 떨어지면 Dead State로 전환
+            if (_monster.isDead.Value)
+            {
+                _monster.stateMachine.ChangeState(EnumState.Monster.DEAD);
+                return true;
+            }
             // attack 가능 범위내에 캐릭터 있는지 체크, 없으면 Idle state로 전환
             List<IDamagable> attackList = _monster.DetectCharacters(_monster.status.atkRange);
             if (_isAttacking == false && attackList.Count == 0)

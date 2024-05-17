@@ -15,5 +15,6 @@ namespace LineUpHeros
         {
             _status = new MonsterStatus(_monsterSetting, _globalSetting);
         }
+
     }
 }
