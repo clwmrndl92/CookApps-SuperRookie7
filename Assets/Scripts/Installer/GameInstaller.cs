@@ -19,7 +19,11 @@ namespace LineUpHeros
 
         private void InstallController()
         {
+            Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
             Container.BindInterfacesAndSelfTo<MonsterController>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
+            Container.Bind<InputState>().AsSingle();
         }
 
         private void InstallFactory()

@@ -7,15 +7,25 @@ namespace LineUpHeros
 {
     public class MonsterController : ITickable, IInitializable
     {
+        private GameController _gameController;
+        
         private MonsterControllerSetting _monsterControllerSetting;
         private Monster.Factory _monsterFactory;
-
+         
+        private CharacterSlots _characterSlots;
+        private Transform _firstSlot;
+        private Vector3 _spawnOffset = new Vector3(15f, 0, 0);
+        
         private float _monsterSpawnTimer;
 
-        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _monsterControllerSetting.monsterSpawnPeriod;
+        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _monsterControllerSetting.monsterSpawnPeriod 
+                                 && _gameController.state.Value == GameStates.Playing;
 
-        public MonsterController(Monster.Factory monsterFactory,  MonsterControllerSetting monsterControllerSetting)
+        public MonsterController(GameController gameController, Monster.Factory monsterFactory,  
+                                MonsterControllerSetting monsterControllerSetting, CharacterSlots characterSlots)
         {
+            _gameController = gameController;
+            _characterSlots = characterSlots;
             _monsterFactory = monsterFactory;
             _monsterControllerSetting = monsterControllerSetting;
         }
@@ -23,6 +33,7 @@ namespace LineUpHeros
         public void Initialize()
         {
             _monsterSpawnTimer = float.MinValue;
+            _firstSlot = _characterSlots.GetSlot(0);
         }
 
         public void Tick()
@@ -31,7 +42,9 @@ namespace LineUpHeros
             {
                 for (int i = 0; i < Random.Range(1, _monsterControllerSetting.monsterMaxSpawnNum); i++)
                 {
-                    _monsterFactory.Create();
+                    var monster = _monsterFactory.Create();
+                    Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
+                    monster.transform.position = _firstSlot.position + _spawnOffset + randomOffset;
                 }
                 _monsterSpawnTimer = Time.time;
             }

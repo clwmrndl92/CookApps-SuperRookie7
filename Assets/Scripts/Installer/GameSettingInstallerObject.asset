@@ -17,13 +17,13 @@ MonoBehaviour:
     GoblinPrefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
   monsterSettings:
     monsterControllerSetting:
-      monsterSpawnPeriod: 10
-      monsterMaxSpawnNum: 1
+      monsterSpawnPeriod: 5
+      monsterMaxSpawnNum: 3
     monsterGlobalSetting:
-      detectRange: 10
+      detectRange: 20
     goblinSetting:
-      baseHp: 100
-      baseAtk: 10
+      baseHp: 1000
+      baseAtk: 1000
       baseAtkRange: 1
       baseAtkCool: 1
       baseAtkPerSec: 1

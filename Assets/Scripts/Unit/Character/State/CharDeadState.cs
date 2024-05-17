@@ -17,6 +17,7 @@ namespace LineUpHeros
             base.OnEnterState();
             _stateEnterTime = Time.time;
             _character.ChangeAnimationState(EnumState.Character.DEAD);
+            _character.collider.isTrigger = true;
         }
 
         public override void OnUpdateState()
@@ -39,10 +40,17 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
+            _character.collider.isTrigger = false;
         }
 
         public override bool CheckChangeState()
         {
+            // // 게임오버
+            // if (_character.gameState== GameStates.GameOver)
+            // {
+            //     _character.stateMachine.ChangeState(EnumState.Character.GAMEOVER);
+            //     return true;
+            // }
             // 부활시간이 되었으면 Idle State로 전환
             if (Time.time - _stateEnterTime >= _character.status.revivalTime)
             {
