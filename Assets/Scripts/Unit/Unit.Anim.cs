@@ -4,7 +4,7 @@ namespace LineUpHeros
 {
     public partial class Unit
     {
-        private GameObject _spriteModel;
+        protected GameObject _spriteModel;
         private Animator _animator;
 
         protected void InitAnim()
