@@ -34,7 +34,7 @@ namespace LineUpHeros
             // 일반공격 실행
             if (canAttack && _attackTargetList.Count != 0)
             {
-                _character.FlipToTarget(_attackTargetList[0].gameObjectIDamagable);
+                _character.FlipToTarget(_attackTargetList[0].gameObjectIDamagable.transform);
                 _character.ChangeAnimationState(EnumState.Character.ATK);
                 _isAttacking = true;
                 _coolStartTime = Time.time;

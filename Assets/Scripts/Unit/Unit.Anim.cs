@@ -52,9 +52,9 @@ namespace LineUpHeros
                 _ => scale.X(scale.x * -1)
             };
         }
-        public void FlipToTarget(GameObject target)
+        public void FlipToTarget(Transform target)
         {
-            Vector3 targetPosition = target.transform.position;
+            Vector3 targetPosition = target.position;
             if (targetPosition.x < position.x)
             {
                 Flip(-1);

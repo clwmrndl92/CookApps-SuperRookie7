@@ -7,6 +7,8 @@ namespace LineUpHeros
     // Idle 스테이트
     public class CharIdleState : CharacterState
     {
+
+        private Transform _slot;
         public CharIdleState(Character character) : base(character)
         {
             _character = character;
@@ -16,6 +18,7 @@ namespace LineUpHeros
         {
             base.OnEnterState();
             _character.ChangeAnimationState(EnumState.Character.IDLE);
+            _slot = _character.GetSlot();
         }
 
         public override void OnUpdateState()
@@ -51,6 +54,12 @@ namespace LineUpHeros
                 // 다른 스테이트로 detectList 전달
                 globalVariables.detectTargetList = detectList;
                 _character.stateMachine.ChangeState(EnumState.Character.MOVE);
+                return true;
+            }
+            // 슬롯 자리로 복귀
+            if (_character.position != _slot.position)
+            {
+                _character.stateMachine.ChangeState(EnumState.Character.GOTO_SLOT);
                 return true;
             }
             return false;

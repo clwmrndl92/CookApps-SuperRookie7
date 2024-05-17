@@ -12,6 +12,8 @@ namespace LineUpHeros
         [Inject]
         private FloatingText.Factory _floatTextFactory;
         private Vector3 _floatingTextOffset = new Vector3(0,2f,0);
+        [Inject]
+        private CharacterSlots characterSlots;
         
         public bool canSkill
         {
@@ -39,6 +41,7 @@ namespace LineUpHeros
             _stateMachine.AddState(EnumState.Character.DEAD, new CharDeadState(this));
             _stateMachine.AddState(EnumState.Character.HURT, new CharHurtState(this));
             _stateMachine.AddState(EnumState.Character.VICTORY, new CharVictoryState(this));
+            _stateMachine.AddState(EnumState.Character.GOTO_SLOT, new CharGotoSlotState(this));
             _stateMachine.ChangeState(EnumState.Character.IDLE);
         }
 
@@ -158,6 +161,10 @@ namespace LineUpHeros
             }
         }
 
+        public Transform GetSlot()
+        {
+            return characterSlots.GetSlot(transform);
+        }
         #endregion
     }
             
@@ -228,6 +235,7 @@ namespace LineUpHeros
             public const string DEAD = "die";
             public const string HURT = "hurt";
             public const string VICTORY = "victory";
+            public const string GOTO_SLOT = "return";
         }
     }
     

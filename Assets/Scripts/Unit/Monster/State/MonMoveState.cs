@@ -29,7 +29,7 @@ namespace LineUpHeros
                 Vector3 direction = (target.transform.position - _monster.position).normalized;
                 _monster.position += _monster.status.moveVelocity * Time.deltaTime * direction;
                 
-                _monster.FlipToTarget(target);
+                _monster.FlipToTarget(target.transform);
             }
             // // 공격 대상 앞으로(같은 줄) 가기, y축 이동
             // bool isTargetInSameLine = Mathf.Abs(_monster.position.y - target.transform.position.y) <= FsmMonsterGlobalVariables.EPSILON;

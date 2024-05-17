@@ -32,7 +32,7 @@ namespace LineUpHeros
             if (canAttack && _attackTargetList.Count != 0)
             {
                 // 일반 공격 실행
-                _monster.FlipToTarget(_attackTargetList[0].gameObjectIDamagable);
+                _monster.FlipToTarget(_attackTargetList[0].gameObjectIDamagable.transform);
                 _monster.ChangeAnimationState(EnumState.Monster.ATK);
                 _isAttacking = true;
                 // 일반공격 쿨타임 세팅
