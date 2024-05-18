@@ -650,8 +650,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -416.6173, y: -174.71046}
-  m_SizeDelta: {x: -833.2346, y: -349.4209}
+  m_AnchoredPosition: {x: -416.6173, y: -173.2208}
+  m_SizeDelta: {x: -833.2346, y: -346.4416}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4012378491770227638
 CanvasRenderer:
@@ -703,10 +703,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf362ff403074c46ad25006719bc2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankerHealthBar: {fileID: 5019760987588528639}
-  SRDHealthBar: {fileID: 8535342002002083223}
-  LRDHealthBar: {fileID: 264477372704866662}
-  healerHealthBar: {fileID: 741153388801518023}
+  tankerHealthBarContainer: {fileID: 0}
+  SRDHealthBarContainer: {fileID: 0}
+  LRDHealthBarContainer: {fileID: 0}
+  healerHealthBarContainer: {fileID: 0}
 --- !u!1 &3083966089748312759
 GameObject:
   m_ObjectHideFlags: 0

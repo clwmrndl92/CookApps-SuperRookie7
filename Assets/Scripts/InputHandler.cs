@@ -16,7 +16,13 @@ namespace LineUpHeros
 
         public void Tick()
         {
-            _inputState.IsMouseClick = Input.GetMouseButtonDown(0);
+            _inputState.IsMouseClick = Input.GetMouseButtonDown(0) || Input.touchCount > 0;
+            
+            // 종료버튼
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
     }
     

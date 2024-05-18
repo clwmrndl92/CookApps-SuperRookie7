@@ -32,7 +32,7 @@ namespace LineUpHeros
             }
         }
 
-        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 2.0f, float destroyTime = 1.5f)
+        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 2.0f, float destroyTime = 1.5f, bool isCanvasPos = false)
         {
             _moveSpeed = moveSpeed;
             _alphaSpeed = alphaSpeed;
@@ -42,7 +42,7 @@ namespace LineUpHeros
             _text.color = new Color(rgb >> 16,(rgb & 0x00FF00) >> 4,rgb & 0x0000FF);
             _color = _text.color;
             
-            transform.position = Camera.main.WorldToScreenPoint(position);
+            transform.position = isCanvasPos? position : Camera.main.WorldToScreenPoint(position);
         }
 
         public void OnDespawned()

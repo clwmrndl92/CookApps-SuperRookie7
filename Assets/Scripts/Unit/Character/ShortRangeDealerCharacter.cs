@@ -9,12 +9,10 @@ namespace LineUpHeros
     {
         [Inject(Id = "ShortRangeDealer")]
         private CharacterSetting _settings;
-        [Inject]
-        private CharacterGlobalSetting _globalSettings;
 
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings, _globalSettings);
+            _status = new CharacterStatus(_settings, _globalSettings, _playerInfo);
         }
 
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
@@ -23,7 +21,7 @@ namespace LineUpHeros
 
             foreach (var target in atkRangeTargetList)
             {
-                target.TakeDamage(this, (int)(status.atk * 1.0f));
+                target.TakeDamage((int)(status.atk * 1.0f));
             }
             return true;
         }

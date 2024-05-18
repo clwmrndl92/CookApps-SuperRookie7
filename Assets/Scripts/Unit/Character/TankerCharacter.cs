@@ -9,20 +9,18 @@ namespace LineUpHeros
     {
         [Inject(Id = "Tanker")]
         private TankerSetting _settings;
-        [Inject]
-        private CharacterGlobalSetting _globalSettings;
         
 
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings, _globalSettings);
+            _status = new CharacterStatus(_settings, _globalSettings, _playerInfo);
         }
         
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
         {
             if (atkRangeTargetList.Count == 0) return false;
 
-            atkRangeTargetList[0].TakeDamage(this, (int)(status.atk * 1.0f));
+            atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
             atkRangeTargetList[0].TakeStun(_settings.stunTime);
             return true;
         }

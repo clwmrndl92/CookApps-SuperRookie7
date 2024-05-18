@@ -15,6 +15,7 @@ namespace LineUpHeros
         {
             InstallController();
             InstallFactory();
+            InstallPlayer();
         }
 
         private void InstallController()
@@ -44,6 +45,12 @@ namespace LineUpHeros
                     .UnderTransformGroup("Arrows"));
         }
 
+        private void InstallPlayer()
+        {
+            Container.Bind<PlayerInfo>().AsSingle();
+            // Container.Bind<IInitializable>().To<PlayerInfo>().AsSingle();
+        }
+        
         [Serializable]
         public class Settings
         {

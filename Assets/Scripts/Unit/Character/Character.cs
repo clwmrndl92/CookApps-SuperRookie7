@@ -2,18 +2,32 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using LineUpHeros;
+using UniRx;
 using Zenject;
 
 namespace LineUpHeros
 {
     public abstract class Character : Unit, IDamagable
     {
-        public CharacterStatus status => (CharacterStatus)_status;
-        [Inject]
+        protected CharacterGlobalSetting _globalSettings;
+        protected PlayerInfo _playerInfo;
+        
+        private CharacterSlots _characterSlots;
+        
         private FloatingText.Factory _floatTextFactory;
-        private Vector3 _floatingTextOffset = new Vector3(0, 2f, 0);
+        public CharacterStatus status => (CharacterStatus)_status;
+        
+        public static readonly Vector3 FLOATING_TEXT_OFFSET = new Vector3(0, 2f, 0);
+            
         [Inject]
-        private CharacterSlots characterSlots;
+        private void Constructor(CharacterGlobalSetting globalSettings,FloatingText.Factory floatTextFactory, 
+                                CharacterSlots characterSlot, PlayerInfo playerInfo)
+        {
+            _globalSettings = globalSettings;
+            _floatTextFactory = floatTextFactory;
+            _characterSlots = characterSlot;
+            _playerInfo = playerInfo;
+        }
 
         public bool canSkill
         {
@@ -57,11 +71,11 @@ namespace LineUpHeros
             _status.tmpHp.Value += healAmount;
 
             var floatText = _floatTextFactory.Create();
-            Vector3 textPos = position + _floatingTextOffset;
+            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
             floatText.SetText(healAmount.ToString(), textPos, 0x00FF00);
         }
 
-        public override void TakeDamage(Unit from, int damage)
+        public override void TakeDamage(int damage)
         {
             _status.tmpHp.Value -= damage;
 
@@ -103,7 +117,7 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
 
-            atkRangeTargetList[0].TakeDamage(this, status.atk);
+            atkRangeTargetList[0].TakeDamage(status.atk);
             return true;
         }
         // return true : 스킬 사용함, return false : 스킬 사용 안함
@@ -163,7 +177,7 @@ namespace LineUpHeros
 
         public Transform GetSlot()
         {
-            return characterSlots.GetSlot(transform);
+            return _characterSlots.GetSlot(transform);
         }
         #endregion
     }
@@ -171,11 +185,18 @@ namespace LineUpHeros
     #region Status
     public class CharacterStatus : Status
     {
+        public ReactiveProperty<int> level;
+        
         private CharacterGlobalSetting _globalSetting;
         public float detectRange => _globalSetting.detectRange;
         public float moveVelocity => _globalSetting.moveVelocity;
         public float revivalTime => _globalSetting.revivalTime;
 
+        // Final Stat Property
+        public int maxHp => (int)GetFinalStat(_baseHp, _addHp, _addPerHp, _addLevelHp);
+        public int atk => (int)GetFinalStat(_baseAtk, _addAtk, _addPerAtk, _addLevelAtk);
+        public int atkRange => (int)GetFinalStat(_baseAtkRange, _addAtkRange, _addPerAtkRange, _addLevelAtkRange);
+        public float atkCool => (int)GetFinalStat(_baseAtkCool, _addAtkCool, _addPerAtkCool, _addLevelAtkCool);
         // 스킬 관련 스탯 추가
         public int skillRange => (int)GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange, _addLevelSkillRange);
         public float skillCool => (int)GetFinalStat(_baseSkillCool, _addSkillCool, _addPerSkillCool, _addLevelSkillCool);
@@ -193,15 +214,33 @@ namespace LineUpHeros
         private float _addPerSkillCool;
 
         // 레벨 관련 성장치
+        private int _addLevelHp;
+        private int _addLevelAtk;
+        private int _addLevelAtkRange;
+        private float _addLevelAtkCool;
         private int _addLevelSkillRange;
         private float _addLevelSkillCool;
 
-        public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting) : base(settings)
+        protected float GetFinalStat(float baseStat, float addStat, float addPerStat, float addLevelStat)
         {
+            // Final Stat 계산식
+            return baseStat + addStat + ((level.Value - 1) * addLevelStat) + ((baseStat + addStat) * (addPerStat / 100));
+        }
+        
+        public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting, PlayerInfo playerInfo) : base(settings)
+        {
+            level = playerInfo.level;
+            
             _baseSkillRange = settings.baseSkillRange;
             _baseSkillCool = settings.baseSkillCool;
 
             _globalSetting = globalSetting;
+            
+            /* TODO: installer에서 캐릭터별 성장치 설정 */
+            _addLevelHp = _baseHp / 5;
+            _addLevelAtk = _baseAtk / 5;
+            _addLevelAtkRange = _baseAtkRange / 5;
+            _addLevelAtkCool = _baseAtkCool / 5;
         }
     }
     #endregion

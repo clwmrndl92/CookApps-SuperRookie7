@@ -10,13 +10,12 @@ namespace LineUpHeros
         [Inject(Id = "LongRangeDealer")]
         private CharacterSetting _settings;
         [Inject]
-        private CharacterGlobalSetting _globalSettings;
-        [Inject]
         private ArrowProjectile.Factory _arrowFactory;
 
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings,_globalSettings);
+            Debug.Log(_playerInfo);
+            _status = new CharacterStatus(_settings,_globalSettings, _playerInfo);
         }
 
         public override bool Attack(List<IDamagable> atkRangeTargetList)

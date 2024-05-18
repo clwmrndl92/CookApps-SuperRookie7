@@ -12,6 +12,8 @@ namespace LineUpHeros
         [Inject]
         private FloatingText.Factory _floatTextFactory;
         private Vector3 _floatingTextOffset = new Vector3(0, 1f, 0);
+        [Inject]
+        private PlayerInfo _playerInfo;
 
         private IMemoryPool _pool;
         protected override void InitStateMachine()
@@ -37,7 +39,7 @@ namespace LineUpHeros
             // _status.tmpHp += healAmount;
         }
 
-        public override void TakeDamage(Unit from, int damage)
+        public override void TakeDamage(int damage)
         {
             _status.tmpHp.Value -= damage;
 
@@ -49,8 +51,6 @@ namespace LineUpHeros
             if (_status.tmpHp.Value <= 0)
             {
                 Die();
-                /* TODO: installer에서 몬스터별 exp 설정 */
-                from.status.GainExp(1);
             }
             // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
         }
@@ -82,12 +82,14 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
 
-            atkRangeTargetList[0].TakeDamage(this, status.atk);
+            atkRangeTargetList[0].TakeDamage(status.atk);
             return true;
         }
 
         public virtual void Die()
         {
+            /* TODO: installer에서 몬스터별 exp, gold 설정 */
+            _playerInfo.GainMonsterReward(1, 1);
             isDead.Value = true;
         }
         public void DespawnMonster()

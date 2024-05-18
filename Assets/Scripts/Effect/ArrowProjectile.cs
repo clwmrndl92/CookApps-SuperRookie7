@@ -25,7 +25,7 @@ namespace LineUpHeros
         {
             if (Vector3.Distance(transform.position, _endPos) <= EPS)
             {
-                _target?.TakeDamage(_owner, _damage);
+                _target?.TakeDamage(_damage);
                 _pool.Despawn(this);
             }
             transform.position += _speed * Time.deltaTime * _direction;
