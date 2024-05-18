@@ -52,7 +52,7 @@ namespace LineUpHeros
         #endregion
         
         #region Initialize
-        protected void Init()
+        protected virtual void Init()
         {
             InitComponent();
             // 지켜야할 순서 Anim -> StateMachine
@@ -61,7 +61,7 @@ namespace LineUpHeros
             InitStatus();
         }
         
-        protected void InitComponent()
+        protected virtual void InitComponent()
         {
             _collider = GetComponent<Collider2D>();
         }

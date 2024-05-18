@@ -11,6 +11,8 @@ namespace LineUpHeros
         private CharacterSetting _settings;
         [Inject]
         private CharacterGlobalSetting _globalSettings;
+
+        private HealerEffect _effect;
         
         // 힐러만 스킬대상이 동료들이어서 재정의 함
         public bool canSkill
@@ -28,11 +30,29 @@ namespace LineUpHeros
                 return isInRange && skillState.isCool == false;
             }
         }
+        
+        protected override void InitComponent()
+        {
+            base.InitComponent();
+            _effect = GameObject.Find("HealerEffect").gameObject.GetComponent<HealerEffect>();
+            _effect.gameObject.SetActive(false);
+        }
         protected override void InitStatus()
         {
             _status = new CharacterStatus(_settings, _globalSettings);
         }
-        
+
+        public override bool Attack(List<IDamagable> atkRangeTargetList)
+        {
+            if (base.Attack(atkRangeTargetList))
+            {
+                _effect.SetEffect(position,atkRangeTargetList[0].gameObjectIDamagable.transform.position);
+                _effect.StartEffect();
+            }
+
+            return false;
+        }
+
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
         {
             atkRangeTargetList = DetectCharacters(status.skillRange);

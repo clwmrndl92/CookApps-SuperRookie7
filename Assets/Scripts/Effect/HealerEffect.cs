@@ -1,39 +1,54 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LineUpHeros
 {
-    public class PriestEffect : MonoBehaviour
+    public class HealerEffect : MonoBehaviour
     {
+        [SerializeField]
+        float effectCreationTime = 0.2f;
+        [SerializeField]
+        float effectStopTime = 0.2f;
+        [SerializeField]
+        float effectDisappearTime = 0.1f;
+        
         private float _length;
         private float _maxScale;
         private Vector3 _startPositon;
+        private Vector3 _startPositonOffset = new Vector3(0.5f, 1f, 0);
         private Vector3 _endPositon;
-        // Start is called before the first frame update
-        void Start()
+        private Vector3 _endPositonOffset = new Vector3(0, 0.8f, 0);
+
+        private Quaternion _rotation;
+        
+        public void SetEffect(Vector3 startPosition, Vector3 targetPosition)
         {
-            _startPositon = transform.position;
-            _endPositon = _startPositon.X(_startPositon.x + 4);
+            transform.localScale = new Vector3(1,1,1);
             _length = GetComponent<SpriteRenderer>().bounds.size.x;
+            
+            _startPositon = startPosition + _startPositonOffset;
+            _endPositon = targetPosition + _endPositonOffset;
+            transform.position = _startPositon;
+            
+            _rotation = Quaternion.FromToRotation(Vector3.right, _endPositon - _startPositon);
+            transform.rotation = _rotation;
+            
             _maxScale = Vector3.Distance(_startPositon, _endPositon) / _length;
+        }
+
+        public void StartEffect()
+        {
+            gameObject.SetActive(true);
             StartCoroutine(EffectCorutine());
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-        
-        
         IEnumerator EffectCorutine()
         {
             
             float startTime = Time.time;
             Vector3 diff = _endPositon - _startPositon;
-            float effectCreationTime = 0.2f;
-            float effectDisappearTime = 0.3f;
             
             while (Time.time - startTime < effectCreationTime)
             {
@@ -44,6 +59,9 @@ namespace LineUpHeros
                 yield return null;
             }
 
+            transform.position = _startPositon + diff / 2;
+            transform.localScale = transform.localScale.X(_maxScale);
+            yield return new WaitForSeconds(effectStopTime);
             
             startTime = Time.time;
             while (Time.time - startTime < effectDisappearTime)
@@ -54,6 +72,8 @@ namespace LineUpHeros
                 transform.localScale = transform.localScale.X(scaleX);
                 yield return null;
             }
+
+            gameObject.SetActive(false);
         }
     }
 }
