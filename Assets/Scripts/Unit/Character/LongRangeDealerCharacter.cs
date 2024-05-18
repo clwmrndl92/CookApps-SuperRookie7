@@ -11,17 +11,31 @@ namespace LineUpHeros
         private CharacterSetting _settings;
         [Inject]
         private CharacterGlobalSetting _globalSettings;
+        [Inject]
+        private ArrowProjectile.Factory _arrowFactory;
 
         protected override void InitStatus()
         {
             _status = new CharacterStatus(_settings,_globalSettings);
         }
 
-        public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
+        public override bool Attack(List<IDamagable> atkRangeTargetList)
         {
             if (atkRangeTargetList.Count == 0) return false;
             
-            atkRangeTargetList[0].TakeDamage(this, (int)(status.atk * 2.5f));
+            ArrowProjectile arrow = _arrowFactory.Create();
+            arrow.FireProjectile(this, atkRangeTargetList[0], status.atk);
+            
+            return true;
+
+        }
+        public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
+        {
+            if (atkRangeTargetList == null || atkRangeTargetList.Count == 0) return false;
+
+            ArrowProjectile arrow = _arrowFactory.Create();
+            arrow.FireProjectile(this, atkRangeTargetList[0], (int)(status.atk * 2.5f));
+            
             return true;
         }
 

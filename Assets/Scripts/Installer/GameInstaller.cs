@@ -37,6 +37,11 @@ namespace LineUpHeros
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
                     .FromComponentInNewPrefab(_settings.GoblinPrefab)
                     .UnderTransformGroup("Monsters"));
+            
+            Container.BindFactory<ArrowProjectile, ArrowProjectile.Factory>()
+                .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(2)
+                    .FromComponentInNewPrefab(_settings.ArrowPrefab)
+                    .UnderTransformGroup("Arrows"));
         }
 
         [Serializable]
@@ -44,14 +49,7 @@ namespace LineUpHeros
         {
             public GameObject FloatingTextPrefab;
             public GameObject GoblinPrefab;
-        }
-        
-        
-        class FloatingTextPool : MonoPoolableMemoryPool<IMemoryPool, FloatingText>
-        {
-        }
-        class MonsterPool : MonoPoolableMemoryPool<IMemoryPool, Monster>
-        {
+            public GameObject ArrowPrefab;
         }
     }
 }

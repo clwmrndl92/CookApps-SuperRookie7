@@ -15,6 +15,7 @@ MonoBehaviour:
   gameInstallerSettings:
     FloatingTextPrefab: {fileID: 2053661189213447618, guid: b9445caacab16044294e302eac6c5b52, type: 3}
     GoblinPrefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
+    ArrowPrefab: {fileID: 5468516559908156944, guid: 21f44e1b39592e24194048982bdcc754, type: 3}
   monsterSettings:
     monsterControllerSetting:
       monsterSpawnPeriod: 5

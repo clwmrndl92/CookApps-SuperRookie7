@@ -25,7 +25,7 @@ namespace LineUpHeros
         
         public void SetEffect(Vector3 startPosition, Vector3 targetPosition)
         {
-            transform.localScale = new Vector3(1,1,1);
+            transform.localScale = new Vector3(1,1.5f,1);
             _length = GetComponent<SpriteRenderer>().bounds.size.x;
             
             _startPositon = startPosition + _startPositonOffset;
