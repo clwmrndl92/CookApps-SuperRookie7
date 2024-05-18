@@ -32,7 +32,7 @@ namespace LineUpHeros
             }
         }
 
-        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 3.0f, float destroyTime = 1.0f)
+        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 2.0f, float destroyTime = 1.5f)
         {
             _moveSpeed = moveSpeed;
             _alphaSpeed = alphaSpeed;

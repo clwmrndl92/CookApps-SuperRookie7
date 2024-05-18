@@ -43,7 +43,8 @@ namespace LineUpHeros
             
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + _floatingTextOffset;
-            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+            int color = damage >= 20 ? 0xFF0000 : 0xFFFFFF;
+            floatText.SetText(damage.ToString(),textPos, color);
             
             if (_status.tmpHp.Value <= 0)
             {

@@ -65,9 +65,9 @@ namespace LineUpHeros
         {
             _status.tmpHp.Value -= damage; 
             
-            var floatText = _floatTextFactory.Create();
-            Vector3 textPos = position + _floatingTextOffset;
-            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+            // var floatText = _floatTextFactory.Create();
+            // Vector3 textPos = position + _floatingTextOffset;
+            // floatText.SetText(damage.ToString(),textPos, 0xFF0000);
             
             if (_status.tmpHp.Value <= 0)
             {
