@@ -6,8 +6,10 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 강화창 관련 UI
     public class UpgradeGUIHandler : MonoBehaviour
     {
+        // todo : 닫기 버튼 만들기
         public GameObject upgradePanel;
         public Button upgradePanelButton;
         
@@ -43,7 +45,7 @@ namespace LineUpHeros
             
             SubscribeUpgradeTabs();
             SubscribeWallet(_wallet);
-            // SubscribeGoldText(goldInfo);
+            // SubscribeGoldUpgrade(_goldUpgrade);
         }
 
         private void SubscribeUpgradeTabs()
@@ -69,7 +71,11 @@ namespace LineUpHeros
             // TextMeshProUGUI rubyText = container.Find("Ruby").transform.Find("RubyText").GetComponent<TextMeshProUGUI>();
             _playerInfo.gold.SubscribeToText(goldText, value=> value.ToString());
         }
-
-
+        
+        private void SubscribeGoldUpgrade(RectTransform container)
+        {
+            // todo : 실제 강화와 연결
+        }
+        
     }
 }

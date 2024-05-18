@@ -11,7 +11,7 @@ namespace LineUpHeros
     {
         protected CharacterGlobalSetting _globalSettings;
         
-        private CharacterSlots _characterSlots;
+        private CharacterSlots _characterSlots; // 캐릭터가 배치되어있는 슬롯
         
         private FloatingText.Factory _floatTextFactory;
         public CharacterStatus status => (CharacterStatus)_status;
@@ -59,15 +59,16 @@ namespace LineUpHeros
 
         private void LateUpdate()
         {
+            // sprite sorting (y값 기준)
             ChangeOrderInLayer(_spriteModel.transform);
         }
-
 
         #region IDamagable
         public override void TakeHeal(int healAmount)
         {
             _status.tmpHp.Value += healAmount;
-
+            
+            // 힐량 텍스트 표시
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + FLOATING_TEXT_OFFSET;
             floatText.SetText(healAmount.ToString(), textPos, 0x00FF00);
@@ -76,7 +77,8 @@ namespace LineUpHeros
         public override void TakeDamage(int damage)
         {
             _status.tmpHp.Value -= damage;
-
+            
+            // // 데미지 텍스트 표시
             // var floatText = _floatTextFactory.Create();
             // Vector3 textPos = position + _floatingTextOffset;
             // floatText.SetText(damage.ToString(),textPos, 0xFF0000);
@@ -199,7 +201,7 @@ namespace LineUpHeros
 
             _globalSetting = globalSetting;
         }
-        
+        // Unit의 EnumStatus와 이어서 사용
         public enum EnumCharacterStatus
         {
             SkillRange = EnumStatus.Count,

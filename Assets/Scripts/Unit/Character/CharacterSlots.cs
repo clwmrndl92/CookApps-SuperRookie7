@@ -5,9 +5,12 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 캐릭터가 배치되어있는 슬롯
     public class CharacterSlots : MonoBehaviour
     {
+        // 슬롯 위치 리스트
         public List<Transform> slotList;
+        // 슬롯 - 캐릭터 정보
         private Dictionary<Transform, int> slotCharacter;
         
         TankerCharacter _tanker;
@@ -23,7 +26,7 @@ namespace LineUpHeros
             _shortRangeDealer = shortRangeDealer;
             _longRangeDealer = longRangeDealer;
             _healer = healer;
-            
+            // 캐릭터 배치 정보
             slotCharacter = new Dictionary<Transform, int>
             {
                 { _tanker.gameObjectIDamagable.transform, 0 },
@@ -37,7 +40,8 @@ namespace LineUpHeros
         {
             SyncWithFirstSlot();
         }
-
+        
+        // 0번 슬롯의 캐릭터(탱커) 위치로 전체 슬롯 위치 맞추기, 0번 캐릭터 기준 정렬
         private void SyncWithFirstSlot()
         {
             Transform firstSlot = GetSlot(0);

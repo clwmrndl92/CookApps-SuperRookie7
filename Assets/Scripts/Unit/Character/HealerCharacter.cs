@@ -32,6 +32,7 @@ namespace LineUpHeros
         protected override void InitComponent()
         {
             base.InitComponent();
+            // 일반 공격 이펙트
             _effect = GameObject.Find("HealerEffect").gameObject.GetComponent<HealerEffect>();
             _effect.gameObject.SetActive(false);
         }
@@ -69,6 +70,7 @@ namespace LineUpHeros
             // 풀피 아닐때만 치유스킬 사용
             if (minHpTarget != null && minHpTarget.status.tmpHp.Value < minHpTarget.status.maxHp)
             {
+                // todo : 스킬 업그레이드 되도록 수정
                 minHpTarget.TakeHeal((int)(status.atk * 2.5f));
                 return true;
             }

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // Move 스테이트
+    // 자기자리로 귀환 스테이트
     public class CharGotoSlotState : CharacterState
     {
         private float _epsilon = 0.05f;

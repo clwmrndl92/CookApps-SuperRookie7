@@ -20,6 +20,7 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
 
+            // todo : 스킬 업그레이드 되도록 수정
             atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
             atkRangeTargetList[0].TakeStun(_settings.stunTime);
             return true;

@@ -10,6 +10,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 게임시작 대기상태때 뜨는 텍스트
     public class StartText : MonoBehaviour
     {
         private GameController _gameController;

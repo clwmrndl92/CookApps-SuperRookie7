@@ -9,7 +9,7 @@ namespace LineUpHeros
         [Inject] 
         private Settings _settings;
         [Inject] 
-        private Canvas _canvas;
+        private Canvas _canvas; // floating text 그릴 캔버스
 
         public override void InstallBindings()
         {
@@ -23,6 +23,7 @@ namespace LineUpHeros
             Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
             Container.BindInterfacesAndSelfTo<MonsterController>().AsSingle();
             
+            // input 관련
             Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
             Container.Bind<InputState>().AsSingle();
         }
@@ -48,7 +49,6 @@ namespace LineUpHeros
         private void InstallPlayer()
         {
             Container.Bind<PlayerInfo>().AsSingle();
-            // Container.Bind<IInitializable>().To<PlayerInfo>().AsSingle();
         }
         
         [Serializable]

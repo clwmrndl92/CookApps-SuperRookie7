@@ -5,7 +5,8 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public class PlayerInfoGUIHandler : MonoBehaviour
+    // 플레이어 정보, 재화 등 플레이어 관련 UI들
+    public class PlayerGUIHandler : MonoBehaviour
     {
         public RectTransform levelInfo;
         public RectTransform expInfo;

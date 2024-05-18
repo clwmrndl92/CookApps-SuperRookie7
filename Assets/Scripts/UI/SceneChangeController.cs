@@ -9,6 +9,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 페이드인 페이드아웃 전환 효과
     public class SceneChangeController : MonoBehaviour
     {
         public Image _sceneChangeImage;
@@ -21,10 +22,6 @@ namespace LineUpHeros
             DontDestroyOnLoad(gameObject);
         }
 
-        void Start()
-        {
-            // _sceneChangeImage = transform.Find("Black").gameObject.GetComponent<Image>();
-        }
         // 현재 씬 리로드 메소드
         public void SceneReload()
         {

@@ -14,7 +14,7 @@ namespace LineUpHeros
          
         private CharacterSlots _characterSlots;
         private Transform _firstSlot;
-        private Vector3 _spawnOffset = new Vector3(15f, 0, 0);
+        private readonly Vector3 _spawnOffset = new Vector3(15f, 0, 0); // 0번 슬롯 기준
         
         private float _monsterSpawnTimer;
 
@@ -43,6 +43,7 @@ namespace LineUpHeros
                 for (int i = 0; i < Random.Range(1, _monsterControllerSetting.monsterMaxSpawnNum); i++)
                 {
                     var monster = _monsterFactory.Create();
+                    // todo : 스폰 좀 더 세련된 방식으로?
                     Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
                     monster.transform.position = _firstSlot.position + _spawnOffset + randomOffset;
                 }

@@ -63,6 +63,7 @@ namespace LineUpHeros
 
         public void AddStat(int statusIndex, float addValue, bool isPermanent = false)
         {
+            // 사실 지금은 baseStatus에 더하든 addStatus에 더하든 똑같다.
             if (isPermanent) baseStatus[statusIndex] += addValue;
             else addStatus[statusIndex] += addValue;
         }

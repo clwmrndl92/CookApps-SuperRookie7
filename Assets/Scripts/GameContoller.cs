@@ -111,6 +111,7 @@ namespace LineUpHeros
         
         private void GameOver()
         {
+            // todo : 스테이지 생기면 게임오버 다른방식으로
             Debug.Log("Game over");
             Assert.That(state.Value == GameStates.Playing);
             Time.timeScale = 0;

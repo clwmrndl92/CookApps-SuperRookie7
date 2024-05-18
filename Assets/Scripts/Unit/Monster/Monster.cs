@@ -45,6 +45,8 @@ namespace LineUpHeros
 
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + _floatingTextOffset;
+            // 특정 데미지 이상 색 변경
+            // todo : 나중에 크리티컬 추가? 하드코딩 좀 어케 수정
             int color = damage >= 20 ? 0xFF0000 : 0xFFFFFF;
             floatText.SetText(damage.ToString(), textPos, color);
 
@@ -52,7 +54,6 @@ namespace LineUpHeros
             {
                 Die();
             }
-            // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
         }
         public override void TakeStun(float stunTime)
         {
@@ -123,7 +124,8 @@ namespace LineUpHeros
             }
 #endif
         }
-
+        
+        // 스턴 이펙트 용
         public void ChangeSpriteColor(Color color)
         {
             _spriteModel.GetComponent<SpriteRenderer>().color = color;

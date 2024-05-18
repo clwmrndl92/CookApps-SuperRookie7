@@ -8,23 +8,26 @@ namespace LineUpHeros
     public class HealerEffect : MonoBehaviour
     {
         [SerializeField]
-        float effectCreationTime = 0.2f;
+        float effectCreationTime = 0.2f; // 번개 날아가는 시간
         [SerializeField]
-        float effectStopTime = 0.2f;
+        float effectStopTime = 0.2f; // 번개 지팡이랑 적이랑 이어져있는 시간
         [SerializeField]
-        float effectDisappearTime = 0.1f;
+        float effectDisappearTime = 0.1f; // 번개 사라지는 시간
         
+        // effect sprite 사이즈 관련 변수
         private float _length;
         private float _maxScale;
-        private Vector3 _startPositon;
+        
+        private Vector3 _startPositon; // 힐러 위치
         private Vector3 _startPositonOffset = new Vector3(0.5f, 1f, 0);
-        private Vector3 _endPositon;
+        private Vector3 _endPositon; // 타겟 위치
         private Vector3 _endPositonOffset = new Vector3(0, 0.8f, 0);
 
         private Quaternion _rotation;
         
         public void SetEffect(Vector3 startPosition, Vector3 targetPosition)
         {
+            // 스프라이트 사이즈 가져오기 (x 크기)
             transform.localScale = new Vector3(1,1.5f,1);
             _length = GetComponent<SpriteRenderer>().bounds.size.x;
             
@@ -35,6 +38,7 @@ namespace LineUpHeros
             _rotation = Quaternion.FromToRotation(Vector3.right, _endPositon - _startPositon);
             transform.rotation = _rotation;
             
+            // 번개 이펙트 최대 크기 (비율, 적까지의 거리)
             _maxScale = Vector3.Distance(_startPositon, _endPositon) / _length;
         }
 
@@ -46,10 +50,10 @@ namespace LineUpHeros
 
         IEnumerator EffectCorutine()
         {
-            
             float startTime = Time.time;
             Vector3 diff = _endPositon - _startPositon;
             
+            // 날아가는 시간, 적에 닿을때까지 길어짐
             while (Time.time - startTime < effectCreationTime)
             {
                 Vector3 lerpPosition = _startPositon + Vector3.Lerp(Vector3.zero, diff / 2, (Time.time - startTime) / effectCreationTime);
@@ -59,10 +63,12 @@ namespace LineUpHeros
                 yield return null;
             }
 
+            // 멈춰있는 시간
             transform.position = _startPositon + diff / 2;
             transform.localScale = transform.localScale.X(_maxScale);
             yield return new WaitForSeconds(effectStopTime);
             
+            // 사라지는 시간, 적 쪽으로 짧아짐
             startTime = Time.time;
             while (Time.time - startTime < effectDisappearTime)
             {

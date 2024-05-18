@@ -10,6 +10,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 게임 오버시 표시되는 텍스트
     public class GameOverText : MonoBehaviour
     {
         private GameController _gameController;

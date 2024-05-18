@@ -7,6 +7,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 데미지 이펙트 등
     public class FloatingText : MonoBehaviour, IPoolable<IMemoryPool>
     {
         private float _moveSpeed;
@@ -31,8 +32,10 @@ namespace LineUpHeros
                 _pool.Despawn(this);
             }
         }
-
-        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 2.0f, float destroyTime = 1.5f, bool isCanvasPos = false)
+        
+        // isCanvasPos : position값이 world position인지, UI position인지
+        public void SetText(string text, Vector3 position, int rgb = 0xFF0000, float moveSpeed = 100.0f, float alphaSpeed = 2.0f, 
+                            float destroyTime = 1.5f, bool isCanvasPos = false)
         {
             _moveSpeed = moveSpeed;
             _alphaSpeed = alphaSpeed;
@@ -52,7 +55,6 @@ namespace LineUpHeros
         public void OnSpawned(IMemoryPool p1)
         {
             _text = GetComponent<TextMeshProUGUI>();
-            // SetText("damage!");
             _startTime = Time.time;
             
             _pool = p1;

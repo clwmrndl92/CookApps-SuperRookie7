@@ -9,9 +9,11 @@ namespace LineUpHeros
         public float stunTime = 5f;
         private float _stateEnterTime;
 
+        // 스턴 이펙트 관련 변수
         private Vector3 _prevScale;
         private float _stunScale = 0.7f;
         private Color _stunColor = new Color(169, 105, 0);
+        
         public MonStunState(Monster monster) : base(monster)
         {
             _monster = monster;
@@ -20,9 +22,8 @@ namespace LineUpHeros
         public override void OnEnterState()
         {
             _stateEnterTime = Time.time;
-            // todo : 스턴 이펙트 켜주기
-            // _monster;
             _monster.ChangeAnimationState(EnumState.Monster.STUN);
+            // 스턴 이펙트 켜기
             _monster.ChangeSpriteColor(_stunColor);
             _prevScale = _monster.scale;
             _monster.scale = _monster.scale.Y(_monster.scale.y * _stunScale);
@@ -39,7 +40,7 @@ namespace LineUpHeros
 
         public override void OnExitState()
         {
-            // todo : 스턴 이펙트 꺼주기
+            // 스턴 이펙트 끄기
             _monster.ChangeSpriteColor(Color.white);
             _monster.scale = _prevScale;
         }
