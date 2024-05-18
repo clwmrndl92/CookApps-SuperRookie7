@@ -22,8 +22,8 @@ MonoBehaviour:
     monsterGlobalSetting:
       detectRange: 20
     goblinSetting:
-      baseHp: 100
-      baseAtk: 10
+      baseHp: 1000
+      baseAtk: 1000
       baseAtkRange: 1
       baseAtkCool: 1
       baseAtkPerSec: 1

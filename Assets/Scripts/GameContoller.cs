@@ -22,6 +22,9 @@ namespace LineUpHeros
         private ShortRangeDealerCharacter _shortRangeDealer;
         private LongRangeDealerCharacter _longRangeDealer;
         private HealerCharacter _healer;
+
+        [Inject]
+        private SceneChangeController _sceneChangeController;
         
         public GameController(InputState inputState, TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
                               LongRangeDealerCharacter longRangeDealer, HealerCharacter healer) 
@@ -79,7 +82,8 @@ namespace LineUpHeros
             if (_inputState.IsMouseClick)
             {
                 state.Value = GameStates.WaitingToStart;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Time.timeScale = 1;
+                _sceneChangeController.SceneReload();
             }
         }
 
@@ -110,6 +114,7 @@ namespace LineUpHeros
         {
             Debug.Log("Game over");
             Assert.That(state.Value == GameStates.Playing);
+            Time.timeScale = 0;
 
             state.Value = GameStates.GameOver;
         }
