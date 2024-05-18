@@ -11,10 +11,10 @@ namespace LineUpHeros
         public CharacterStatus status => (CharacterStatus)_status;
         [Inject]
         private FloatingText.Factory _floatTextFactory;
-        private Vector3 _floatingTextOffset = new Vector3(0,2f,0);
+        private Vector3 _floatingTextOffset = new Vector3(0, 2f, 0);
         [Inject]
         private CharacterSlots characterSlots;
-        
+
         public bool canSkill
         {
             get
@@ -26,14 +26,14 @@ namespace LineUpHeros
                                  status.skillRange;
                 // 스킬 쿨타임 체크
                 CharSpecialAtkState skillState = (CharSpecialAtkState)_stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
-                
+
                 return isInRange && skillState.isCool == false;
             }
         }
-        
+
         protected override void InitStateMachine()
         {
-            _stateMachine = new StateMachine( new FSMCharacterGlobalVariables());
+            _stateMachine = new StateMachine(new FSMCharacterGlobalVariables());
             _stateMachine.AddState(EnumState.Character.IDLE, new CharIdleState(this));
             _stateMachine.AddState(EnumState.Character.MOVE, new CharMoveState(this));
             _stateMachine.AddState(EnumState.Character.ATK, new CharAtkState(this));
@@ -55,20 +55,20 @@ namespace LineUpHeros
         public override void TakeHeal(int healAmount)
         {
             _status.tmpHp.Value += healAmount;
-            
+
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + _floatingTextOffset;
-            floatText.SetText(healAmount.ToString(),textPos, 0x00FF00);
+            floatText.SetText(healAmount.ToString(), textPos, 0x00FF00);
         }
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(Unit from, int damage)
         {
-            _status.tmpHp.Value -= damage; 
-            
+            _status.tmpHp.Value -= damage;
+
             // var floatText = _floatTextFactory.Create();
             // Vector3 textPos = position + _floatingTextOffset;
             // floatText.SetText(damage.ToString(),textPos, 0xFF0000);
-            
+
             if (_status.tmpHp.Value <= 0)
             {
                 Die();
@@ -79,7 +79,7 @@ namespace LineUpHeros
         }
 
         #endregion
-        
+
         #region public Methods
         // Animation Event에서 호출하는 함수
         public override void AnimEventAttack()
@@ -87,7 +87,7 @@ namespace LineUpHeros
             BaseState attackState = _stateMachine.GetState(EnumState.Character.ATK);
             if (_stateMachine.currentState == attackState)
             {
-                ((CharAtkState) attackState).Attack();
+                ((CharAtkState)attackState).Attack();
             }
         }
         public override void AnimEventSpecialAttack()
@@ -95,15 +95,15 @@ namespace LineUpHeros
             BaseState specialAttackState = _stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
             if (_stateMachine.currentState == specialAttackState)
             {
-                ((CharSpecialAtkState) specialAttackState).SpecialAttack();
+                ((CharSpecialAtkState)specialAttackState).SpecialAttack();
             }
         }
         // return true : 공격 성공함, return false : 공격대상 없음
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
             if (atkRangeTargetList.Count == 0) return false;
-            
-            atkRangeTargetList[0].TakeDamage(status.atk);
+
+            atkRangeTargetList[0].TakeDamage(this, status.atk);
             return true;
         }
         // return true : 스킬 사용함, return false : 스킬 사용 안함
@@ -125,7 +125,7 @@ namespace LineUpHeros
         #region Util
         // 범위내 살아있는 몬스터 리스트 찾아서 리턴 (거리순 정렬)
         public List<IDamagable> DetectMonsters(float radius)
-        { 
+        {
             List<IDamagable> aliveMonsterList = new List<IDamagable>();
             foreach (var monster in Util.GetDetectDamagableList(position, radius, LayerMasks.Monster))
             {
@@ -137,9 +137,9 @@ namespace LineUpHeros
 
         private void OnDrawGizmos()
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (status != null)
-            { 
+            {
                 // 공격범위 파랑
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(position, status.atkRange);
@@ -147,17 +147,17 @@ namespace LineUpHeros
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(position, status.detectRange);
             }
-            #endif
+#endif
         }
-        
-        
+
+
         void ChangeOrderInLayer(Transform parent)
         {
             SpriteRenderer[] children = parent.gameObject.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer renderer in children)
             {
                 int y = (int)(position.y * 100);
-                renderer.sortingOrder = 10000 -(y * 10) + renderer.sortingOrder%10;
+                renderer.sortingOrder = 10000 - (y * 10) + renderer.sortingOrder % 10;
             }
         }
 
@@ -167,7 +167,7 @@ namespace LineUpHeros
         }
         #endregion
     }
-            
+
     #region Status
     public class CharacterStatus : Status
     {
@@ -177,20 +177,24 @@ namespace LineUpHeros
         public float revivalTime => _globalSetting.revivalTime;
 
         // 스킬 관련 스탯 추가
-        public int skillRange => (int) GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange);
-        public float skillCool => (int) GetFinalStat(_baseSkillCool, _addSkillCool, _addPerSkillCool);
-                
+        public int skillRange => (int)GetFinalStat(_baseSkillRange, _addSkillRange, _addPerSkillRange, _addLevelSkillRange);
+        public float skillCool => (int)GetFinalStat(_baseSkillCool, _addSkillCool, _addPerSkillCool, _addLevelSkillCool);
+
         // Base Stat, 영구 성장치 적용
         private int _baseSkillRange;
         private float _baseSkillCool;
-                
+
         // Additional Stat, 아이템, 버프 등 일시적 성장치
         private int _addSkillRange;
         private float _addSkillCool;
-                
+
         // Additional Percent Stat, 아이템, 버프 등 일시적 성장치 (퍼센트)
         private int _addPerSkillRange;
         private float _addPerSkillCool;
+
+        // 레벨 관련 성장치
+        private int _addLevelSkillRange;
+        private float _addLevelSkillCool;
 
         public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting) : base(settings)
         {
@@ -201,7 +205,7 @@ namespace LineUpHeros
         }
     }
     #endregion
-    
+
     #region setting
     // Scriptable Object Installer 세팅 값
     [Serializable]
@@ -223,7 +227,7 @@ namespace LineUpHeros
         public float revivalTime;
     }
     #endregion
-    
+
     public static partial class EnumState
     {
         public static class Character
@@ -238,7 +242,7 @@ namespace LineUpHeros
             public const string GOTO_SLOT = "return";
         }
     }
-    
+
     // Character 스테이트머신 글로벌 변수
     public class FSMCharacterGlobalVariables : FSMGlobalVariables
     {

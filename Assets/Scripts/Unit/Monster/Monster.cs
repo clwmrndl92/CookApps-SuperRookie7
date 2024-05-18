@@ -11,8 +11,8 @@ namespace LineUpHeros
         public MonsterStatus status => (MonsterStatus)_status;
         [Inject]
         private FloatingText.Factory _floatTextFactory;
-        private Vector3 _floatingTextOffset = new Vector3(0,1f,0);
-        
+        private Vector3 _floatingTextOffset = new Vector3(0, 1f, 0);
+
         private IMemoryPool _pool;
         protected override void InitStateMachine()
         {
@@ -37,18 +37,20 @@ namespace LineUpHeros
             // _status.tmpHp += healAmount;
         }
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(Unit from, int damage)
         {
             _status.tmpHp.Value -= damage;
-            
+
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + _floatingTextOffset;
             int color = damage >= 20 ? 0xFF0000 : 0xFFFFFF;
-            floatText.SetText(damage.ToString(),textPos, color);
-            
+            floatText.SetText(damage.ToString(), textPos, color);
+
             if (_status.tmpHp.Value <= 0)
             {
                 Die();
+                /* TODO: installer에서 몬스터별 exp 설정 */
+                from.status.GainExp(1);
             }
             // Debug.Log(gameObject.name + " Take Damage " + damage + " HP : " + _status.tmpHp);
         }
@@ -56,22 +58,22 @@ namespace LineUpHeros
         {
             ((MonStunState)_stateMachine.GetState(EnumState.Monster.STUN)).stunTime = stunTime;
             _stateMachine.ChangeState(EnumState.Monster.STUN);
-            
+
             var floatText = _floatTextFactory.Create();
             Vector3 textPos = position + _floatingTextOffset;
-            floatText.SetText("Stun",textPos, 0xFFFF00);
+            floatText.SetText("Stun", textPos, 0xFFFF00);
         }
-        
+
         #endregion
 
         #region publicMethod
-        
+
         public override void AnimEventAttack()
         {
             BaseState attackState = _stateMachine.GetState(EnumState.Monster.ATK);
             if (_stateMachine.currentState == attackState)
             {
-                ((MonAtkState) attackState).Attack();
+                ((MonAtkState)attackState).Attack();
             }
         }
 
@@ -79,11 +81,11 @@ namespace LineUpHeros
         public virtual bool Attack(List<IDamagable> atkRangeTargetList)
         {
             if (atkRangeTargetList.Count == 0) return false;
-            
-            atkRangeTargetList[0].TakeDamage(status.atk);
+
+            atkRangeTargetList[0].TakeDamage(this, status.atk);
             return true;
         }
-        
+
         public virtual void Die()
         {
             isDead.Value = true;
@@ -93,7 +95,7 @@ namespace LineUpHeros
             _pool.Despawn(this);
         }
         #endregion
-        
+
         #region Util
 
         public List<IDamagable> DetectCharacters(float radius)
@@ -124,12 +126,12 @@ namespace LineUpHeros
         {
             _spriteModel.GetComponent<SpriteRenderer>().color = color;
         }
-        
+
         void ChangeOrderInLayer()
         {
             SpriteRenderer renderer = _spriteModel.GetComponent<SpriteRenderer>();
             int y = (int)(position.y * 100);
-            renderer.sortingOrder = 10000 -(y * 10) + renderer.sortingOrder%10;
+            renderer.sortingOrder = 10000 - (y * 10) + renderer.sortingOrder % 10;
         }
         #endregion
 
@@ -141,19 +143,19 @@ namespace LineUpHeros
 
         public void OnSpawned(IMemoryPool p1)
         {
-            isDead.Value  = false;
+            isDead.Value = false;
             Init();
             // todo : 포지션 정해주기, hp 초기화, state초기화, status초기화
             _pool = p1;
         }
-        
+
         public class Factory : PlaceholderFactory<Monster>
         {
-                
+
         }
         #endregion
     }
-    
+
     #region Status
 
     public class MonsterStatus : Status

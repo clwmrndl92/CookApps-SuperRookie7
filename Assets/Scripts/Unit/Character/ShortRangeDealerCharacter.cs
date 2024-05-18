@@ -23,7 +23,7 @@ namespace LineUpHeros
 
             foreach (var target in atkRangeTargetList)
             {
-                target.TakeDamage((int)(status.atk * 1.0f));
+                target.TakeDamage(this, (int)(status.atk * 1.0f));
             }
             return true;
         }

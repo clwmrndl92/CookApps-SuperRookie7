@@ -22,7 +22,7 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
 
-            atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
+            atkRangeTargetList[0].TakeDamage(this, (int)(status.atk * 1.0f));
             atkRangeTargetList[0].TakeStun(_settings.stunTime);
             return true;
         }

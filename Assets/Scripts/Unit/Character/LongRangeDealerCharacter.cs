@@ -21,7 +21,7 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
             
-            atkRangeTargetList[0].TakeDamage((int)(status.atk * 2.5f));
+            atkRangeTargetList[0].TakeDamage(this, (int)(status.atk * 2.5f));
             return true;
         }
 

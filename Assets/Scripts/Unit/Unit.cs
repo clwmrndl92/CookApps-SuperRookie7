@@ -76,7 +76,7 @@ namespace LineUpHeros
         public GameObject gameObjectIDamagable { get => gameObject; }
 
         public abstract void TakeHeal(int healAmount);
-        public abstract void TakeDamage(int damage);
+        public abstract void TakeDamage(Unit from, int damage);
         public abstract void TakeStun(float stunTime);
 
         #endregion
