@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -21,35 +22,30 @@ namespace LineUpHeros
         public ReactiveProperty<int> tmpHp;
 
         // Final Stat Property
-        public int maxHp => (int)GetFinalStat(_baseHp, _addHp, _addPerHp);
-        public int atk => (int)GetFinalStat(_baseAtk, _addAtk, _addPerAtk);
-        public int atkRange => (int)GetFinalStat(_baseAtkRange, _addAtkRange, _addPerAtkRange);
-        public float atkCool => (int)GetFinalStat(_baseAtkCool, _addAtkCool, _addPerAtkCool);
+        public int maxHp => (int)GetFinalStat((int)EnumStatus.Hp);
+        public int atk => (int)GetFinalStat((int)EnumStatus.Atk);
+        public int atkRange => (int)GetFinalStat((int)EnumStatus.AtkRange);
+        public float atkCool => (int)GetFinalStat((int)EnumStatus.AtkCool);
 
         // Base Stat, 영구 성장치 적용
-        protected int _baseHp;
-        protected int _baseAtk;
-        protected int _baseAtkRange;
-        protected float _baseAtkCool;
+        protected float[] baseStatus;
 
         // Additional Stat, 아이템, 버프 등 일시적 성장치
-        protected int _addHp;
-        protected int _addAtk;
-        protected int _addAtkRange;
-        protected float _addAtkCool;
+        protected float[] addStatus;
 
         // Additional Percent Stat, 아이템, 버프 등 일시적 성장치 (퍼센트)
-        protected int _addPerHp;
-        protected int _addPerAtk;
-        protected int _addPerAtkRange;
-        protected float _addPerAtkCool;
+        protected float[] addPerStatus;
 
-        public Status(StatSettings settings)
+        public Status(StatSettings settings, int statusNum = (int)EnumStatus.Count)
         {
-            _baseHp = settings.baseHp;
-            _baseAtk = settings.baseAtk;
-            _baseAtkRange = settings.baseAtkRange;
-            _baseAtkCool = settings.baseAtkCool;
+            baseStatus = new float[statusNum];
+            addStatus = new float[statusNum];
+            addPerStatus = new float[statusNum];
+            
+            baseStatus[(int)EnumStatus.Hp] = settings.baseHp;
+            baseStatus[(int)EnumStatus.Atk] = settings.baseAtk;
+            baseStatus[(int)EnumStatus.AtkRange] = settings.baseAtkRange;
+            baseStatus[(int)EnumStatus.AtkCool] = settings.baseAtkCool;
 
             // UI에 업데이트 될 값
             tmpHp = new ReactiveProperty<int>(maxHp);
@@ -59,12 +55,45 @@ namespace LineUpHeros
                     tmpHp.Value = Mathf.Clamp(tmpHp.Value, 0, maxHp);
                 });
         }
-        protected virtual float GetFinalStat(float baseStat, float addStat, float addPerStat)
+        protected float GetFinalStat(int statusIndex)
         {
             // Final Stat 계산식
-            return baseStat + addStat + ((baseStat + addStat) * (addPerStat / 100));
+            return baseStatus[statusIndex] + addStatus[statusIndex]  + ((baseStatus[statusIndex]  + addStatus[statusIndex] ) * (addPerStatus[statusIndex]  / 100));
         }
 
+        public void AddStat(int statusIndex, float addValue, bool isPermanent = false)
+        {
+            if (isPermanent) baseStatus[statusIndex] += addValue;
+            else addStatus[statusIndex] += addValue;
+        }
+        
+        public void AddPerStat(int statusIndex, float addValue)
+        {
+            addPerStatus[statusIndex] += addValue;
+        }
+        
+        public float GetBaseStat(int statusIndex)
+        {
+            return baseStatus[statusIndex];
+        }
+        public float GetAddStat(int statusIndex)
+        {
+            return addStatus[statusIndex];
+        }
+        public float GetAddPerStat(int statusIndex)
+        {
+            return addPerStatus[statusIndex];
+        }
+        
+        
+        public enum EnumStatus
+        {
+            Hp = 0,
+            Atk,
+            AtkRange,
+            AtkCool,
+            Count
+        }
     }
 
     // Scriptable Object Installer 세팅 값

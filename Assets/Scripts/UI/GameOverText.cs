@@ -28,7 +28,6 @@ namespace LineUpHeros
             _gameController.state
                 .Subscribe(value =>
                 {
-                    Debug.Log(value);
                     if (value == GameStates.GameOver) _textGameObject.SetActive(true);
                     else _textGameObject.SetActive(false);
                 });

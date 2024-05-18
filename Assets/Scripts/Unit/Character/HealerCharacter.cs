@@ -37,7 +37,7 @@ namespace LineUpHeros
         }
         protected override void InitStatus()
         {
-            _status = new CharacterStatus(_settings, _globalSettings, _playerInfo);
+            _status = new CharacterStatus(_settings, _globalSettings);
         }
 
         public override bool Attack(List<IDamagable> atkRangeTargetList)

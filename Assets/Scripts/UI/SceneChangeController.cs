@@ -11,11 +11,10 @@ namespace LineUpHeros
 {
     public class SceneChangeController : MonoBehaviour
     {
-        private GameObject _sceneChangeObject;
-        private Image _sceneChangeImage;
+        public Image _sceneChangeImage;
 
-        private float _fadeInTime = 2f;
-        private float _fadeOutTime = 0f;
+        public float _fadeInTime = 2f;
+        public float _fadeOutTime = 0f;
 
         private void Awake()
         {
@@ -24,8 +23,7 @@ namespace LineUpHeros
 
         void Start()
         {
-            _sceneChangeObject = transform.GetChild(0).gameObject;
-            _sceneChangeImage = _sceneChangeObject.GetComponent<Image>();
+            // _sceneChangeImage = transform.Find("Black").gameObject.GetComponent<Image>();
         }
         // 현재 씬 리로드 메소드
         public void SceneReload()
@@ -35,6 +33,7 @@ namespace LineUpHeros
         
         IEnumerator SceneReloadCorutine()
         {
+            _sceneChangeImage.gameObject.SetActive(true);
             float startTime = Time.time;
             Color color = _sceneChangeImage.color;
             
@@ -58,6 +57,8 @@ namespace LineUpHeros
                 _sceneChangeImage.color = color;
                 yield return null;
             }
+            
+            _sceneChangeImage.gameObject.SetActive(false);
         }
 
     }

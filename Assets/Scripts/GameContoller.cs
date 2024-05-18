@@ -103,7 +103,6 @@ namespace LineUpHeros
 
         private void StartGame()
         {
-            Debug.Log("start Game");
             Assert.That(state.Value == GameStates.WaitingToStart || state.Value == GameStates.GameOver);
 
             state.Value = GameStates.Playing;

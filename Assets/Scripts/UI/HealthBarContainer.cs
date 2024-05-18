@@ -22,18 +22,15 @@ namespace LineUpHeros
         LongRangeDealerCharacter _longRangeDealer;
         HealerCharacter _healer;
 
-        private FloatingText.Factory _floatingFactory;
 
         [Inject]
         public void Construct(TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
-                LongRangeDealerCharacter longRangeDealer, HealerCharacter healer,
-                FloatingText.Factory floatingFactory)
+                LongRangeDealerCharacter longRangeDealer, HealerCharacter healer)
         {
             _tanker = tanker;
             _shortRangeDealer = shortRangeDealer;
             _longRangeDealer = longRangeDealer;
             _healer = healer;
-            _floatingFactory = floatingFactory;
         }
 
         void Start()

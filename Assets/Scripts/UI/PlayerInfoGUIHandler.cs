@@ -56,8 +56,8 @@ namespace LineUpHeros
         }
         private void SubscribeGoldText(RectTransform container)
         {
-            TextMeshProUGUI levelText = container.Find("GoldText").GetComponent<TextMeshProUGUI>();
-            _playerInfo.gold.SubscribeToText(levelText, value=> value.ToString());
+            TextMeshProUGUI goldText = container.Find("GoldText").GetComponent<TextMeshProUGUI>();
+            _playerInfo.gold.SubscribeToText(goldText, value=> value.ToString());
         }
         
     }

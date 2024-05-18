@@ -16,7 +16,7 @@ namespace LineUpHeros
         private float _speed = 10f;
         private int _damage;
         
-        private readonly float EPS = 0.1f;
+        private readonly float EPS = 0.2f;
         
         private Unit _owner;
 
