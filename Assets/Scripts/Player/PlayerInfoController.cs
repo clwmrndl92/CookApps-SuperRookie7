@@ -5,7 +5,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public class PlayerInfo
+    public class PlayerInfoController
     {
         public ReactiveProperty<int> exp = new ReactiveProperty<int>(0);
         public ReactiveProperty<int> level = new ReactiveProperty<int>(1);
@@ -20,9 +20,11 @@ namespace LineUpHeros
         public List<UpgradeInfo> goldUpgradeList = new List<UpgradeInfo>();
         public List<UpgradeInfo> rubyUpgradeList = new List<UpgradeInfo>();
 
+        private SignalBus _signalBus;
+
         [Inject]
         public void Construct(TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
-            LongRangeDealerCharacter longRangeDealer, HealerCharacter healer)
+            LongRangeDealerCharacter longRangeDealer, HealerCharacter healer, SignalBus signalBus)
         {
             _tanker = tanker;
             _shortRangeDealer = shortRangeDealer;
@@ -35,16 +37,20 @@ namespace LineUpHeros
 
             // 루비 업그레이드 항목 추가
             rubyUpgradeList.Add(new RubyHpUpgrade(this));
+            
+            // 몬스터 사망 시그널
+            _signalBus = signalBus;
+            _signalBus.Subscribe<GameEvent.MonsterDieSignal>(x => OnDieMonster(x.monsterInfo));
         }
         
         // 다음 레벨이 되기위한 경험치
         public int nextExp => level.Value * 2;
 
         // todo : 몬스터 별로 얻을 경험치, 골드, 스크립터블 오브젝트로 설정 가능하게
-        public void GainMonsterReward(int gainExp, int gainGold)
+        public void OnDieMonster(MonsterInfo info)
         {
-            GainExp(gainExp);
-            GainGold(gainGold);
+            GainExp(info.rewardExp);
+            GainGold(info.rewardGold);
         }
         // exp 획득
         private void GainExp(int gainExp)

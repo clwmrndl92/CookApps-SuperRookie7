@@ -1,42 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
 namespace LineUpHeros
 {
-    public class MonsterController : ITickable, IInitializable
+    public class MonsterSpawnController : ITickable, IInitializable
     {
         private GameController _gameController;
-
-        // private Monster.Factory _monsterFactory;
+        private SignalBus _signalBus;
         private MonsterFactory _monsterFactory;
-
-        private CharacterSlots _characterSlots;
+        
         private Transform _firstSlot;
         private readonly Vector3 _spawnOffset = new Vector3(15f, 0, 0); // 0번 슬롯 기준
 
         private float _monsterSpawnTimer;
-
-        private StageInfo currentStage => _gameController.GetCurrentStage();
-
-        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= currentStage.monsterSetting.monsterSpawnPeriod
+        private int _currentSpawnedMonsters;
+        
+        // stage 정보
+        private StageInfo _currentStage;
+        
+        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _currentStage.monsterSetting.monsterSpawnPeriod
+                                 && _currentSpawnedMonsters < _currentStage.monsterSetting.requiredMonsterKills
                                  && _gameController.state.Value == GameStates.Playing;
 
-        public MonsterController(GameController gameController, MonsterFactory monsterFactory,
-            CharacterSlots characterSlots)
+        public MonsterSpawnController(GameController gameController, MonsterFactory monsterFactory, SignalBus signalBus)
         {
             _gameController = gameController;
-            _characterSlots = characterSlots;
             _monsterFactory = monsterFactory;
+            _signalBus = signalBus;
+            
+            _signalBus.Subscribe<GameEvent.StageStartSignal>(OnStageStart);
         }
 
         public void Initialize()
         {
             _monsterSpawnTimer = float.MinValue;
-            _firstSlot = _characterSlots.GetSlot(0);
         }
 
         public void Tick()
@@ -48,13 +50,21 @@ namespace LineUpHeros
             }
         }
 
+        private void OnStageStart()
+        {
+            _currentStage = _gameController.GetCurrentStage();
+            _currentSpawnedMonsters = 0;
+        }
+
         private void MonsterSpawn()
         {
-            var monsterSpawnList = currentStage.monsterSetting.monsterSpawnProbability;
+            var monsterSpawnList = _currentStage.monsterSetting.monsterSpawnProbability;
             float total = monsterSpawnList.Sum(spawnProbability => spawnProbability.probabilty);
 
             // 몇마리 스폰할지 랜덤돌려서 스폰
-            for (int i = 0; i < Random.Range(1, currentStage.monsterSetting.monsterMaxSpawnNum); i++)
+            int remainMonsterNum = _currentStage.monsterSetting.requiredMonsterKills - _currentSpawnedMonsters;
+            int spawnNum = Random.Range(1, Mathf.Min(_currentStage.monsterSetting.monsterMaxSpawnNum, remainMonsterNum));
+            for (int i = 0; i < spawnNum; i++)
             {
                 float random = Random.Range(0, total);
                 float currentThreshold = 0;
