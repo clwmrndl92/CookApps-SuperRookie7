@@ -36,10 +36,6 @@ namespace LineUpHeros
                     .FromComponentInNewPrefab(_settings.FloatingTextPrefab)
                     .UnderTransform(_canvas.transform));
             
-            Container.BindFactory<Monster, Monster.Factory>()
-                .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
-                    .FromComponentInNewPrefab(_settings.GoblinPrefab)
-                    .UnderTransformGroup("Monsters"));
             
             Container.BindFactory<ArrowProjectile, ArrowProjectile.Factory>()
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(2)
@@ -50,14 +46,12 @@ namespace LineUpHeros
         private void InstallPlayer()
         {
             Container.Bind<PlayerInfo>().AsSingle();
-            Container.Bind<List<UpgradeInfo>>().AsSingle();
         }
         
         [Serializable]
         public class Settings
         {
             public GameObject FloatingTextPrefab;
-            public GameObject GoblinPrefab;
             public GameObject ArrowPrefab;
         }
     }

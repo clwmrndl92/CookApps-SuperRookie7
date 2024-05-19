@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -8,26 +10,27 @@ namespace LineUpHeros
     public class MonsterController : ITickable, IInitializable
     {
         private GameController _gameController;
-        
-        private MonsterControllerSetting _monsterControllerSetting;
-        private Monster.Factory _monsterFactory;
-         
+
+        // private Monster.Factory _monsterFactory;
+        private MonsterFactory _monsterFactory;
+
         private CharacterSlots _characterSlots;
         private Transform _firstSlot;
         private readonly Vector3 _spawnOffset = new Vector3(15f, 0, 0); // 0번 슬롯 기준
-        
+
         private float _monsterSpawnTimer;
 
-        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _monsterControllerSetting.monsterSpawnPeriod 
+        private StageInfo currentStage => _gameController.GetCurrentStage();
+
+        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= currentStage.monsterSetting.monsterSpawnPeriod
                                  && _gameController.state.Value == GameStates.Playing;
 
-        public MonsterController(GameController gameController, Monster.Factory monsterFactory,  
-                                MonsterControllerSetting monsterControllerSetting, CharacterSlots characterSlots)
+        public MonsterController(GameController gameController, MonsterFactory monsterFactory,
+            CharacterSlots characterSlots)
         {
             _gameController = gameController;
             _characterSlots = characterSlots;
             _monsterFactory = monsterFactory;
-            _monsterControllerSetting = monsterControllerSetting;
         }
 
         public void Initialize()
@@ -40,22 +43,35 @@ namespace LineUpHeros
         {
             if (canSpawn)
             {
-                for (int i = 0; i < Random.Range(1, _monsterControllerSetting.monsterMaxSpawnNum); i++)
-                {
-                    var monster = _monsterFactory.Create();
-                    // todo : 스폰 좀 더 세련된 방식으로?
-                    Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
-                    monster.transform.position = _firstSlot.position + _spawnOffset + randomOffset;
-                }
+                MonsterSpawn();
                 _monsterSpawnTimer = Time.time;
             }
         }
-        
-        [Serializable]
-        public class MonsterControllerSetting
+
+        private void MonsterSpawn()
         {
-            public float monsterSpawnPeriod;
-            public float monsterMaxSpawnNum;
+            var monsterSpawnList = currentStage.monsterSetting.monsterSpawnProbability;
+            float total = monsterSpawnList.Sum(spawnProbability => spawnProbability.probabilty);
+
+            // 몇마리 스폰할지 랜덤돌려서 스폰
+            for (int i = 0; i < Random.Range(1, currentStage.monsterSetting.monsterMaxSpawnNum); i++)
+            {
+                float random = Random.Range(0, total);
+                float currentThreshold = 0;
+                // 어떤 몬스터를 스폰할지 스폰확률에 따라 스폰
+                foreach (var spawnProbability in monsterSpawnList)
+                {
+                    currentThreshold += spawnProbability.probabilty;
+                    if (random <= currentThreshold)
+                    {
+                        Monster monster = _monsterFactory.Create(spawnProbability.monsterInfo);
+                        // todo : 스폰 위치 오프셋 설정 하드코딩 ㄴㄴ..
+                        Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
+                        monster.transform.position = _firstSlot.position + _spawnOffset + randomOffset;
+                    }
+                }
+            }
+
         }
     }
 }

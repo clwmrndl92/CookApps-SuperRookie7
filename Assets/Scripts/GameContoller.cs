@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ModestTree;
 using UniRx;
 using UnityEngine;
@@ -16,18 +17,21 @@ namespace LineUpHeros
 
     public class GameController : IInitializable, ITickable, IDisposable
     {
+        // input
         private InputState _inputState;
-        
+        // characters
         private TankerCharacter _tanker;
         private ShortRangeDealerCharacter _shortRangeDealer;
         private LongRangeDealerCharacter _longRangeDealer;
         private HealerCharacter _healer;
+        // stage
+        private List<StageInfo> _stages;
 
         [Inject]
         private SceneChangeController _sceneChangeController;
         
         public GameController(InputState inputState, TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
-                              LongRangeDealerCharacter longRangeDealer, HealerCharacter healer) 
+                              LongRangeDealerCharacter longRangeDealer, HealerCharacter healer, Settings settings) 
         {
             _inputState = inputState;
             
@@ -35,10 +39,13 @@ namespace LineUpHeros
             _shortRangeDealer = shortRangeDealer;
             _longRangeDealer = longRangeDealer;
             _healer = healer;
+
+            _stages = settings.stages;
         }
 
+        // game info
         public ReactiveProperty<GameStates> state { get; private set; } = new ReactiveProperty<GameStates>(GameStates.WaitingToStart);
-
+        public ReactiveProperty<int> currentStage = new ReactiveProperty<int>(0);
         public void Dispose()
         {
         }
@@ -118,5 +125,16 @@ namespace LineUpHeros
 
             state.Value = GameStates.GameOver;
         }
+
+        public StageInfo GetCurrentStage()
+        {
+            return _stages[currentStage.Value];
+        }
+        
+        [Serializable]
+        public class Settings
+        {
+            public List<StageInfo> stages;
+        }  
     }
 }

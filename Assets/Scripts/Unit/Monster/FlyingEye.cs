@@ -5,9 +5,9 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    public class Goblin : Monster
+    public class FlyingEye : Monster
     {
-        [Inject(Id = "Goblin")]
+        [Inject(Id = "FlyingEye")]
         private MonsterInfo _monsterInfo;
         [Inject]
         private MonsterGlobalSetting _globalSetting;

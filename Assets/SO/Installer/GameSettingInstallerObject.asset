@@ -16,18 +16,14 @@ MonoBehaviour:
     FloatingTextPrefab: {fileID: 2053661189213447618, guid: b9445caacab16044294e302eac6c5b52, type: 3}
     GoblinPrefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
     ArrowPrefab: {fileID: 5468516559908156944, guid: 21f44e1b39592e24194048982bdcc754, type: 3}
+  gameSettings:
+    stages:
+    - {fileID: 11400000, guid: f05494e34168a20498ae06599b4a57ba, type: 2}
   monsterSettings:
-    monsterControllerSetting:
-      monsterSpawnPeriod: 5
-      monsterMaxSpawnNum: 3
     monsterGlobalSetting:
       detectRange: 20
-    goblinSetting:
-      baseHp: 100
-      baseAtk: 10
-      baseAtkRange: 1
-      baseAtkCool: 1
-      baseAtkPerSec: 1
+    goblinInfo: {fileID: 11400000, guid: f92a210ad98d1134ab3dda1ece2ba7b7, type: 2}
+    flyingEyeInfo: {fileID: 11400000, guid: 01ad5ff43dfc11445a6e46fd2aaef071, type: 2}
   characterSettings:
     globalSettings:
       detectRange: 10

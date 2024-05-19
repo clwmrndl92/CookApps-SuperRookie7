@@ -164,14 +164,15 @@ namespace LineUpHeros
 
     public class MonsterStatus : Status
     {
-        private MonsterGlobalSetting _globalSetting;
-        public float detectRange => _globalSetting.detectRange;
+        public float detectRange;
         // todo: 나중에 글로벌스탯으로 만들든 몬스터스탯으로 만들든
-        public float moveVelocity = 1f;
-        public MonsterStatus(MonsterSetting setting, MonsterGlobalSetting globalSetting) : base(setting)
+        public float moveVelocity;
+        public MonsterStatus(MonsterInfo info, MonsterGlobalSetting globalSetting) : base(info.statusSetting)
         {
-            _globalSetting = globalSetting;
-            setting.baseAtkCool = 1 / setting.baseAtkPerSec;
+            detectRange = globalSetting.detectRange;
+            moveVelocity = info.statusSetting.moveVelocity;
+            
+            info.statusSetting.baseAtkCool = 1 / info.statusSetting.baseAtkPerSec;
         }
     }
     #endregion
@@ -179,11 +180,6 @@ namespace LineUpHeros
 
     #region Setting
     // Scriptable Object Installer 세팅 값
-    [Serializable]
-    public class MonsterSetting : StatSettings
-    {
-        public float baseAtkPerSec;
-    }
 
     [Serializable]
     public class MonsterGlobalSetting
@@ -209,4 +205,16 @@ namespace LineUpHeros
         public List<IDamagable> detectTargetList;
         public const float EPSILON = 0.1f;
     }
+}
+
+public enum EnumMonsterType
+{
+    Goblin,
+    FlyingEye,
+    Mushroom,
+    Skeleton,
+    KingGoblin,
+    KingFlyingEye,
+    KingMushroom,
+    KingSkeleton,
 }

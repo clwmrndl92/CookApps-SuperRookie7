@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using Zenject;
 using System;
+using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 namespace LineUpHeros
 {
-    [CreateAssetMenu(fileName = "GameSettingInstaller", menuName = "ScriptableInstallers/GameSettingInstaller")]
+    [CreateAssetMenu(fileName = "GameSettingInstaller", menuName = "ScriptableObject/Installers/GameSettingInstaller")]
     public class GameSettingInstaller : ScriptableObjectInstaller<GameSettingInstaller>
     {
         public GameInstaller.Settings gameInstallerSettings;
+        public GameController.Settings gameSettings;
         public MonsterSettings monsterSettings;
         public CharacterSettings characterSettings;
 
@@ -24,9 +26,9 @@ namespace LineUpHeros
         [Serializable]
         public class MonsterSettings
         {
-            public MonsterController.MonsterControllerSetting monsterControllerSetting;
             public MonsterGlobalSetting monsterGlobalSetting;
-            public MonsterSetting goblinSetting;
+            public MonsterInfo goblinInfo;
+            public MonsterInfo flyingEyeInfo;
         }
 
 
@@ -34,6 +36,7 @@ namespace LineUpHeros
         {
             // Game
             Container.BindInstance(gameInstallerSettings);
+            Container.BindInstance(gameSettings);
             // Character
             Container.BindInstance(characterSettings.globalSettings).AsSingle();
             Container.BindInstance(characterSettings.tankerSettings).WithId("Tanker");
@@ -41,9 +44,29 @@ namespace LineUpHeros
             Container.BindInstance(characterSettings.longRangeDealerSettings).WithId("LongRangeDealer");
             Container.BindInstance(characterSettings.healerSettings).WithId("Healer");
             // Monster
-            Container.BindInstance(monsterSettings.monsterControllerSetting).AsSingle();
             Container.BindInstance(monsterSettings.monsterGlobalSetting).AsSingle();
-            Container.BindInstance(monsterSettings.goblinSetting).WithId("Goblin");
+            Container.BindInstance(monsterSettings.goblinInfo).WithId("Goblin");
+            Container.BindInstance(monsterSettings.flyingEyeInfo).WithId("FlyingEye");
+            InstallMonsterFactory();
+
         }
+        
+        private void InstallMonsterFactory()
+        {
+            Container.BindInterfacesAndSelfTo<MonsterFactory>().AsSingle();
+            
+            Container.BindFactory<Monster, Monster.Factory>()
+                .WithId("GoblinFactory")
+                .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
+                    .FromComponentInNewPrefab(monsterSettings.goblinInfo.prefab)
+                    .UnderTransformGroup("Monsters"));
+            
+            Container.BindFactory<Monster, Monster.Factory>()
+                .WithId("FlyingEyeFactory")
+                .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
+                    .FromComponentInNewPrefab(monsterSettings.flyingEyeInfo.prefab)
+                    .UnderTransformGroup("Monsters"));
+        }
+
     }
 }
