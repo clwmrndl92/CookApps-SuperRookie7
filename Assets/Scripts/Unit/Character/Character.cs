@@ -34,12 +34,10 @@ namespace LineUpHeros
                 // 스킬 범위내 몬스터 체크
                 List<IDamagable> monsters = DetectMonsters(status.skillRange);
                 if (monsters.Count == 0) return false;
-                bool isInRange = Vector3.Distance(position, monsters[0].gameObjectIDamagable.transform.position) <=
-                                 status.skillRange;
                 // 스킬 쿨타임 체크
                 CharSpecialAtkState skillState = (CharSpecialAtkState)_stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
 
-                return isInRange && skillState.isCool == false;
+                return skillState.isCool == false;
             }
         }
 
@@ -78,10 +76,10 @@ namespace LineUpHeros
         {
             _status.tmpHp.Value -= damage;
             
-            // // 데미지 텍스트 표시
-            // var floatText = _floatTextFactory.Create();
-            // Vector3 textPos = position + _floatingTextOffset;
-            // floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+            // 데미지 텍스트 표시
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
+            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
 
             if (_status.tmpHp.Value <= 0 && isDead.Value == false)
             {

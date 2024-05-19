@@ -6,7 +6,7 @@ namespace LineUpHeros
     public class GoldHPUpgrade : UpgradeInfo
     {
 
-        private int _effect => 10 + upgradeNum.Value;
+        private int _effect => 10 + upgradeNum.Value*10;
         private int _cost => 10 + upgradeNum.Value * 5;
 
         public GoldHPUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
@@ -36,7 +36,7 @@ namespace LineUpHeros
 
     public class GoldATKUpgrade : UpgradeInfo
     {
-        private int _effect => 10 + upgradeNum.Value;
+        private int _effect => upgradeNum.Value;
         private int _cost => 10 + upgradeNum.Value * 5;
 
         public GoldATKUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)

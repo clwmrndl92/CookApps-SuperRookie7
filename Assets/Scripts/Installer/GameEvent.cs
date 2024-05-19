@@ -11,5 +11,10 @@
         {
             public MonsterInfo monsterInfo;
         }
+        
+        public class BossDieSignal
+        {
+            public BossMonsterInfo bossInfo;
+        }
     }
 }

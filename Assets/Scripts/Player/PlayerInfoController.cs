@@ -41,6 +41,7 @@ namespace LineUpHeros
             // 몬스터 사망 시그널
             _signalBus = signalBus;
             _signalBus.Subscribe<GameEvent.MonsterDieSignal>(x => OnDieMonster(x.monsterInfo));
+            _signalBus.Subscribe<GameEvent.BossDieSignal>(x => OnDieBossMonster(x.bossInfo));
         }
         
         // 다음 레벨이 되기위한 경험치
@@ -51,6 +52,12 @@ namespace LineUpHeros
         {
             GainExp(info.rewardExp);
             GainGold(info.rewardGold);
+        }
+        public void OnDieBossMonster(BossMonsterInfo info)
+        {
+            GainExp(info.rewardExp);
+            GainGold(info.rewardGold);
+            GainRuby(info.rewardRuby);
         }
         // exp 획득
         private void GainExp(int gainExp)
@@ -65,6 +72,10 @@ namespace LineUpHeros
         private void GainGold(int gainGold)
         {
             gold.Value += gainGold;
+        }
+        private void GainRuby(int gainRuby)
+        {
+            ruby.Value += gainRuby;
         }
 
         private void LevelUp()

@@ -36,6 +36,7 @@ namespace LineUpHeros
 
             Container.DeclareSignal<GameEvent.StageStartSignal>();
             Container.DeclareSignal<GameEvent.MonsterDieSignal>();
+            Container.DeclareSignal<GameEvent.BossDieSignal>();
         }
         private void InstallFactory()
         {

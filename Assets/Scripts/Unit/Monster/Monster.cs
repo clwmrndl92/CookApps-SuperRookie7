@@ -46,7 +46,7 @@ namespace LineUpHeros
             Vector3 textPos = position + _floatingTextOffset;
             // 특정 데미지 이상 색 변경
             // todo : 나중에 크리티컬 추가? 하드코딩 좀 어케 수정
-            int color = damage >= 20 ? 0xFF0000 : 0xFFFFFF;
+            int color = damage >= 50 ? 0x00FFFF : 0xFFFFFF;
             floatText.SetText(damage.ToString(), textPos, color);
 
             if (_status.tmpHp.Value <= 0 && isDead.Value == false)
@@ -168,8 +168,6 @@ namespace LineUpHeros
         {
             detectRange = globalSetting.detectRange;
             moveVelocity = info.statusSetting.moveVelocity;
-            
-            info.statusSetting.baseAtkCool = 1 / info.statusSetting.baseAtkPerSec;
         }
     }
     #endregion

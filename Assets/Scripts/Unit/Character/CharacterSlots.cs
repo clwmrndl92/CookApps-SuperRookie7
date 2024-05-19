@@ -44,10 +44,8 @@ namespace LineUpHeros
         // 0번 슬롯의 캐릭터(탱커) 위치로 전체 슬롯 위치 맞추기, 0번 캐릭터 기준 정렬
         private void SyncWithFirstSlot()
         {
-            Transform firstSlot = GetSlot(0);
             Transform unitTransform = GetSlotUnit(0);
-            Vector3 diff = unitTransform.position - firstSlot.position;
-            transform.position += diff;
+            transform.position = transform.position.X(unitTransform.position.x);
         }
 
         public Transform GetSlot(int slotNum)

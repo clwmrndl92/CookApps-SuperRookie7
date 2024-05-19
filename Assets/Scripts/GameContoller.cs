@@ -148,10 +148,20 @@ namespace LineUpHeros
                 {
                     currentStage.Value = stageNum;
                     _signalBus.Fire<GameEvent.StageStartSignal>();
+                    ResetCharacter();
                 }
             ,0.5f, 1f,0.5f);
             Debug.Log("stage start " + GetCurrentStage().name);
         }
+
+        private void ResetCharacter()
+        {
+            _tanker.status.tmpHp.Value = _tanker.status.maxHp;
+            _shortRangeDealer.status.tmpHp.Value = _shortRangeDealer.status.maxHp;
+            _longRangeDealer.status.tmpHp.Value = _longRangeDealer.status.maxHp;
+            _healer.status.tmpHp.Value = _healer.status.maxHp;
+        }
+        
         public StageInfo GetCurrentStage()
         {
             return _stages[currentStage.Value];

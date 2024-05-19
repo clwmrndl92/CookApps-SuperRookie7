@@ -44,9 +44,10 @@ namespace LineUpHeros
                     break;
             }
 
-            // title은 고정
             // info / cost는 변경 가능
-            titleText.text = info.title;
+            info.upgradeNum.SubscribeToText(titleText, value =>
+                $"{info.title}\n[{value}]"
+            );
             info.cost.SubscribeToText(costText, value =>
                 value.ToString()
             );
@@ -56,7 +57,7 @@ namespace LineUpHeros
 
             // 버튼 클릭시 업그레이드 함수 호출
             Button upgradeButton = transform.Find("UpgradeButton").GetComponent<Button>();
-            upgradeButton.onClick.AddListener(() =>
+            upgradeButton.OnClickAsObservable().Subscribe(_ =>
             {
                 info.TryUpgrade();
             });

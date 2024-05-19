@@ -7,7 +7,7 @@ namespace LineUpHeros
     // 자기자리로 귀환 스테이트
     public class CharGotoSlotState : CharacterState
     {
-        private float _epsilon = 0.05f;
+        private const float _EPSILON = 0.05f;
 
         private Transform _slot;
         public CharGotoSlotState(Character character) : base(character)
@@ -48,7 +48,7 @@ namespace LineUpHeros
                 return true;
             }
             // 복귀 했으면 Idle State로 전환
-            if (Vector3.Distance(_character.position , _slot.position) <= _epsilon)
+            if (Vector3.Distance(_character.position , _slot.position) <= _EPSILON)
             {
                 _character.position = _slot.position;
                 _character.stateMachine.ChangeState(EnumState.Character.IDLE);

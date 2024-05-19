@@ -20,8 +20,6 @@ namespace LineUpHeros
     [Serializable]
     public class MonsterSetting : StatSettings
     {
-        public float baseAtkPerSec;
-
         public float moveVelocity;
     }
 }

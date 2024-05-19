@@ -38,6 +38,8 @@ namespace LineUpHeros
             //     int direction = target.transform.position.y < _monster.position.y ? -1 : 1;
             //     _monster.position += _monster.status.moveVelocity * Time.deltaTime * direction * Vector3.up;
             // }
+            
+            _detectTargetList = _monster.DetectCharacters(_monster.status.detectRange);
         }
 
         public override void OnFixedUpdateState()

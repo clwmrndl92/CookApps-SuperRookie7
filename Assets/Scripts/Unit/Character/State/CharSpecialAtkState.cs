@@ -32,7 +32,7 @@ namespace LineUpHeros
         {
             // 스테이트 전환 체크
             if(CheckChangeState()) return;
-            // 일반공격 실행
+            // 공격 실행
             if (canSpecialAttack && _attackTargetList.Count != 0)
             {
                 _character.FlipToTarget(_attackTargetList[0].gameObjectIDamagable.transform);

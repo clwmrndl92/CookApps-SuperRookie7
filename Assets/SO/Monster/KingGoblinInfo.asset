@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca5dfdbb71140c0acc6b47a261ca80d, type: 3}
+  m_Name: KingGoblinInfo
+  m_EditorClassIdentifier: 
+  name: King Goblin
+  prefab: {fileID: 6656398069967196575, guid: 6b1a475303a942241b9eb33e19ab933f, type: 3}
+  type: 4
+  rewardExp: 10
+  rewardGold: 10
+  statusSetting:
+    baseHp: 1000
+    baseAtk: 15
+    baseAtkRange: 1
+    baseAtkCool: 1
+    moveVelocity: 1
+  skillCoolTime: 5
+  skillRange: 5
+  skillDamageMultiplier: 1.5
+  rewardRuby: 1

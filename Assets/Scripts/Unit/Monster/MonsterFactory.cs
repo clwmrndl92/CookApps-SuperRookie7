@@ -1,5 +1,6 @@
 ﻿
 using System;
+using UnityEngine;
 using Zenject;
 
 namespace LineUpHeros
@@ -12,8 +13,10 @@ namespace LineUpHeros
         private Monster.Factory _goblinFactory;
         [Inject(Id = "FlyingEyeFactory")]
         private Monster.Factory _flyingEyeFactory;
+        [Inject(Id = "KingGoblinFactory")]
+        private BossMonster.Factory _kingGoblinFactory;
         
-        public Monster Create(MonsterInfo info)
+        public Monster Create(MonsterInfo info, Vector3 position)
         {
             Monster monster = null;
             switch (info.type)
@@ -29,6 +32,7 @@ namespace LineUpHeros
                 case EnumMonsterType.Skeleton:
                     break;
                 case EnumMonsterType.KingGoblin:
+                    monster = _kingGoblinFactory.Create();
                     break;
                 case EnumMonsterType.KingFlyingEye:
                     break;
@@ -42,6 +46,7 @@ namespace LineUpHeros
 
             if (monster != null)
             {
+                monster.transform.position = position;
                 ApplyMonsterStatChanges(monster);
             }
             return monster;

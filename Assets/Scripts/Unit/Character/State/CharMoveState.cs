@@ -7,6 +7,8 @@ namespace LineUpHeros
     public class CharMoveState : CharacterState
     {
         private List<IDamagable> _detectTargetList;
+        
+        private const float _EPSILON = 0.2f;
         public CharMoveState(Character character) : base(character)
         {
             _character = character;
@@ -28,6 +30,16 @@ namespace LineUpHeros
             // move
             Vector3 direction = (target.transform.position - _character.position).normalized;
             _character.position += _character.status.moveVelocity * Time.deltaTime * direction;
+            
+            // 공격 대상 앞으로(같은 줄) 가기, y축 이동
+            bool isTargetInSameLine = Mathf.Abs(_character.position.y - target.transform.position.y) <= _EPSILON;
+            if (isTargetInSameLine == false)
+            {
+                int dirY = target.transform.position.y < _character.position.y ? -1 : 1;
+                _character.position += _character.status.moveVelocity * Time.deltaTime * dirY * Vector3.up;
+            }
+            
+            _detectTargetList = _character.DetectMonsters(_character.status.detectRange);
         }
 
         public override void OnFixedUpdateState()

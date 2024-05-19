@@ -57,8 +57,8 @@ namespace LineUpHeros
             InitComponent();
             // 지켜야할 순서 Anim -> StateMachine
             InitAnim();
-            InitStateMachine();
             InitStatus();
+            InitStateMachine();
         }
         
         protected virtual void InitComponent()

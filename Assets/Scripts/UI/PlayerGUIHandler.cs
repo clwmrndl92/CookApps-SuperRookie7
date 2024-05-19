@@ -11,6 +11,7 @@ namespace LineUpHeros
         public RectTransform levelInfo;
         public RectTransform expInfo;
         public RectTransform goldInfo;
+        public RectTransform rubyInfo;
 
         private PlayerInfoController _playerInfoController;
         private FloatingText.Factory _floatingFactory;
@@ -27,6 +28,7 @@ namespace LineUpHeros
             SubscribeExpBar(expInfo);
             SubscribeLevelText(levelInfo);
             SubscribeGoldText(goldInfo);
+            SubscribeRubyText(rubyInfo);
         }
 
         private void SubscribeExpBar(RectTransform container)
@@ -59,6 +61,11 @@ namespace LineUpHeros
         {
             TextMeshProUGUI goldText = container.Find("GoldText").GetComponent<TextMeshProUGUI>();
             _playerInfoController.gold.SubscribeToText(goldText, value=> value.ToString());
+        }
+        private void SubscribeRubyText(RectTransform container)
+        {
+            TextMeshProUGUI rubyText = container.Find("RubyText").GetComponent<TextMeshProUGUI>();
+            _playerInfoController.ruby.SubscribeToText(rubyText, value=> value.ToString());
         }
         
     }
