@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -49,6 +50,7 @@ namespace LineUpHeros
         private void InstallPlayer()
         {
             Container.Bind<PlayerInfo>().AsSingle();
+            Container.Bind<List<UpgradeInfo>>().AsSingle();
         }
         
         [Serializable]
