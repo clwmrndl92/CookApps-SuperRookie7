@@ -83,7 +83,7 @@ namespace LineUpHeros
             // Vector3 textPos = position + _floatingTextOffset;
             // floatText.SetText(damage.ToString(),textPos, 0xFF0000);
 
-            if (_status.tmpHp.Value <= 0)
+            if (_status.tmpHp.Value <= 0 && isDead.Value == false)
             {
                 Die();
             }

@@ -6,6 +6,8 @@ namespace LineUpHeros
 {
     public class MonsterFactory
     {   
+        [Inject]
+        private GameController _gameController;
         [Inject(Id = "GoblinFactory")]
         private Monster.Factory _goblinFactory;
         [Inject(Id = "FlyingEyeFactory")]
@@ -13,12 +15,15 @@ namespace LineUpHeros
         
         public Monster Create(MonsterInfo info)
         {
+            Monster monster = null;
             switch (info.type)
             {
                 case EnumMonsterType.Goblin:
-                    return _goblinFactory.Create();
+                    monster = _goblinFactory.Create();
+                    break;
                 case EnumMonsterType.FlyingEye:
-                    return _flyingEyeFactory.Create();
+                    monster = _flyingEyeFactory.Create();
+                    break;
                 case EnumMonsterType.Mushroom:
                     break;
                 case EnumMonsterType.Skeleton:
@@ -35,7 +40,18 @@ namespace LineUpHeros
                     throw new ArgumentOutOfRangeException(nameof(info.type), info.type, null);
             }
 
-            return null;
+            if (monster != null)
+            {
+                ApplyMonsterStatChanges(monster);
+            }
+            return monster;
+        }
+
+        private void ApplyMonsterStatChanges(Monster monster)
+        {
+            float monsterStageGrowthRate = _gameController.currentStage.Value * 10;
+            monster.status.SetPerStat((int)Status.EnumStatus.Hp, monsterStageGrowthRate);
+            monster.status.SetPerStat((int)Status.EnumStatus.Atk, monsterStageGrowthRate);
         }
     }
 }

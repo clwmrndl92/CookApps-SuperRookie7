@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameInstallerSettings:
     FloatingTextPrefab: {fileID: 2053661189213447618, guid: b9445caacab16044294e302eac6c5b52, type: 3}
-    GoblinPrefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
     ArrowPrefab: {fileID: 5468516559908156944, guid: 21f44e1b39592e24194048982bdcc754, type: 3}
   gameSettings:
     stages:
     - {fileID: 11400000, guid: f05494e34168a20498ae06599b4a57ba, type: 2}
+    - {fileID: 11400000, guid: e615bec79687fc84d98159ebe4709db6, type: 2}
   monsterSettings:
     monsterGlobalSetting:
       detectRange: 20

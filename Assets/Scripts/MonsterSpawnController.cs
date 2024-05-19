@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using Zenject;
@@ -20,20 +21,27 @@ namespace LineUpHeros
         private float _monsterSpawnTimer;
         private int _currentSpawnedMonsters;
         
+        public ReactiveProperty<int> currentMonsterKills = new ReactiveProperty<int>(0);
+
+        private bool isStageStart = false;
+        
         // stage 정보
-        private StageInfo _currentStage;
+        private StageInfo _currentStage => _gameController.GetCurrentStage();
         
         private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _currentStage.monsterSetting.monsterSpawnPeriod
                                  && _currentSpawnedMonsters < _currentStage.monsterSetting.requiredMonsterKills
-                                 && _gameController.state.Value == GameStates.Playing;
+                                 && isStageStart;
 
-        public MonsterSpawnController(GameController gameController, MonsterFactory monsterFactory, SignalBus signalBus)
+        public MonsterSpawnController(GameController gameController, MonsterFactory monsterFactory, SignalBus signalBus, CharacterSlots _characterSlots)
         {
             _gameController = gameController;
             _monsterFactory = monsterFactory;
             _signalBus = signalBus;
+
+            _firstSlot = _characterSlots.GetSlot(0);
             
             _signalBus.Subscribe<GameEvent.StageStartSignal>(OnStageStart);
+            _signalBus.Subscribe<GameEvent.MonsterDieSignal>(_ => OnMonsterDie());
         }
 
         public void Initialize()
@@ -43,17 +51,39 @@ namespace LineUpHeros
 
         public void Tick()
         {
-            if (canSpawn)
+            if (isStageStart)
             {
-                MonsterSpawn();
-                _monsterSpawnTimer = Time.time;
+                if (canSpawn)
+                {
+                    MonsterSpawn();
+                    _monsterSpawnTimer = Time.time;
+                }
+
+                if (currentMonsterKills.Value == _currentStage.monsterSetting.requiredMonsterKills)
+                {
+                    if (_currentStage.bossSetting.isBossSpawn)
+                    {
+                        // 보스 스폰
+                    }
+                    else
+                    {
+                        isStageStart = false;
+                        _gameController.StageCler();
+                    }
+                }
             }
         }
 
         private void OnStageStart()
         {
-            _currentStage = _gameController.GetCurrentStage();
             _currentSpawnedMonsters = 0;
+            currentMonsterKills.Value = 0;
+            isStageStart = true;
+        }
+        private void OnMonsterDie()
+        {
+            currentMonsterKills.Value++;
+            Debug.Log($"{currentMonsterKills} / {_currentSpawnedMonsters} / {_currentStage.monsterSetting.requiredMonsterKills}");
         }
 
         private void MonsterSpawn()
@@ -72,15 +102,17 @@ namespace LineUpHeros
                 foreach (var spawnProbability in monsterSpawnList)
                 {
                     currentThreshold += spawnProbability.probabilty;
-                    if (random <= currentThreshold)
+                    if (currentThreshold >= random)
                     {
                         Monster monster = _monsterFactory.Create(spawnProbability.monsterInfo);
                         // todo : 스폰 위치 오프셋 설정 하드코딩 ㄴㄴ..
                         Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
                         monster.transform.position = _firstSlot.position + _spawnOffset + randomOffset;
+                        break;
                     }
                 }
             }
+            _currentSpawnedMonsters += spawnNum;
 
         }
     }

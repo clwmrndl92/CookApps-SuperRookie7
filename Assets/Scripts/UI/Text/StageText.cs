@@ -14,7 +14,7 @@ namespace LineUpHeros
     public class StageText : MonoBehaviour
     {
         private GameController _gameController;
-        private GameObject _textGameObject;
+        private TextMeshProUGUI _text;
         
          [Inject]
          public void Construct(GameController gameController)
@@ -24,14 +24,10 @@ namespace LineUpHeros
         
         void Start()
         {
-            _textGameObject = transform.GetChild(0).gameObject;
+            _text = transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
             
-            _gameController.state
-                .Subscribe(value =>
-                {
-                    if (value == GameStates.WaitingToStart) _textGameObject.SetActive(true);
-                    else _textGameObject.SetActive(false);;
-                });
+            _gameController.currentStage
+                .SubscribeToText(_text, _=>_gameController.GetCurrentStage().name);
             
         }
         

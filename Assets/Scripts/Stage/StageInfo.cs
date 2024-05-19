@@ -9,6 +9,7 @@ namespace LineUpHeros
     [CreateAssetMenu(fileName = "StageInfo", menuName = "ScriptableObject/Stage/StageInfo")]
     public class StageInfo : ScriptableObject
     {
+        public string name;
         public StageMonsterSetting monsterSetting;
         public StageBossSetting bossSetting;
         
@@ -18,7 +19,7 @@ namespace LineUpHeros
             public int requiredMonsterKills; // 스테이지 클리어 혹은 보스등장에 필요 몬스터 처치수
             
             public float monsterSpawnPeriod;
-            public float monsterMaxSpawnNum;
+            public int monsterMaxSpawnNum;
         
             [FormerlySerializedAs("monsterSpawnProbabilty")] public List<StageMonsterSpawnProbabilty> monsterSpawnProbability;
         }

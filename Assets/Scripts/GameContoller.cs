@@ -26,21 +26,24 @@ namespace LineUpHeros
         private HealerCharacter _healer;
         // stage
         private List<StageInfo> _stages;
+        // signal
+        private SignalBus _signalBus;
 
         [Inject]
-        private SceneChangeController _sceneChangeController;
+        private FadeInOutController _fadeInOutController;
         
-        public GameController(InputState inputState, TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
-                              LongRangeDealerCharacter longRangeDealer, HealerCharacter healer, Settings settings) 
+        public GameController(InputState inputState, SignalBus signalBus, Settings settings,
+            TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer, LongRangeDealerCharacter longRangeDealer, HealerCharacter healer) 
         {
             _inputState = inputState;
+            _signalBus = signalBus;
+            _stages = settings.stages;
             
             _tanker = tanker;
             _shortRangeDealer = shortRangeDealer;
             _longRangeDealer = longRangeDealer;
             _healer = healer;
 
-            _stages = settings.stages;
         }
 
         // game info
@@ -88,9 +91,10 @@ namespace LineUpHeros
 
             if (_inputState.IsMouseClick)
             {
-                state.Value = GameStates.WaitingToStart;
+                state.Value = GameStates.Playing;
                 Time.timeScale = 1;
-                _sceneChangeController.SceneReload();
+                // _sceneChangeController.SceneReload();
+                StageStart(currentStage.Value);
             }
         }
 
@@ -111,8 +115,8 @@ namespace LineUpHeros
         private void StartGame()
         {
             Assert.That(state.Value == GameStates.WaitingToStart || state.Value == GameStates.GameOver);
-
             state.Value = GameStates.Playing;
+            StageStart(0);
         }
         
         
@@ -125,7 +129,29 @@ namespace LineUpHeros
 
             state.Value = GameStates.GameOver;
         }
-
+        
+        public void StageCler()
+        {
+            Debug.Log("stage clear " + GetCurrentStage().name);
+            if (currentStage.Value+1 == _stages.Count)
+            {
+                // todo : 게임 클리어?
+                StageStart(currentStage.Value);
+                return;
+            }
+            StageStart(++currentStage.Value);
+        }
+        
+        public void StageStart(int stageNum)
+        {
+            _fadeInOutController.StartEffect(() =>
+                {
+                    currentStage.Value = stageNum;
+                    _signalBus.Fire<GameEvent.StageStartSignal>();
+                }
+            ,0.5f, 1f,0.5f);
+            Debug.Log("stage start " + GetCurrentStage().name);
+        }
         public StageInfo GetCurrentStage()
         {
             return _stages[currentStage.Value];

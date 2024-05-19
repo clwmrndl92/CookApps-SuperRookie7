@@ -12,13 +12,13 @@ namespace LineUpHeros
         public RectTransform expInfo;
         public RectTransform goldInfo;
 
-        private PlayerInfo _playerInfo;
+        private PlayerInfoController _playerInfoController;
         private FloatingText.Factory _floatingFactory;
 
         [Inject]
-        public void Construct(PlayerInfo playerInfo, FloatingText.Factory floatingFactory)
+        public void Construct(PlayerInfoController playerInfoController, FloatingText.Factory floatingFactory)
         {
-            _playerInfo = playerInfo;
+            _playerInfoController = playerInfoController;
             _floatingFactory = floatingFactory;
         }
 
@@ -35,12 +35,12 @@ namespace LineUpHeros
             TextMeshProUGUI expText = container.Find("ExpText").GetComponent<TextMeshProUGUI>();
             float maxSize = expBar.sizeDelta.x;
         
-            _playerInfo.exp
+            _playerInfoController.exp
                 .Subscribe(value =>
                 {
-                    expBar.sizeDelta = new Vector2(maxSize * Mathf.Clamp(((float)_playerInfo.exp.Value / _playerInfo.nextExp), 0, 1),
+                    expBar.sizeDelta = new Vector2(maxSize * Mathf.Clamp(((float)_playerInfoController.exp.Value / _playerInfoController.nextExp), 0, 1),
                         expBar.sizeDelta.y);
-                    expText.text = $"{_playerInfo.exp.Value} / {_playerInfo.nextExp}";
+                    expText.text = $"{_playerInfoController.exp.Value} / {_playerInfoController.nextExp}";
                 });
         }
         
@@ -48,7 +48,7 @@ namespace LineUpHeros
         {
             RectTransform levelTagText = container.Find("LevelTagText").GetComponent<RectTransform>();
             TextMeshProUGUI levelText = container.Find("LevelText").GetComponent<TextMeshProUGUI>();
-            _playerInfo.level
+            _playerInfoController.level
                 .Subscribe(value =>
                 {
                     levelText.text = value.ToString();
@@ -58,7 +58,7 @@ namespace LineUpHeros
         private void SubscribeGoldText(RectTransform container)
         {
             TextMeshProUGUI goldText = container.Find("GoldText").GetComponent<TextMeshProUGUI>();
-            _playerInfo.gold.SubscribeToText(goldText, value=> value.ToString());
+            _playerInfoController.gold.SubscribeToText(goldText, value=> value.ToString());
         }
         
     }

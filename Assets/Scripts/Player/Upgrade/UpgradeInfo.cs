@@ -11,7 +11,7 @@ namespace LineUpHeros
     // 강화 항목 클래스
     public abstract class UpgradeInfo
     {
-        protected PlayerInfo playerInfo;
+        protected PlayerInfoController playerInfoController;
         public string title = "";
         public ReactiveProperty<string> info = new ReactiveProperty<string>("");
         public ReactiveProperty<int> upgradeNum = new ReactiveProperty<int>(0);
@@ -19,9 +19,9 @@ namespace LineUpHeros
         public UpgradeCostType costType;
 
         public abstract void TryUpgrade();
-        protected UpgradeInfo(PlayerInfo info)
+        protected UpgradeInfo(PlayerInfoController infoController)
         {
-            playerInfo = info;
+            playerInfoController = infoController;
         }
     }
 }

@@ -20,12 +20,12 @@ namespace LineUpHeros
         private RectTransform _rubyUpgrade;
         private RectTransform _goldUpgrade;
 
-        private PlayerInfo _playerInfo;
+        private PlayerInfoController _playerInfoController;
 
         [Inject]
-        public void Construct(PlayerInfo playerInfo)
+        public void Construct(PlayerInfoController playerInfoController)
         {
-            _playerInfo = playerInfo;
+            _playerInfoController = playerInfoController;
         }
 
         void Start()
@@ -71,14 +71,14 @@ namespace LineUpHeros
             TextMeshProUGUI goldText = container.Find("Gold").transform.Find("GoldText").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI rubyText = container.Find("Ruby").transform.Find("RubyText").GetComponent<TextMeshProUGUI>();
             
-            _playerInfo.gold.SubscribeToText(goldText, value => value.ToString());
-            _playerInfo.ruby.SubscribeToText(rubyText, value => value.ToString());
+            _playerInfoController.gold.SubscribeToText(goldText, value => value.ToString());
+            _playerInfoController.ruby.SubscribeToText(rubyText, value => value.ToString());
         }
 
         private void SubscribeGoldUpgrade(RectTransform goldUpgradeContrainer)
         {
             // gold upgrade들의 container 추가
-            _playerInfo.goldUpgradeList.ForEach((info) =>
+            _playerInfoController.goldUpgradeList.ForEach((info) =>
             {
                 GameObject container = Instantiate(upgradeContainer, goldUpgradeContrainer.transform);
                 container.GetComponent<UpgradeContainer>().SubscribeUpgradeInfo(info);
@@ -88,7 +88,7 @@ namespace LineUpHeros
         private void SubscribeRubyUpgrade(RectTransform rubyUpgradeContrainer)
         {
             // ruby upgrade들의 container 추가
-            _playerInfo.rubyUpgradeList.ForEach((info) =>
+            _playerInfoController.rubyUpgradeList.ForEach((info) =>
             {
                 GameObject container = Instantiate(upgradeContainer, _rubyUpgrade.transform);
                 container.GetComponent<UpgradeContainer>().SubscribeUpgradeInfo(info);

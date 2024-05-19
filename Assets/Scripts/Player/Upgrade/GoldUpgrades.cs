@@ -9,7 +9,7 @@ namespace LineUpHeros
         private int _effect => 10 + upgradeNum.Value;
         private int _cost => 10 + upgradeNum.Value * 5;
 
-        public GoldHPUpgrade(PlayerInfo playerInfo) : base(playerInfo)
+        public GoldHPUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
         {
             title = "HP";
             info.Value = $"Max HP\n+{_effect}";
@@ -19,10 +19,10 @@ namespace LineUpHeros
 
         public override void TryUpgrade()
         {
-            if (playerInfo.UseGold(_cost))
+            if (playerInfoController.UseGold(_cost))
             {
                 // 모든 캐릭터 스탯 일괄 상승
-                playerInfo.ApplyStatusUpgradeToAll((character) =>
+                playerInfoController.ApplyStatusUpgradeToAll((character) =>
                 {
                     character.status.AddStat((int)Status.EnumStatus.Hp, _effect, false);
                     character.status.tmpHp.Value += _effect;
@@ -39,7 +39,7 @@ namespace LineUpHeros
         private int _effect => 10 + upgradeNum.Value;
         private int _cost => 10 + upgradeNum.Value * 5;
 
-        public GoldATKUpgrade(PlayerInfo playerInfo) : base(playerInfo)
+        public GoldATKUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
         {
             title = "ATK";
             info.Value = $"ATK\n+{_effect}";
@@ -49,10 +49,10 @@ namespace LineUpHeros
 
         public override void TryUpgrade()
         {
-            if (playerInfo.UseGold(_cost))
+            if (playerInfoController.UseGold(_cost))
             {
                 // 모든 캐릭터 스탯 일괄 상승
-                playerInfo.ApplyStatusUpgradeToAll((character) =>
+                playerInfoController.ApplyStatusUpgradeToAll((character) =>
                 {
                     character.status.AddStat((int)Status.EnumStatus.Atk, _effect, false);
                 });

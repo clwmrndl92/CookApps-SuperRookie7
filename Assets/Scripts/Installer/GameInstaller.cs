@@ -15,6 +15,7 @@ namespace LineUpHeros
         public override void InstallBindings()
         {
             InstallController();
+            InstallSignals();
             InstallFactory();
             InstallPlayer();
         }
@@ -22,13 +23,20 @@ namespace LineUpHeros
         private void InstallController()
         {
             Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
-            Container.BindInterfacesAndSelfTo<MonsterController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MonsterSpawnController>().AsSingle();
             
             // input 관련
             Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
             Container.Bind<InputState>().AsSingle();
         }
 
+        void InstallSignals()
+        {
+            SignalBusInstaller.Install(Container);
+
+            Container.DeclareSignal<GameEvent.StageStartSignal>();
+            Container.DeclareSignal<GameEvent.MonsterDieSignal>();
+        }
         private void InstallFactory()
         {
             Container.BindFactory<FloatingText, FloatingText.Factory>()
@@ -45,7 +53,7 @@ namespace LineUpHeros
 
         private void InstallPlayer()
         {
-            Container.Bind<PlayerInfo>().AsSingle();
+            Container.Bind<PlayerInfoController>().AsSingle();
         }
         
         [Serializable]

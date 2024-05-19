@@ -12,10 +12,9 @@ namespace LineUpHeros
         [Inject]
         private FloatingText.Factory _floatTextFactory;
         private Vector3 _floatingTextOffset = new Vector3(0, 1f, 0);
-        [Inject]
-        private PlayerInfo _playerInfo;
 
         private IMemoryPool _pool;
+
         protected override void InitStateMachine()
         {
             _stateMachine = new StateMachine(new FsmMonsterGlobalVariables());
@@ -50,7 +49,7 @@ namespace LineUpHeros
             int color = damage >= 20 ? 0xFF0000 : 0xFFFFFF;
             floatText.SetText(damage.ToString(), textPos, color);
 
-            if (_status.tmpHp.Value <= 0)
+            if (_status.tmpHp.Value <= 0 && isDead.Value == false)
             {
                 Die();
             }
@@ -89,8 +88,6 @@ namespace LineUpHeros
 
         public virtual void Die()
         {
-            /* TODO: installer에서 몬스터별 exp, gold 설정 */
-            _playerInfo.GainMonsterReward(1, 1);
             isDead.Value = true;
         }
         public void DespawnMonster()

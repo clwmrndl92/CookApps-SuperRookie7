@@ -68,9 +68,9 @@ namespace LineUpHeros
             else addStatus[statusIndex] += addValue;
         }
         
-        public void AddPerStat(int statusIndex, float addValue)
+        public void SetPerStat(int statusIndex, float perStat)
         {
-            addPerStatus[statusIndex] += addValue;
+            addPerStatus[statusIndex] = perStat;
         }
         
         public float GetBaseStat(int statusIndex)
