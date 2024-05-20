@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
@@ -11,7 +12,8 @@ namespace LineUpHeros
     {
         public GameObject upgradePanel;
         public Button upgradePanelButton;
-        public GameObject upgradeContainer;
+        public GameObject goldUpgradeContent;
+        public GameObject rubyUpgradeContent;
 
         private RectTransform _wallet;
         private Button _rubyButton;
@@ -79,7 +81,7 @@ namespace LineUpHeros
             // gold upgrade들의 container 추가
             _playerInfoController.goldUpgradeList.ForEach((info) =>
             {
-                GameObject container = Instantiate(upgradeContainer, goldUpgradeContrainer.transform);
+                GameObject container = Instantiate(goldUpgradeContent, goldUpgradeContrainer.transform);
                 container.GetComponent<UpgradeContainer>().SubscribeUpgradeInfo(info);
             });
         }
@@ -89,7 +91,7 @@ namespace LineUpHeros
             // ruby upgrade들의 container 추가
             _playerInfoController.rubyUpgradeList.ForEach((info) =>
             {
-                GameObject container = Instantiate(upgradeContainer, _rubyUpgrade.transform);
+                GameObject container = Instantiate(rubyUpgradeContent, _rubyUpgrade.transform);
                 container.GetComponent<UpgradeContainer>().SubscribeUpgradeInfo(info);
             });
         }

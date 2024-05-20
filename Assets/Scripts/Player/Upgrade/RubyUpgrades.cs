@@ -3,34 +3,36 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // ruby 예시
-    public class RubyHpUpgrade : UpgradeInfo
+    public class RubySkillUpgrade : UpgradeInfo
     {
-        private int _effect => 10 + upgradeNum.Value;
-        
-        private int _cost => 10 + upgradeNum.Value * 5;
-        public RubyHpUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
+        private float _upgradeValue = 0.5f;
+        private float _effect => upgradeNum.Value*_upgradeValue;
+        private int _cost => 1 + upgradeNum.Value * 1;
+
+        private EnumCharacter _characterType;
+        public RubySkillUpgrade(PlayerInfoController playerInfoController, string charName, EnumCharacter characterType) : base(playerInfoController)
         {
-            title = "HP";
-            info.Value = $"Max HP\n+{_effect}";
+            title = charName;
+            info.Value = $"Skill Up!\n(ATK Multiplier)\n+{_effect}";
             cost.Value = _cost;
             costType = UpgradeCostType.Ruby;
+            _characterType = characterType;
         }
 
         public override void TryUpgrade()
         {
-            if (playerInfoController.UseRuby(_cost))
+            if (playerInfoController.UseGold(_cost))
             {
-                // todo : 루비강화는 캐릭터별 스킬 강화?
-                playerInfoController.ApplyStatusUpgradeToAll((character) =>
+                // 스킬 데미지 업그레이드
+                playerInfoController.ApplyStatusUpgrade((character) =>
                 {
-                    character.status.AddStat((int)Status.EnumStatus.Hp, _effect, false);
-                    character.status.tmpHp.Value += _effect;
-                });
+                    character.status.AddStat((int)CharacterStatus.EnumCharacterStatus.SkillDamageMul, _upgradeValue, false);
+                }, _characterType);
                 ++upgradeNum.Value;
-                info.Value = $"Max HP\n+{_effect}";
+                info.Value = $"Skill Up!\n(ATK Multiplier)\n+{_effect}";
                 cost.Value = _cost;
             }
         }
     }
+    
 }

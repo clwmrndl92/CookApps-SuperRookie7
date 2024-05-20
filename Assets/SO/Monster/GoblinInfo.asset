@@ -18,9 +18,8 @@ MonoBehaviour:
   rewardExp: 1
   rewardGold: 1
   statusSetting:
-    baseHp: 100
+    baseHp: 100000
     baseAtk: 10
     baseAtkRange: 1
     baseAtkCool: 1
-    baseAtkPerSec: 1
     moveVelocity: 1

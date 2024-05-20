@@ -208,14 +208,14 @@ namespace LineUpHeros
 
         // 스킬 관련 스탯 추가
         public int skillRange => (int)GetFinalStat((int)EnumCharacterStatus.SkillRange);
-        public float skillCool => (int)GetFinalStat((int)EnumCharacterStatus.SkillCool);
+        public float skillCool => GetFinalStat((int)EnumCharacterStatus.SkillCool);
+        public float skillDamageMultiplier => GetFinalStat((int)EnumCharacterStatus.SkillDamageMul);
         
-        public float skillDamageMultiplier;
         public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting) : base(settings, (int)EnumCharacterStatus.Count)
         {
             baseStatus[(int)EnumCharacterStatus.SkillRange] = settings.baseSkillRange;
             baseStatus[(int)EnumCharacterStatus.SkillCool] = settings.baseSkillCool;
-            skillDamageMultiplier = settings.skillDamageMultiplier;
+            baseStatus[(int)EnumCharacterStatus.SkillDamageMul] = settings.baseSkillDamageMultiplier;
 
             _globalSetting = globalSetting;
         }
@@ -224,6 +224,7 @@ namespace LineUpHeros
         {
             SkillRange = EnumStatus.Count,
             SkillCool,
+            SkillDamageMul,
             Count
         }
     }
@@ -237,7 +238,7 @@ namespace LineUpHeros
         // 스킬 관련 변수 추가
         public int baseSkillRange;
         public float baseSkillCool;
-        public float skillDamageMultiplier;
+        public float baseSkillDamageMultiplier;
     }
 
     [Serializable]
@@ -265,6 +266,15 @@ namespace LineUpHeros
             public const string VICTORY = "victory";
             public const string GOTO_SLOT = "return";
         }
+    }
+    
+    
+    public enum EnumCharacter
+    {
+        Tanker,
+        ShortRangeDealer,
+        LongRangeDealer,
+        Healer
     }
 
     // Character 스테이트머신 글로벌 변수

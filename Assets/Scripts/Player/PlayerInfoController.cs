@@ -9,7 +9,7 @@ namespace LineUpHeros
     {
         public ReactiveProperty<int> exp = new ReactiveProperty<int>(0);
         public ReactiveProperty<int> level = new ReactiveProperty<int>(1);
-        public ReactiveProperty<int> gold = new ReactiveProperty<int>(0);
+        public ReactiveProperty<int> gold = new ReactiveProperty<int>(9999);
         public ReactiveProperty<int> ruby = new ReactiveProperty<int>(9999);
 
         private TankerCharacter _tanker;
@@ -36,9 +36,12 @@ namespace LineUpHeros
             goldUpgradeList.Add(new GoldATKUpgrade(this));
 
             // 루비 업그레이드 항목 추가
-            rubyUpgradeList.Add(new RubyHpUpgrade(this));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "Tanker", EnumCharacter.Tanker));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "ShortRangeDealer", EnumCharacter.ShortRangeDealer));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "LongRangeDealer", EnumCharacter.LongRangeDealer));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "Healer", EnumCharacter.Healer));
             
-            // 몬스터 사망 시그널
+            // 몬스터 사망 리워드 획득
             _signalBus = signalBus;
             _signalBus.Subscribe<GameEvent.MonsterDieSignal>(x => OnDieMonster(x.monsterInfo));
             _signalBus.Subscribe<GameEvent.BossDieSignal>(x => OnDieBossMonster(x.bossInfo));
@@ -47,17 +50,6 @@ namespace LineUpHeros
         // 다음 레벨이 되기위한 경험치
         public int nextExp => level.Value * 2;
 
-        public void OnDieMonster(MonsterInfo info)
-        {
-            GainExp(info.rewardExp);
-            GainGold(info.rewardGold);
-        }
-        public void OnDieBossMonster(BossMonsterInfo info)
-        {
-            GainExp(info.rewardExp);
-            GainGold(info.rewardGold);
-            GainRuby(info.rewardRuby);
-        }
         // exp 획득
         private void GainExp(int gainExp)
         {
@@ -93,6 +85,27 @@ namespace LineUpHeros
             upgradeAction(_longRangeDealer);
             upgradeAction(_healer);
         }
+        public void ApplyStatusUpgrade(Action<Character> upgradeAction, EnumCharacter characterType)
+        {
+            switch (characterType)
+            {
+                case EnumCharacter.Tanker:
+                    upgradeAction(_tanker);
+                    break;
+                case EnumCharacter.ShortRangeDealer:
+                    upgradeAction(_shortRangeDealer);
+                    break;
+                case EnumCharacter.LongRangeDealer:
+                    upgradeAction(_longRangeDealer);
+                    break;
+                case EnumCharacter.Healer:
+                    upgradeAction(_healer);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
+            }
+
+        }
 
         private void CalLevelUpStat(Character character)
         {
@@ -127,6 +140,18 @@ namespace LineUpHeros
                 return true;
             }
             return false;
+        }
+        
+        public void OnDieMonster(MonsterInfo info)
+        {
+            GainExp(info.rewardExp);
+            GainGold(info.rewardGold);
+        }
+        public void OnDieBossMonster(BossMonsterInfo info)
+        {
+            GainExp(info.rewardExp);
+            GainGold(info.rewardGold);
+            GainRuby(info.rewardRuby);
         }
     }
 }

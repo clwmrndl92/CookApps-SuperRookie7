@@ -6,7 +6,8 @@ namespace LineUpHeros
     public class GoldHPUpgrade : UpgradeInfo
     {
 
-        private int _effect => 10 + upgradeNum.Value*10;
+        private int _upgradeValue = 10;
+        private int _effect => upgradeNum.Value*_upgradeValue;
         private int _cost => 10 + upgradeNum.Value * 5;
 
         public GoldHPUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
@@ -24,7 +25,7 @@ namespace LineUpHeros
                 // 모든 캐릭터 스탯 일괄 상승
                 playerInfoController.ApplyStatusUpgradeToAll((character) =>
                 {
-                    character.status.AddStat((int)Status.EnumStatus.Hp, _effect, false);
+                    character.status.AddStat((int)Status.EnumStatus.Hp, _upgradeValue, false);
                     character.status.tmpHp.Value += _effect;
                 });
                 ++upgradeNum.Value;
@@ -36,7 +37,9 @@ namespace LineUpHeros
 
     public class GoldATKUpgrade : UpgradeInfo
     {
-        private int _effect => upgradeNum.Value;
+        
+        private int _upgradeValue = 1;
+        private int _effect => upgradeNum.Value * _upgradeValue;
         private int _cost => 10 + upgradeNum.Value * 5;
 
         public GoldATKUpgrade(PlayerInfoController playerInfoController) : base(playerInfoController)
@@ -54,7 +57,7 @@ namespace LineUpHeros
                 // 모든 캐릭터 스탯 일괄 상승
                 playerInfoController.ApplyStatusUpgradeToAll((character) =>
                 {
-                    character.status.AddStat((int)Status.EnumStatus.Atk, _effect, false);
+                    character.status.AddStat((int)Status.EnumStatus.Atk, _upgradeValue, false);
                 });
                 ++upgradeNum.Value;
                 info.Value = $"ATK\n+{_effect}";

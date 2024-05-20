@@ -37,6 +37,7 @@ MonoBehaviour:
       baseAtkCool: 1.5
       baseSkillRange: 1
       baseSkillCool: 3
+      baseSkillDamageMultiplier: 1
       stunTime: 1
     shortRangeDealerSettings:
       baseHp: 200
@@ -45,6 +46,7 @@ MonoBehaviour:
       baseAtkCool: 1
       baseSkillRange: 2
       baseSkillCool: 3
+      baseSkillDamageMultiplier: 1
     longRangeDealerSettings:
       baseHp: 100
       baseAtk: 15
@@ -52,10 +54,12 @@ MonoBehaviour:
       baseAtkCool: 1
       baseSkillRange: 4
       baseSkillCool: 4
+      baseSkillDamageMultiplier: 2.5
     healerSettings:
       baseHp: 100
       baseAtk: 10
       baseAtkRange: 4
-      baseAtkCool: 1
+      baseAtkCool: 2.5
       baseSkillRange: 4
       baseSkillCool: 6
+      baseSkillDamageMultiplier: 2.5
