@@ -11,6 +11,8 @@ namespace LineUpHeros
         private CharacterSetting _settings;
         [Inject]
         private ArrowProjectile.Factory _arrowFactory;
+        [Inject]
+        private SignalBus _signalBus;
 
         protected override void InitStatus()
         {
@@ -32,6 +34,7 @@ namespace LineUpHeros
             if (atkRangeTargetList == null || atkRangeTargetList.Count == 0) return false;
             // 더 센 화살 발사
             // todo : 스킬 업그레이드 되도록 수정
+            isSkillUse.Value = true;
             ArrowProjectile arrow = _arrowFactory.Create();
             arrow.FireProjectile(this, atkRangeTargetList[0], (int)(status.atk * 2.5f));
             

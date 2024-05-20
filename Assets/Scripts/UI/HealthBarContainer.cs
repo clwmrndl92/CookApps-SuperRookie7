@@ -24,7 +24,6 @@ namespace LineUpHeros
         LongRangeDealerCharacter _longRangeDealer;
         HealerCharacter _healer;
 
-
         [Inject]
         public void Construct(TankerCharacter tanker, ShortRangeDealerCharacter shortRangeDealer,
                 LongRangeDealerCharacter longRangeDealer, HealerCharacter healer)
@@ -37,10 +36,17 @@ namespace LineUpHeros
 
         void Start()
         {
+            
             SubscribeHealthBar(tankerHealthBarContainer, _tanker);
             SubscribeHealthBar(SRDHealthBarContainer, _shortRangeDealer);
             SubscribeHealthBar(LRDHealthBarContainer, _longRangeDealer);
             SubscribeHealthBar(healerHealthBarContainer, _healer);
+            
+            SubscribeSkillCool(tankerHealthBarContainer, _tanker);
+            SubscribeSkillCool(SRDHealthBarContainer, _shortRangeDealer);
+            SubscribeSkillCool(LRDHealthBarContainer, _longRangeDealer);
+            SubscribeSkillCool(healerHealthBarContainer, _healer);
+            
         }
         
         // UI와 데이터 연결 (uniRX)
@@ -48,19 +54,17 @@ namespace LineUpHeros
         {
             RectTransform healthBarContainer = container.Find("HealthBar").GetComponent<RectTransform>();
 
-            RectTransform healthBar = healthBarContainer.Find("Bar").GetComponent<RectTransform>();
+            Image barImage = healthBarContainer.Find("Bar").GetComponent<Image>();
             TextMeshProUGUI hpText = healthBarContainer.Find("HPText").gameObject.GetComponent<TextMeshProUGUI>();
 
             // 체력 텍스트 표시
             unit.status.tmpHp.SubscribeToText(hpText, value => string.Format("{0} / {1}", Mathf.Clamp(value, 0, unit.status.maxHp), unit.status.maxHp));
 
             // 체력바 사이즈 조절
-            float maxSize = healthBar.sizeDelta.x;
             unit.status.tmpHp
                 .Subscribe(value =>
                 {
-                    healthBar.sizeDelta = new Vector2(maxSize * Mathf.Clamp(((float)unit.status.tmpHp.Value / unit.status.maxHp), 0, 1),
-                        healthBar.sizeDelta.y);
+                    barImage.fillAmount = Mathf.Clamp(((float)unit.status.tmpHp.Value / unit.status.maxHp), 0, 1);
                 });
             
             // 죽고 부활할 때 표시되는 텍스트
@@ -80,6 +84,27 @@ namespace LineUpHeros
                     }
                 });
         }
-    }
+        // UI와 데이터 연결 (uniRX)
+        private void SubscribeSkillCool(RectTransform container, Character character)
+        {
+            CoolTimeImage coolTimeImage = container.Find("CoolTime").GetComponent<CoolTimeImage>();
+            
+            character.isSkillUse.Subscribe(value =>
+            {
+                if (value)
+                {
+                    coolTimeImage.cooltime = character.status.skillCool;
+                    coolTimeImage.gameObject.SetActive(true);
+                }
+                else
+                {
+                    coolTimeImage.gameObject.SetActive(false);
+                }
+            });
 
+
+
+        }
+    }
+ 
 }

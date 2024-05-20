@@ -17,6 +17,8 @@ namespace LineUpHeros
         public CharacterStatus status => (CharacterStatus)_status;
         
         public static readonly Vector3 FLOATING_TEXT_OFFSET = new Vector3(0, 2f, 0);
+
+        public ReactiveProperty<bool> isSkillUse = new ReactiveProperty<bool>(false);
             
         [Inject]
         private void Constructor(CharacterGlobalSetting globalSettings,FloatingText.Factory floatTextFactory, 
@@ -110,6 +112,12 @@ namespace LineUpHeros
             status.tmpHp.Value = status.maxHp;
             isDead.Value = false;
             _stateMachine.ChangeState(EnumState.Character.IDLE);
+            // 쿨타임 초기화
+            CharAtkState atkState = (CharAtkState)_stateMachine.GetState(EnumState.Character.ATK);
+            atkState.coolStartTime = float.MinValue;
+            CharSpecialAtkState skillState = (CharSpecialAtkState)_stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
+            skillState.coolStartTime = float.MinValue;
+            isSkillUse.Value = false;
         }
         #endregion
         

@@ -7,9 +7,8 @@ namespace LineUpHeros
     public class CharSpecialAtkState : CharacterState
     {
         // 쿨타임 시작 시간
-        private float _coolStartTime = float.MinValue;
-        public bool isCool => Time.time - _coolStartTime < _character.status.skillCool;
-        
+        public float coolStartTime = float.MinValue;
+        public bool isCool => Time.time - coolStartTime < _character.status.skillCool;
         
         private bool _isSpecialAttacking;
         
@@ -38,7 +37,8 @@ namespace LineUpHeros
                 _character.FlipToTarget(_attackTargetList[0].gameObjectIDamagable.transform);
                 _character.ChangeAnimationState(EnumState.Character.SPECIAL_ATK);
                 _isSpecialAttacking = true;
-                _coolStartTime = Time.time;
+                
+                coolStartTime = Time.time;
             }
         }
 

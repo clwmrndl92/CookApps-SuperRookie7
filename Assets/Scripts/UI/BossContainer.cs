@@ -57,7 +57,7 @@ namespace LineUpHeros
             nameText.text = boss.status.name;
 
             RectTransform healthBarContainer = container.Find("HealthBar").GetComponent<RectTransform>();
-            RectTransform healthBar = healthBarContainer.Find("Bar").GetComponent<RectTransform>();
+            Image healthBarImage = healthBarContainer.Find("Bar").GetComponent<Image>();
             TextMeshProUGUI hpText = healthBarContainer.Find("HPText").gameObject.GetComponent<TextMeshProUGUI>();
             
             // 체력 텍스트 표시
@@ -65,13 +65,10 @@ namespace LineUpHeros
                 value => string.Format("{0} / {1}", Mathf.Clamp(value, 0, boss.status.maxHp), boss.status.maxHp));
 
             // 체력바 사이즈 조절
-            float maxSize = healthBar.sizeDelta.x;
             boss.status.tmpHp
                 .Subscribe(value =>
                 {
-                    healthBar.sizeDelta = new Vector2(
-                        maxSize * Mathf.Clamp(((float)boss.status.tmpHp.Value / boss.status.maxHp), 0, 1),
-                        healthBar.sizeDelta.y);
+                    healthBarImage.fillAmount = Mathf.Clamp(((float)boss.status.tmpHp.Value / boss.status.maxHp), 0, 1);
                 });
 
         }

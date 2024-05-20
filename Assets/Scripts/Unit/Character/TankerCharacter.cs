@@ -9,6 +9,8 @@ namespace LineUpHeros
     {
         [Inject(Id = "Tanker")]
         private TankerSetting _settings;
+        [Inject]
+        private SignalBus _signalBus;
         
 
         protected override void InitStatus()
@@ -21,6 +23,7 @@ namespace LineUpHeros
             if (atkRangeTargetList.Count == 0) return false;
 
             // todo : 스킬 업그레이드 되도록 수정
+            isSkillUse.Value = true;
             atkRangeTargetList[0].TakeDamage((int)(status.atk * 1.0f));
             atkRangeTargetList[0].TakeStun(_settings.stunTime);
             return true;

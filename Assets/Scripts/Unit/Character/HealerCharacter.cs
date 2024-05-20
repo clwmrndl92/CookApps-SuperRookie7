@@ -11,6 +11,8 @@ namespace LineUpHeros
         private CharacterSetting _settings;
 
         private HealerEffect _effect;
+        [Inject]
+        private SignalBus _signalBus;
         
         // 힐러만 스킬대상이 동료들이어서 재정의 함
         public bool canSkill
@@ -70,6 +72,8 @@ namespace LineUpHeros
             // 풀피 아닐때만 치유스킬 사용
             if (minHpTarget != null && minHpTarget.status.tmpHp.Value < minHpTarget.status.maxHp)
             {
+                
+                isSkillUse.Value = true;
                 // todo : 스킬 업그레이드 되도록 수정
                 minHpTarget.TakeHeal((int)(status.atk * 2.5f));
                 return true;
