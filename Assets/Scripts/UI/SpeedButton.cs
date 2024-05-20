@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,33 +15,25 @@ namespace LineUpHeros
         [Inject]
         GameController _gameController;
 
-        private bool _is2XSpeed = false;
+        private int speed = 1;
 
         private Image _image;
+        private TextMeshProUGUI _text;
 
         private void Start()
         {
             _image = GetComponent<Image>();
-            GetComponent<Button>().onClick.AddListener(OnButtonClick);
-            Debug.Log("??");
+            _text = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            GetComponent<Button>().OnClickAsObservable().Subscribe(_=>
+            {
+                speed = speed%3 + 1;
+                _gameController.gameSpeed = speed;
+                Time.timeScale = speed;
+                _text.text = $"{speed}X\nSpeed";
+                if (speed > 1) _image.color = Color.green; 
+                else _image.color = Color.white;
+            });
         }
 
-        public void OnButtonClick()
-        {
-            if (_is2XSpeed)
-            {
-                _is2XSpeed = false;
-                _image.color = Color.white;
-                _gameController.gameSpeed = 1;
-                Time.timeScale = 1;
-            }
-            else
-            {
-                _is2XSpeed = true;
-                _image.color = Color.green;
-                _gameController.gameSpeed = 2;
-                Time.timeScale = 2;
-            }
-        }
     }
 }
