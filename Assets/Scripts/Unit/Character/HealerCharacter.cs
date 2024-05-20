@@ -73,7 +73,7 @@ namespace LineUpHeros
             if (minHpTarget != null && minHpTarget.status.tmpHp.Value < minHpTarget.status.maxHp)
             {
                 
-                isSkillUse.Value = true;
+                isSkillUse.OnNext(true);
                 minHpTarget.TakeHeal((int)(status.atk * status.skillDamageMultiplier));
                 return true;
             }

@@ -9,8 +9,8 @@ namespace LineUpHeros
     {
         public ReactiveProperty<int> exp = new ReactiveProperty<int>(0);
         public ReactiveProperty<int> level = new ReactiveProperty<int>(1);
-        public ReactiveProperty<int> gold = new ReactiveProperty<int>(9999);
-        public ReactiveProperty<int> ruby = new ReactiveProperty<int>(9999);
+        public ReactiveProperty<int> gold = new ReactiveProperty<int>(0);
+        public ReactiveProperty<int> ruby = new ReactiveProperty<int>(0);
 
         private TankerCharacter _tanker;
         private ShortRangeDealerCharacter _shortRangeDealer;
@@ -38,8 +38,8 @@ namespace LineUpHeros
             // 루비 업그레이드 항목 추가
             rubyUpgradeList.Add(new RubySkillUpgrade(this, "Tanker", EnumCharacter.Tanker));
             rubyUpgradeList.Add(new RubySkillUpgrade(this, "ShortRangeDealer", EnumCharacter.ShortRangeDealer));
-            rubyUpgradeList.Add(new RubySkillUpgrade(this, "LongRangeDealer", EnumCharacter.LongRangeDealer));
-            rubyUpgradeList.Add(new RubySkillUpgrade(this, "Healer", EnumCharacter.Healer));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "LongRangeDealer", EnumCharacter.LongRangeDealer, 1f));
+            rubyUpgradeList.Add(new RubySkillUpgrade(this, "Healer", EnumCharacter.Healer, 1f));
             
             // 몬스터 사망 리워드 획득
             _signalBus = signalBus;

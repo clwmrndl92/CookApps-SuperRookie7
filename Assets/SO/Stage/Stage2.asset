@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Stage 2
   monsterSetting:
-    requiredMonsterKills: 10
+    requiredMonsterKills: 30
     monsterSpawnPeriod: 5
     monsterMaxSpawnNum: 5
     monsterSpawnProbability:
     - monsterInfo: {fileID: 11400000, guid: f92a210ad98d1134ab3dda1ece2ba7b7, type: 2}
-      probabilty: 0
+      probabilty: 100
     - monsterInfo: {fileID: 11400000, guid: 01ad5ff43dfc11445a6e46fd2aaef071, type: 2}
       probabilty: 100
   bossSetting:
-    isBossSpawn: 0
-    bossMonster: {fileID: 0}
+    isBossSpawn: 1
+    bossMonster: {fileID: 11400000, guid: d2660af4fe881814cab9d0370bae0a41, type: 2}

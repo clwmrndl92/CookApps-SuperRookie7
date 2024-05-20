@@ -18,7 +18,7 @@ namespace LineUpHeros
         
         public static readonly Vector3 FLOATING_TEXT_OFFSET = new Vector3(0, 2f, 0);
 
-        public ReactiveProperty<bool> isSkillUse = new ReactiveProperty<bool>(false);
+        public Subject<bool> isSkillUse = new Subject<bool>();
             
         [Inject]
         private void Constructor(CharacterGlobalSetting globalSettings,FloatingText.Factory floatTextFactory, 
@@ -117,7 +117,7 @@ namespace LineUpHeros
             atkState.coolStartTime = float.MinValue;
             CharSpecialAtkState skillState = (CharSpecialAtkState)_stateMachine.GetState(EnumState.Character.SPECIAL_ATK);
             skillState.coolStartTime = float.MinValue;
-            isSkillUse.Value = false;
+            isSkillUse.OnNext(false);
         }
         #endregion
         

@@ -15,11 +15,11 @@ MonoBehaviour:
   name: FlyingEye
   prefab: {fileID: 6656398069967196575, guid: d7e1e1269aa03a74ca15a92ccc4349c6, type: 3}
   type: 1
-  rewardExp: 1
-  rewardGold: 1
+  rewardExp: 2
+  rewardGold: 8
   statusSetting:
     baseHp: 100
-    baseAtk: 1000
-    baseAtkRange: 1
+    baseAtk: 15
+    baseAtkRange: 2
     baseAtkCool: 1
-    moveVelocity: 1
+    moveVelocity: 2

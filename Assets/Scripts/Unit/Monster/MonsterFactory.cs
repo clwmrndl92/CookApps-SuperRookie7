@@ -23,9 +23,11 @@ namespace LineUpHeros
             {
                 case EnumMonsterType.Goblin:
                     monster = _goblinFactory.Create();
+                    ApplyMonsterStatChanges(monster);
                     break;
                 case EnumMonsterType.FlyingEye:
                     monster = _flyingEyeFactory.Create();
+                    ApplyMonsterStatChanges(monster);
                     break;
                 case EnumMonsterType.Mushroom:
                     break;
@@ -47,7 +49,6 @@ namespace LineUpHeros
             if (monster != null)
             {
                 monster.transform.position = position;
-                ApplyMonsterStatChanges(monster);
             }
             return monster;
         }

@@ -16,9 +16,9 @@ MonoBehaviour:
   prefab: {fileID: 6656398069967196575, guid: cb4a5481a72fbc64582d466c71fe96a5, type: 3}
   type: 0
   rewardExp: 1
-  rewardGold: 1
+  rewardGold: 5
   statusSetting:
-    baseHp: 100000
+    baseHp: 100
     baseAtk: 10
     baseAtkRange: 1
     baseAtkCool: 1

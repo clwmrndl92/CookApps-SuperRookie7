@@ -33,7 +33,7 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList == null || atkRangeTargetList.Count == 0) return false;
             // 더 센 화살 발사
-            isSkillUse.Value = true;
+            isSkillUse.OnNext(true);
             ArrowProjectile arrow = _arrowFactory.Create();
             arrow.FireProjectile(this, atkRangeTargetList[0], (int)(status.atk * status.skillDamageMultiplier));
             

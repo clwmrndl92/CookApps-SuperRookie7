@@ -10,13 +10,14 @@ namespace LineUpHeros
         private int _cost => 1 + upgradeNum.Value * 1;
 
         private EnumCharacter _characterType;
-        public RubySkillUpgrade(PlayerInfoController playerInfoController, string charName, EnumCharacter characterType) : base(playerInfoController)
+        public RubySkillUpgrade(PlayerInfoController playerInfoController, string charName, EnumCharacter characterType, float upgradeValue = 0.5f) : base(playerInfoController)
         {
             title = charName;
             info.Value = $"Skill Up!\n(ATK Multiplier)\n+{_effect}";
             cost.Value = _cost;
             costType = UpgradeCostType.Ruby;
             _characterType = characterType;
+            _upgradeValue = upgradeValue;
         }
 
         public override void TryUpgrade()
