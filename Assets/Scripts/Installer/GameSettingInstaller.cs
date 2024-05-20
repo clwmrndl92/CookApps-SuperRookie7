@@ -30,6 +30,7 @@ namespace LineUpHeros
             public MonsterInfo goblinInfo;
             public BossMonsterInfo kingGoblinInfo;
             public MonsterInfo flyingEyeInfo;
+            public BossMonsterInfo kingFlyingEyeInfo;
         }
 
 
@@ -49,6 +50,7 @@ namespace LineUpHeros
             Container.BindInstance(monsterSettings.goblinInfo).WithId("Goblin");
             Container.BindInstance(monsterSettings.kingGoblinInfo).WithId("KingGoblin");
             Container.BindInstance(monsterSettings.flyingEyeInfo).WithId("FlyingEye");
+            Container.BindInstance(monsterSettings.kingFlyingEyeInfo).WithId("KingFlyingEye");
             InstallMonsterFactory();
 
         }
@@ -72,6 +74,11 @@ namespace LineUpHeros
             Container.BindFactory<BossMonster, BossMonster.Factory>()
                 .WithId("KingGoblinFactory")
                 .FromComponentInNewPrefab(monsterSettings.kingGoblinInfo.prefab)
+                .UnderTransformGroup("Monsters");
+            
+            Container.BindFactory<BossMonster, BossMonster.Factory>()
+                .WithId("KingFlyingEyeFactory")
+                .FromComponentInNewPrefab(monsterSettings.kingFlyingEyeInfo.prefab)
                 .UnderTransformGroup("Monsters");
         }
 

@@ -8,7 +8,7 @@ namespace LineUpHeros
     public class MonAtkState : MonsterState
     {
         // 쿨타임 시작 시간
-        private float _coolStartTime = float.MinValue;
+        private float _coolStartTime =  -10;
         public bool isCool => Time.time - _coolStartTime < _monster.status.atkCool;
         
         private bool _isAttacking;

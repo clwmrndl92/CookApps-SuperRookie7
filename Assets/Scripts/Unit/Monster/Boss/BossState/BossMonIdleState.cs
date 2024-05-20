@@ -40,7 +40,6 @@ namespace LineUpHeros
                 return true;
             }
             // 스킬 사용 가능한지 체크(쿨타임), 가능하면 SpecialAttack State로 전환
-            Debug.Log(_monster.canSkill);
             if (_monster.canSkill)
             {
                 _monster.stateMachine.ChangeState(EnumState.BossMonster.SKILL);

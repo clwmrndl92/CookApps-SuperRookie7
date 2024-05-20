@@ -22,7 +22,7 @@ namespace LineUpHeros
 
         public override void TryUpgrade()
         {
-            if (playerInfoController.UseGold(_cost))
+            if (playerInfoController.UseRuby(_cost))
             {
                 // 스킬 데미지 업그레이드
                 playerInfoController.ApplyStatusUpgrade((character) =>

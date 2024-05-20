@@ -68,7 +68,7 @@ namespace LineUpHeros
                     _monsterSpawnTimer = Time.time;
                 }
                 // 몬스터 처치수 채웠을때
-                if (currentMonsterKills.Value == _currentStage.monsterSetting.requiredMonsterKills)
+                if (currentMonsterKills.Value >= _currentStage.monsterSetting.requiredMonsterKills)
                 {
                     if (_currentStage.bossSetting.isBossSpawn)
                     {

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ca5dfdbb71140c0acc6b47a261ca80d, type: 3}
-  m_Name: KingGoblinInfo
+  m_Name: KingFlyingEyeInfo
   m_EditorClassIdentifier: 
-  name: King Goblin
-  prefab: {fileID: 6656398069967196575, guid: 6b1a475303a942241b9eb33e19ab933f, type: 3}
-  type: 4
-  rewardExp: 10
-  rewardGold: 50
+  name: King Flying Eye
+  prefab: {fileID: 6656398069967196575, guid: 919d78dc776e9584e913648a422a5994, type: 3}
+  type: 5
+  rewardExp: 15
+  rewardGold: 100
   statusSetting:
-    baseHp: 1000
-    baseAtk: 35
-    baseAtkRange: 1
-    baseAtkCool: 1
-    moveVelocity: 2
-  skillCoolTime: 5
+    baseHp: 1500
+    baseAtk: 40
+    baseAtkRange: 2
+    baseAtkCool: 0.5
+    moveVelocity: 3
+  skillCoolTime: 3
   skillRange: 5
-  skillDamageMultiplier: 2.5
-  rewardRuby: 2
+  skillDamageMultiplier: 999999
+  rewardRuby: 3

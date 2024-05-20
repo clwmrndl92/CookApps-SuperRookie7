@@ -8,7 +8,7 @@ namespace LineUpHeros
     public class BossMonSpecialAtkState : BossState
     {
         // 쿨타임 시작 시간
-        private float _coolStartTime = float.MinValue;
+        private float _coolStartTime = -10;
         public bool isCool => Time.time - _coolStartTime < _monster.status.skillCoolTime;
         
         
@@ -25,7 +25,7 @@ namespace LineUpHeros
 
         public override void OnEnterState()
         {
-            _monster.ChangeAnimationState(EnumState.Character.IDLE);
+            _monster.ChangeAnimationState(EnumState.BossMonster.IDLE);
         }
 
         public override void OnUpdateState()
@@ -60,12 +60,13 @@ namespace LineUpHeros
                 _monster.stateMachine.ChangeState(EnumState.BossMonster.DEAD);
                 return true;
             }
-            // 쿨타임이면 Idle로 전환
-            if (isCool)
-            {
-                _monster.stateMachine.ChangeState(EnumState.Character.IDLE);
-                return true;
-            }
+            // // 쿨타임이면 Idle로 전환
+            // if (isCool)
+            // {
+            //     Debug.Log("isCool true");
+            //     _monster.stateMachine.ChangeState(EnumState.Character.IDLE);
+            //     return true;
+            // }
             return false;
         }
         // Animation 이벤트를 통해 호출되는 함수
@@ -74,7 +75,7 @@ namespace LineUpHeros
             _monster.SpecialAttack();
             _isSpecialAttacking = false;
             // 한번 공격 했으면 Idle state로 전환
-            _monster.stateMachine.ChangeState(EnumState.Character.IDLE);
+            _monster.stateMachine.ChangeState(EnumState.BossMonster.IDLE);
         }
         
     

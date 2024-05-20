@@ -15,6 +15,8 @@ namespace LineUpHeros
         private Monster.Factory _flyingEyeFactory;
         [Inject(Id = "KingGoblinFactory")]
         private BossMonster.Factory _kingGoblinFactory;
+        [Inject(Id = "KingFlyingEyeFactory")]
+        private BossMonster.Factory _kingFlyingEyeFactory;
         
         public Monster Create(MonsterInfo info, Vector3 position)
         {
@@ -37,6 +39,7 @@ namespace LineUpHeros
                     monster = _kingGoblinFactory.Create();
                     break;
                 case EnumMonsterType.KingFlyingEye:
+                    monster = _kingFlyingEyeFactory.Create();
                     break;
                 case EnumMonsterType.KingMushroom:
                     break;

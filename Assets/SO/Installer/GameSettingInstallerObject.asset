@@ -25,11 +25,12 @@ MonoBehaviour:
     goblinInfo: {fileID: 11400000, guid: f92a210ad98d1134ab3dda1ece2ba7b7, type: 2}
     kingGoblinInfo: {fileID: 11400000, guid: d2660af4fe881814cab9d0370bae0a41, type: 2}
     flyingEyeInfo: {fileID: 11400000, guid: 01ad5ff43dfc11445a6e46fd2aaef071, type: 2}
+    kingFlyingEyeInfo: {fileID: 11400000, guid: fac4a061f86cb74488e23430109de078, type: 2}
   characterSettings:
     globalSettings:
       detectRange: 15
       moveVelocity: 1
-      revivalTime: 5
+      revivalTime: 10
     tankerSettings:
       baseHp: 400
       baseAtk: 5
