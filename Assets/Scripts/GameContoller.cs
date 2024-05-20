@@ -51,6 +51,7 @@ namespace LineUpHeros
         // game info
         public ReactiveProperty<GameStates> state { get; private set; } = new ReactiveProperty<GameStates>(GameStates.WaitingToStart);
         public ReactiveProperty<int> currentStage = new ReactiveProperty<int>(0);
+        public float gameSpeed = 1;
         public void Dispose()
         {
         }
@@ -102,7 +103,7 @@ namespace LineUpHeros
             if (_inputState.IsMouseClick)
             {
                 state.Value = GameStates.Waiting;
-                Time.timeScale = 1;
+                Time.timeScale = gameSpeed;
                 _fadeInOutController.StartEffect(() =>
                     {
                         state.Value = GameStates.WaitingToStart;
@@ -118,7 +119,7 @@ namespace LineUpHeros
 
             if (_inputState.IsMouseClick)
             {
-                Time.timeScale = 1;
+                Time.timeScale = gameSpeed;
                 
                 state.Value = GameStates.Waiting;
                 StageStart(currentStage.Value);
