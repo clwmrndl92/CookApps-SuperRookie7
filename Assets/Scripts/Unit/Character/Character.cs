@@ -210,10 +210,12 @@ namespace LineUpHeros
         public int skillRange => (int)GetFinalStat((int)EnumCharacterStatus.SkillRange);
         public float skillCool => (int)GetFinalStat((int)EnumCharacterStatus.SkillCool);
         
+        public float skillDamageMultiplier;
         public CharacterStatus(CharacterSetting settings, CharacterGlobalSetting globalSetting) : base(settings, (int)EnumCharacterStatus.Count)
         {
             baseStatus[(int)EnumCharacterStatus.SkillRange] = settings.baseSkillRange;
             baseStatus[(int)EnumCharacterStatus.SkillCool] = settings.baseSkillCool;
+            skillDamageMultiplier = settings.skillDamageMultiplier;
 
             _globalSetting = globalSetting;
         }
@@ -235,6 +237,7 @@ namespace LineUpHeros
         // 스킬 관련 변수 추가
         public int baseSkillRange;
         public float baseSkillCool;
+        public float skillDamageMultiplier;
     }
 
     [Serializable]

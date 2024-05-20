@@ -10,8 +10,6 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // 캐릭터들 체력바 표시
-    // todo : 스킬 쿨타임 표시 추가
     public class BossContainer : MonoBehaviour
     {
         private TextMeshProUGUI _requireMonsetText;

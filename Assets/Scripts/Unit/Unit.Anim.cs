@@ -25,23 +25,6 @@ namespace LineUpHeros
         public virtual void AnimEventSpecialAttack() { }
         
         #region util
-        // todo : 안쓸것 같으면 삭제
-        protected float GetClipLength(string stateName)
-        {
-            RuntimeAnimatorController controller = _animator.runtimeAnimatorController;
-
-            if (controller != null)
-            {
-                for(int i = 0; i<controller.animationClips.Length; i++)
-                {
-                    if(controller.animationClips[i].name == stateName)
-                    {
-                        return controller.animationClips[i].length;
-                    }
-                }
-            }
-            return 0;
-        }
         // direction : 1, 오른쪽 / direction : -1, 왼쪽 / default 현재 방향의 반대방향으로 플립
         public void Flip(int direction = 0)
         {

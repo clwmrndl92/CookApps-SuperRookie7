@@ -25,10 +25,14 @@ namespace LineUpHeros
         private IMemoryPool _pool;
         private void Update()
         {
-            // todo : 화살 너무 빨라서 뚫고 지나갈 수 있음 그에 관한 처리 필요
             if (Vector3.Distance(transform.position, _endPos) <= EPS)
             {
                 _target?.TakeDamage(_damage);
+                _pool.Despawn(this);
+            }
+            // todo : 화살 너무 빨라서 뚫고 지나갈 수 있음 그에 관한 처리 필요, 아래 하드코딩 없애기
+            if (Vector3.Distance(transform.position, _endPos) >= 1000)
+            {
                 _pool.Despawn(this);
             }
             transform.position += _speed * Time.deltaTime * _direction;

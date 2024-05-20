@@ -162,7 +162,6 @@ namespace LineUpHeros
     public class MonsterStatus : Status
     {
         public float detectRange;
-        // todo: 나중에 글로벌스탯으로 만들든 몬스터스탯으로 만들든
         public float moveVelocity;
         public MonsterStatus(MonsterInfo info, MonsterGlobalSetting globalSetting) : base(info.statusSetting)
         {

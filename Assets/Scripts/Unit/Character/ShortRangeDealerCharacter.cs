@@ -21,11 +21,10 @@ namespace LineUpHeros
         {
             if (atkRangeTargetList.Count == 0) return false;
             // 공격 범위내 모든 적에게 데미지
-            // todo : 스킬 업그레이드 되도록 수정
             isSkillUse.Value = true;
             foreach (var target in atkRangeTargetList)
             {
-                target.TakeDamage((int)(status.atk * 1.0f));
+                target.TakeDamage((int)(status.atk * status.skillDamageMultiplier));
             }
             return true;
         }

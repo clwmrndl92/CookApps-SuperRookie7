@@ -9,7 +9,6 @@ namespace LineUpHeros
     // 강화창 관련 UI
     public class UpgradeGUIHandler : MonoBehaviour
     {
-        // todo : 닫기 버튼 만들기
         public GameObject upgradePanel;
         public Button upgradePanelButton;
         public GameObject upgradeContainer;

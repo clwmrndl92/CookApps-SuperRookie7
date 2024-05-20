@@ -74,8 +74,7 @@ namespace LineUpHeros
             {
                 
                 isSkillUse.Value = true;
-                // todo : 스킬 업그레이드 되도록 수정
-                minHpTarget.TakeHeal((int)(status.atk * 2.5f));
+                minHpTarget.TakeHeal((int)(status.atk * status.skillDamageMultiplier));
                 return true;
             }
             return false;

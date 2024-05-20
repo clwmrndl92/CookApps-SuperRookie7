@@ -47,7 +47,6 @@ namespace LineUpHeros
         // 다음 레벨이 되기위한 경험치
         public int nextExp => level.Value * 2;
 
-        // todo : 몬스터 별로 얻을 경험치, 골드, 스크립터블 오브젝트로 설정 가능하게
         public void OnDieMonster(MonsterInfo info)
         {
             GainExp(info.rewardExp);
