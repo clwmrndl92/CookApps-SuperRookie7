@@ -40,11 +40,11 @@ namespace LineUpHeros
         }
         private void InstallFactory()
         {
+            Transform floatingTextTransform = _canvas.transform.Find("FloatingText");
             Container.BindFactory<FloatingText, FloatingText.Factory>()
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
                     .FromComponentInNewPrefab(_settings.FloatingTextPrefab)
-                    .UnderTransform(_canvas.transform));
-            
+                    .UnderTransform(floatingTextTransform));
             
             Container.BindFactory<ArrowProjectile, ArrowProjectile.Factory>()
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(2)

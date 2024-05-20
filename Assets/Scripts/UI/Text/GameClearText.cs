@@ -10,11 +10,11 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // 게임시작 대기상태때 뜨는 텍스트
-    public class StartText : MonoBehaviour
+    // 게임 오버시 표시되는 텍스트
+    public class GameClearText : MonoBehaviour
     {
         private GameController _gameController;
-        private GameObject _backgroundGameObject;
+        private GameObject _textGameObject;
         
          [Inject]
          public void Construct(GameController gameController)
@@ -24,15 +24,15 @@ namespace LineUpHeros
         
         void Start()
         {
-            _backgroundGameObject = transform.GetChild(0).gameObject;
+            _textGameObject = transform.GetChild(0).gameObject;
             
             _gameController.state
                 .Subscribe(value =>
                 {
-                    if (value == GameStates.WaitingToStart) _backgroundGameObject.SetActive(true);
-                    else if(value != GameStates.Waiting) _backgroundGameObject.SetActive(false);;
+                    if (value == GameStates.GameClear) _textGameObject.SetActive(true);
+                    else _textGameObject.SetActive(false);
                 });
-            
+
         }
         
     }

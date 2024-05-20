@@ -61,37 +61,6 @@ namespace LineUpHeros
             ChangeOrderInLayer(_spriteModel.transform);
         }
 
-        #region IDamagable
-        public override void TakeHeal(int healAmount)
-        {
-            _status.tmpHp.Value += healAmount;
-            
-            // 힐량 텍스트 표시
-            var floatText = _floatTextFactory.Create();
-            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
-            floatText.SetText(healAmount.ToString(), textPos, 0x00FF00);
-        }
-
-        public override void TakeDamage(int damage)
-        {
-            _status.tmpHp.Value -= damage;
-            
-            // 데미지 텍스트 표시
-            var floatText = _floatTextFactory.Create();
-            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
-            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
-
-            if (_status.tmpHp.Value <= 0 && isDead.Value == false)
-            {
-                Die();
-            }
-        }
-        public override void TakeStun(float stunTime)
-        {
-        }
-
-        #endregion
-
         #region public Methods
         // Animation Event에서 호출하는 함수
         public override void AnimEventAttack()
@@ -132,8 +101,49 @@ namespace LineUpHeros
             status.tmpHp.Value = status.maxHp;
             isDead.Value = false;
         }
+        public virtual void Victory()
+        {
+            _stateMachine.ChangeState(EnumState.Character.VICTORY);
+        }
+        public virtual void Reset()
+        {
+            status.tmpHp.Value = status.maxHp;
+            isDead.Value = false;
+            _stateMachine.ChangeState(EnumState.Character.IDLE);
+        }
         #endregion
+        
+        #region IDamagable
+        public override void TakeHeal(int healAmount)
+        {
+            _status.tmpHp.Value += healAmount;
+            
+            // 힐량 텍스트 표시
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
+            floatText.SetText(healAmount.ToString(), textPos, 0x00FF00);
+        }
 
+        public override void TakeDamage(int damage)
+        {
+            _status.tmpHp.Value -= damage;
+            
+            // 데미지 텍스트 표시
+            var floatText = _floatTextFactory.Create();
+            Vector3 textPos = position + FLOATING_TEXT_OFFSET;
+            floatText.SetText(damage.ToString(),textPos, 0xFF0000);
+
+            if (_status.tmpHp.Value <= 0 && isDead.Value == false)
+            {
+                Die();
+            }
+        }
+        public override void TakeStun(float stunTime)
+        {
+        }
+
+        #endregion
+        
         #region Util
         // 범위내 살아있는 몬스터 리스트 찾아서 리턴 (거리순 정렬)
         public List<IDamagable> DetectMonsters(float radius)

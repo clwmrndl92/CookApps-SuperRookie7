@@ -34,6 +34,7 @@ namespace LineUpHeros
         
         // stage 정보
         private StageInfo _currentStage => _gameController.GetCurrentStage();
+        private List<Monster> _spawndMonster = new List<Monster>();
         
         private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _currentStage.monsterSetting.monsterSpawnPeriod
                                  && _currentSpawnedMonsters < _currentStage.monsterSetting.requiredMonsterKills
@@ -48,7 +49,7 @@ namespace LineUpHeros
             _firstSlot = _characterSlots.GetSlot(0);
             
             _signalBus.Subscribe<GameEvent.StageStartSignal>(OnStageStart);
-            _signalBus.Subscribe<GameEvent.MonsterDieSignal>(_ => OnMonsterDie());
+            _signalBus.Subscribe<GameEvent.MonsterDieSignal>(monster => OnMonsterDie(monster.monster));
             _signalBus.Subscribe<GameEvent.BossDieSignal>(_ => OnBossDie());
         }
 
@@ -86,12 +87,12 @@ namespace LineUpHeros
 
         private void OnStageStart()
         {
-            _currentSpawnedMonsters = 0;
-            currentMonsterKills.Value = 0;
+            ResetStage();
             _phase = EnumSpawnPhase.Normal;
         }
-        private void OnMonsterDie()
+        private void OnMonsterDie(Monster monster)
         {
+            _spawndMonster.Remove(monster);
             currentMonsterKills.Value++;
             Debug.Log($"{currentMonsterKills} / {_currentSpawnedMonsters} / {_currentStage.monsterSetting.requiredMonsterKills}");
         }
@@ -106,6 +107,26 @@ namespace LineUpHeros
         {
             _phase = EnumSpawnPhase.Wating;
             _gameController.StageCler();
+        }
+
+        private void ResetStage()
+        {
+            if (boss.Value != null)
+            {
+                boss.Value.Destroy();
+                boss.Value = null;
+            }
+
+            if (_spawndMonster.Count != 0)
+            {
+                foreach (var monster in _spawndMonster)
+                {
+                    monster.DespawnMonster();
+                }
+                _spawndMonster.Clear();
+            }
+            _currentSpawnedMonsters = 0;
+            currentMonsterKills.Value = 0;
         }
         private void MonsterSpawn()
         {
@@ -128,7 +149,8 @@ namespace LineUpHeros
                         // todo : 스폰 위치 오프셋 설정 하드코딩 ㄴㄴ..
                         Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.5f), 0);
                         Vector3 monsterPosition = _firstSlot.position + _spawnOffset + randomOffset;
-                        _monsterFactory.Create(spawnProbability.monsterInfo, monsterPosition);
+                        Monster monster =_monsterFactory.Create(spawnProbability.monsterInfo, monsterPosition);
+                        _spawndMonster.Add(monster);
                         break;
                     }
                 }

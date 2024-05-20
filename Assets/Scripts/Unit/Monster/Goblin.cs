@@ -21,7 +21,7 @@ namespace LineUpHeros
         public override void Die()
         {
             base.Die();
-            _signalBus.Fire(new GameEvent.MonsterDieSignal() { monsterInfo = _monsterInfo });
+            _signalBus.Fire(new GameEvent.MonsterDieSignal() { monsterInfo = _monsterInfo, monster = this});
         }
 
     }

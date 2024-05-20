@@ -11,8 +11,10 @@ namespace LineUpHeros
     public enum GameStates
     {
         WaitingToStart,
+        Waiting,
         Playing,
-        GameOver
+        GameOver,
+        GameClear
     }
 
     public class GameController : IInitializable, ITickable, IDisposable
@@ -66,6 +68,10 @@ namespace LineUpHeros
                     UpdateStarting();
                     break;
                 }
+                case GameStates.Waiting:
+                {
+                    break;
+                }
                 case GameStates.Playing:
                 {
                     UpdatePlaying();
@@ -76,6 +82,11 @@ namespace LineUpHeros
                     UpdateGameOver();
                     break;
                 }
+                case GameStates.GameClear:
+                {
+                    UpdateGameClear();
+                    break;
+                }
                 default:
                 {
                     Assert.That(false);
@@ -84,6 +95,22 @@ namespace LineUpHeros
             }
         }
 
+        private void UpdateGameClear()
+        {
+            Assert.That(state.Value == GameStates.GameClear);
+            
+            if (_inputState.IsMouseClick)
+            {
+                state.Value = GameStates.Waiting;
+                Time.timeScale = 1;
+                _fadeInOutController.StartEffect(() =>
+                    {
+                        state.Value = GameStates.WaitingToStart;
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                    },
+                                        0.5f, 1f,0.5f);
+            }
+        }
         private void UpdateGameOver()
         {
             Assert.That(state.Value == GameStates.GameOver);
@@ -91,9 +118,9 @@ namespace LineUpHeros
 
             if (_inputState.IsMouseClick)
             {
-                state.Value = GameStates.Playing;
                 Time.timeScale = 1;
-                // _sceneChangeController.SceneReload();
+                
+                state.Value = GameStates.Waiting;
                 StageStart(currentStage.Value);
             }
         }
@@ -109,34 +136,44 @@ namespace LineUpHeros
         {
             Assert.That(state.Value == GameStates.WaitingToStart);
 
-            if (_inputState.IsMouseClick) StartGame();
+            if (_inputState.IsMouseClick)
+            {
+                state.Value = GameStates.Waiting;
+                StartGame();
+            }
         }
 
         private void StartGame()
         {
-            Assert.That(state.Value == GameStates.WaitingToStart || state.Value == GameStates.GameOver);
-            state.Value = GameStates.Playing;
             StageStart(0);
         }
         
         
         private void GameOver()
         {
-            // todo : 스테이지 생기면 게임오버 다른방식으로
             Debug.Log("Game over");
-            Assert.That(state.Value == GameStates.Playing);
             Time.timeScale = 0;
 
             state.Value = GameStates.GameOver;
         }
         
+        private void GameClear()
+        {
+            Debug.Log("Game Clear");
+            _tanker.Victory();
+            _shortRangeDealer.Victory();
+            _longRangeDealer.Victory();
+            _healer.Victory();
+            state.Value = GameStates.GameClear;
+        }
         public void StageCler()
         {
             Debug.Log("stage clear " + GetCurrentStage().name);
+            state.Value = GameStates.Waiting;
             if (currentStage.Value+1 == _stages.Count)
             {
-                // todo : 게임 클리어?
-                StageStart(currentStage.Value);
+                GameClear();
+                // StageStart(currentStage.Value);
                 return;
             }
             StageStart(++currentStage.Value);
@@ -146,6 +183,7 @@ namespace LineUpHeros
         {
             _fadeInOutController.StartEffect(() =>
                 {
+                    state.Value = GameStates.Playing;
                     currentStage.Value = stageNum;
                     _signalBus.Fire<GameEvent.StageStartSignal>();
                     ResetCharacter();
@@ -156,10 +194,10 @@ namespace LineUpHeros
 
         private void ResetCharacter()
         {
-            _tanker.status.tmpHp.Value = _tanker.status.maxHp;
-            _shortRangeDealer.status.tmpHp.Value = _shortRangeDealer.status.maxHp;
-            _longRangeDealer.status.tmpHp.Value = _longRangeDealer.status.maxHp;
-            _healer.status.tmpHp.Value = _healer.status.maxHp;
+            _tanker.Reset();
+            _shortRangeDealer.Reset();
+            _longRangeDealer.Reset();
+            _healer.Reset();
         }
         
         public StageInfo GetCurrentStage()

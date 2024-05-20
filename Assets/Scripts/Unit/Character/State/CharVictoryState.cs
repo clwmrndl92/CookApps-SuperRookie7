@@ -26,7 +26,7 @@
         }
         public override bool CheckChangeState()
         {
-            throw new System.NotImplementedException();
+            return false;
         }
     }
 }

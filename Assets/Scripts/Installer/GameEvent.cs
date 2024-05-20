@@ -10,6 +10,7 @@
         public class MonsterDieSignal
         {
             public MonsterInfo monsterInfo;
+            public Monster monster;
         }
         
         public class BossDieSignal
