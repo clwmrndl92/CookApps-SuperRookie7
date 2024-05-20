@@ -21,5 +21,5 @@ MonoBehaviour:
     - monsterInfo: {fileID: 11400000, guid: f92a210ad98d1134ab3dda1ece2ba7b7, type: 2}
       probabilty: 100
   bossSetting:
-    isBossSpawn: 1
+    isBossSpawn: 0
     bossMonster: {fileID: 11400000, guid: d2660af4fe881814cab9d0370bae0a41, type: 2}

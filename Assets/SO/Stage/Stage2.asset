@@ -19,7 +19,7 @@ MonoBehaviour:
     monsterMaxSpawnNum: 5
     monsterSpawnProbability:
     - monsterInfo: {fileID: 11400000, guid: f92a210ad98d1134ab3dda1ece2ba7b7, type: 2}
-      probabilty: 100
+      probabilty: 0
     - monsterInfo: {fileID: 11400000, guid: 01ad5ff43dfc11445a6e46fd2aaef071, type: 2}
       probabilty: 100
   bossSetting:
