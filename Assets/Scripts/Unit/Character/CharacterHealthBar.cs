@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
+    // 캐릭터 하단 따라다니는 hp bar
     public class CharacterHealthBar : MonoBehaviour
     {
         private Character _character;

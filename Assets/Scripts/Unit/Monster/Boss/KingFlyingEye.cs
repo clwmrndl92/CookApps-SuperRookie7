@@ -28,9 +28,8 @@ namespace LineUpHeros
         
         public override bool SpecialAttack()
         {
-            Debug.Log("skill!");
             List<IDamagable> targetList = DetectCharacters(status.skillRange);
-            Debug.Log(targetList.Count);
+
             if (targetList.Count == 0) return false;
             
             // 한명 대상 즉사기

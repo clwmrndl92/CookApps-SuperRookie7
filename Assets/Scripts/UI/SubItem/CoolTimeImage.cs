@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace LineUpHeros
 {
+    // 쿨타임 이미지, enable시 자동재생
     public class CoolTimeImage : MonoBehaviour
     { 
          public TextMeshProUGUI text_CoolTime;

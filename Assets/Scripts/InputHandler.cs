@@ -16,7 +16,7 @@ namespace LineUpHeros
 
         public void Tick()
         {
-            _inputState.IsMouseClick = Input.GetMouseButtonDown(0) || Input.touchCount > 0; // 안드로이드
+            _inputState.IsClick = Input.GetMouseButtonDown(0) || Input.touchCount > 0; // 안드로이드 터치
             
             // 종료버튼
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -28,7 +28,7 @@ namespace LineUpHeros
     
     public class InputState
     {
-        public bool IsMouseClick
+        public bool IsClick
         {
             get;
             set;

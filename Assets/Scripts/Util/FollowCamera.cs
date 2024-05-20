@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LineUpHeros
 {
-    
+    // 타겟 트랜스폼을 따라다니는 카메라
     public class FollowCamera : MonoBehaviour
     {
         public Transform followCharacter;

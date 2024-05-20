@@ -10,6 +10,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
+    // 보스 및 몬스터 관련 정보 UI
     public class BossContainer : MonoBehaviour
     {
         private TextMeshProUGUI _requireMonsetText;
@@ -22,8 +23,8 @@ namespace LineUpHeros
 
         void Start()
         {
+            // 몬스터 처치 수 출력
             _requireMonsetText = transform.Find("RequireMonsterText").GetComponent<TextMeshProUGUI>();
-            
             _monsterSpawnController.currentMonsterKills
                  .SubscribeToText(_requireMonsetText, kill =>
                  {
@@ -31,8 +32,8 @@ namespace LineUpHeros
                      return  $"{tag}\n{kill} / {_gameController.GetCurrentStage().monsterSetting.requiredMonsterKills}";
                  });
             
+            // 보스 정보 및 체력바
             _bossInfoContainer = transform.Find("BossInfoContainer").GetComponent<RectTransform>();
-
             _monsterSpawnController.boss.Subscribe(bossMonster =>
             {
                 if (bossMonster == null)

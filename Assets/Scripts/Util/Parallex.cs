@@ -7,18 +7,13 @@ namespace LineUpHeros
         public float parallaxEffect;
 
         private float _length;
-        private Vector3 _startPos;
         private float _startPosX;
         private Vector3 _leftPos;
         private Vector3 _rightPos;
         private GameObject _cam;
 
-        float speed = 0.2f;
-        Vector3 direction;
-
         void Start()
         {
-            _startPos = transform.position;
             _startPosX = transform.position.x;
             _length = GetComponent<SpriteRenderer>().bounds.size.x;
             _cam = Camera.main.gameObject;

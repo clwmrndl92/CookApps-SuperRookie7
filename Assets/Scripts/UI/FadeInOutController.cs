@@ -39,10 +39,6 @@ namespace LineUpHeros
             _fadeInTime= fadeInTime;
             StartCoroutine(FadeInOut(action));
         }
-        // public void SceneReload()
-        // {
-        //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        // }
 
         IEnumerator FadeInOut(Action action)
         {

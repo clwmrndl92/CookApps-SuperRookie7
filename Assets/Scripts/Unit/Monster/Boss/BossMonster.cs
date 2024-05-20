@@ -28,10 +28,10 @@ namespace LineUpHeros
             _stateMachine = new StateMachine(new FsmMonsterGlobalVariables());
             _stateMachine.AddState(EnumState.BossMonster.IDLE, new BossMonIdleState(this));
             _stateMachine.AddState(EnumState.BossMonster.SKILL, new BossMonSpecialAtkState(this));
-            _stateMachine.AddState(EnumState.BossMonster.MOVE, new MonMoveState(this));
-            _stateMachine.AddState(EnumState.BossMonster.ATK, new MonAtkState(this));
+            _stateMachine.AddState(EnumState.BossMonster.MOVE, new MonMoveState(this)); // monster state재사용
+            _stateMachine.AddState(EnumState.BossMonster.ATK, new MonAtkState(this)); // monster state재사용
             _stateMachine.AddState(EnumState.BossMonster.DEAD, new BossMonDeadState(this));
-            _stateMachine.AddState(EnumState.BossMonster.STUN, new MonStunState(this));
+            _stateMachine.AddState(EnumState.BossMonster.STUN, new MonStunState(this)); // monster state재사용
             _stateMachine.ChangeState(EnumState.BossMonster.IDLE);
         }
         
@@ -51,7 +51,8 @@ namespace LineUpHeros
         }
 
         public void Destroy()
-        {
+        {   
+            // 오브젝트 풀링 안해서 그냥 destroy함
             Destroy(this.gameObject);
         }
 

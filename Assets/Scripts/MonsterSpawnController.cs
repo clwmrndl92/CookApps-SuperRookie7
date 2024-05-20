@@ -18,7 +18,7 @@ namespace LineUpHeros
         // 스폰 관련
         private Transform _firstSlot;
         private readonly Vector3 _spawnOffset = new Vector3(15f, 0, 0); // 0번 슬롯 기준
-        private float _monsterSpawnTimer;
+        private float _monsterSpawnTime;
         
         // 현재 상태
         private int _currentSpawnedMonsters;
@@ -36,7 +36,8 @@ namespace LineUpHeros
         private StageInfo _currentStage => _gameController.GetCurrentStage();
         private List<Monster> _spawndMonster = new List<Monster>();
         
-        private bool canSpawn => (Time.time - _monsterSpawnTimer) >= _currentStage.monsterSetting.monsterSpawnPeriod
+        // 스폰 주기, max 몬스터수, 게임 상태 등 체크
+        private bool canSpawn => (Time.time - _monsterSpawnTime) >= _currentStage.monsterSetting.monsterSpawnPeriod
                                  && _currentSpawnedMonsters < _currentStage.monsterSetting.requiredMonsterKills
                                  && _phase == EnumSpawnPhase.Normal;
 
@@ -55,7 +56,7 @@ namespace LineUpHeros
 
         public void Initialize()
         {
-            _monsterSpawnTimer = float.MinValue;
+            _monsterSpawnTime = float.MinValue;
         }
 
         public void Tick()
@@ -65,7 +66,7 @@ namespace LineUpHeros
                 if (canSpawn)
                 {
                     MonsterSpawn();
-                    _monsterSpawnTimer = Time.time;
+                    _monsterSpawnTime = Time.time;
                 }
                 // 몬스터 처치수 채웠을때
                 if (currentMonsterKills.Value >= _currentStage.monsterSetting.requiredMonsterKills)
@@ -78,13 +79,14 @@ namespace LineUpHeros
                     }
                     else
                     {
-                        // 보스 없이 스테이지 클리어
+                        // 보스 생략, 스테이지 클리어
                         StageClear();
                     }
                 }
             }
         }
-
+        
+        // 시그널 호출 메소드들
         private void OnStageStart()
         {
             ResetStage();
@@ -96,7 +98,6 @@ namespace LineUpHeros
             currentMonsterKills.Value++;
             Debug.Log($"{currentMonsterKills} / {_currentSpawnedMonsters} / {_currentStage.monsterSetting.requiredMonsterKills}");
         }
-
         private void OnBossDie()
         {
             boss.Value = null;
@@ -111,12 +112,13 @@ namespace LineUpHeros
 
         private void ResetStage()
         {
+            // 보스 초기화
             if (boss.Value != null)
             {
                 boss.Value.Destroy();
                 boss.Value = null;
             }
-
+            // 몬스터 초기화
             if (_spawndMonster.Count != 0)
             {
                 foreach (var monster in _spawndMonster)

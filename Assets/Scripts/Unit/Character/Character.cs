@@ -10,16 +10,16 @@ namespace LineUpHeros
     public abstract class Character : Unit, IDamagable
     {
         protected CharacterGlobalSetting _globalSettings;
-        
-        private CharacterSlots _characterSlots; // 캐릭터가 배치되어있는 슬롯
-        
-        private FloatingText.Factory _floatTextFactory;
         public CharacterStatus status => (CharacterStatus)_status;
         
-        public static readonly Vector3 FLOATING_TEXT_OFFSET = new Vector3(0, 2f, 0);
-
+        // 쿨타임 UI에서 구독하는 변수
         public Subject<bool> isSkillUse = new Subject<bool>();
-            
+        // 캐릭터가 배치되어있는 슬롯
+        private CharacterSlots _characterSlots;
+        // 데미지 이펙트 팩토리
+        private FloatingText.Factory _floatTextFactory;
+        public static readonly Vector3 FLOATING_TEXT_OFFSET = new Vector3(0, 2f, 0);
+        
         [Inject]
         private void Constructor(CharacterGlobalSetting globalSettings,FloatingText.Factory floatTextFactory, 
                                 CharacterSlots characterSlot)

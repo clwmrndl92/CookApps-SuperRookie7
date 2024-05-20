@@ -10,8 +10,8 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // 캐릭터들 체력바 표시
-    public class HealthBarContainer : MonoBehaviour
+    // 캐릭터들 쿨타임 및 체력바 UI
+    public class CharacterHealthBarContainer : MonoBehaviour
     {
         public RectTransform tankerHealthBarContainer;
         public RectTransform SRDHealthBarContainer;

@@ -47,6 +47,7 @@ namespace LineUpHeros
         {
             if (base.Attack(atkRangeTargetList))
             {
+                // 힐러 일반 공격 이펙트
                 _effect.SetEffect(position,atkRangeTargetList[0].gameObjectIDamagable.transform.position);
                 _effect.StartEffect();
             }

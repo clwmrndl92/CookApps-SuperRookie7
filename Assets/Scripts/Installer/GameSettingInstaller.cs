@@ -46,6 +46,7 @@ namespace LineUpHeros
             Container.BindInstance(characterSettings.longRangeDealerSettings).WithId("LongRangeDealer");
             Container.BindInstance(characterSettings.healerSettings).WithId("Healer");
             // Monster
+            // todo : 몬스터 별로 매번 이렇게 추가하는게 번거롭다.
             Container.BindInstance(monsterSettings.monsterGlobalSetting).AsSingle();
             Container.BindInstance(monsterSettings.goblinInfo).WithId("Goblin");
             Container.BindInstance(monsterSettings.kingGoblinInfo).WithId("KingGoblin");
@@ -54,9 +55,9 @@ namespace LineUpHeros
             InstallMonsterFactory();
 
         }
-        
         private void InstallMonsterFactory()
         {
+            // 몬스터 팩토리 바인딩
             Container.BindInterfacesAndSelfTo<MonsterFactory>().AsSingle();
             
             Container.BindFactory<Monster, Monster.Factory>()

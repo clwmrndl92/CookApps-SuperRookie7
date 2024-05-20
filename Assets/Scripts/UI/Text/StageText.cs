@@ -10,7 +10,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // 게임시작 대기상태때 뜨는 텍스트
+    // 스테이지 이름 표시
     public class StageText : MonoBehaviour
     {
         private GameController _gameController;

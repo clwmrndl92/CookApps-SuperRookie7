@@ -54,7 +54,6 @@ namespace LineUpHeros
 
         public void OnDespawned()
         {
-            
         }
 
         public void OnSpawned(IMemoryPool p1)

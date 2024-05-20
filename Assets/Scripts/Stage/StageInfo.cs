@@ -21,7 +21,7 @@ namespace LineUpHeros
             public float monsterSpawnPeriod;
             public int monsterMaxSpawnNum;
         
-            [FormerlySerializedAs("monsterSpawnProbabilty")] public List<StageMonsterSpawnProbabilty> monsterSpawnProbability;
+            public List<StageMonsterSpawnProbabilty> monsterSpawnProbability;
         }
         [Serializable]
         public class StageBossSetting

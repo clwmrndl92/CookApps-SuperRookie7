@@ -40,12 +40,13 @@ namespace LineUpHeros
         }
         private void InstallFactory()
         {
+            // 데미지 텍스트 팩토리
             Transform floatingTextTransform = _canvas.transform.Find("FloatingText");
             Container.BindFactory<FloatingText, FloatingText.Factory>()
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(5)
                     .FromComponentInNewPrefab(_settings.FloatingTextPrefab)
                     .UnderTransform(floatingTextTransform));
-            
+            // 화살 팩토리
             Container.BindFactory<ArrowProjectile, ArrowProjectile.Factory>()
                 .FromMonoPoolableMemoryPool(poolBinder => poolBinder.WithInitialSize(2)
                     .FromComponentInNewPrefab(_settings.ArrowPrefab)

@@ -7,21 +7,12 @@ namespace LineUpHeros
 {
     public class DebugButtons : MonoBehaviour
     {
+        // 디버그용 에디터 버튼
+        #if UNITY_EDITOR
         [Inject]
         private GameController controller;
         [Inject]
         private MonsterSpawnController _monsterSpawnController;
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
 
         public void NextStage()
         {
@@ -33,5 +24,6 @@ namespace LineUpHeros
             _monsterSpawnController.currentMonsterKills.Value =
                 controller.GetCurrentStage().monsterSetting.requiredMonsterKills;
         }
+        #endif
     }
 }

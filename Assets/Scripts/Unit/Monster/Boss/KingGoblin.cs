@@ -26,10 +26,9 @@ namespace LineUpHeros
         
         public override bool SpecialAttack()
         {
-            Debug.Log("skill!");
             List<IDamagable> targetList = DetectCharacters(status.skillRange);
-            Debug.Log(targetList.Count);
-            
+
+            // 범위내 모든 적에게 데미지
             foreach (var target in targetList)
             {
                 target.TakeDamage((int)(status.atk * status.skillDamageMultiplier));

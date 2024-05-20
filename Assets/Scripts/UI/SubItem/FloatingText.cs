@@ -7,7 +7,7 @@ using Zenject;
 
 namespace LineUpHeros
 {
-    // 데미지 이펙트 등
+    // 데미지 텍스트 등 띄우는 효과
     public class FloatingText : MonoBehaviour, IPoolable<IMemoryPool>
     {
         private float _moveSpeed;

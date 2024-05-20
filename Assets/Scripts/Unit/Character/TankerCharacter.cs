@@ -21,7 +21,7 @@ namespace LineUpHeros
         public override bool SpecialAttack(List<IDamagable> atkRangeTargetList = null)
         {
             if (atkRangeTargetList.Count == 0) return false;
-
+            // 공격 대상에게 스턴
             isSkillUse.OnNext(true);
             atkRangeTargetList[0].TakeDamage((int)(status.atk * status.skillDamageMultiplier));
             atkRangeTargetList[0].TakeStun(_settings.stunTime);
