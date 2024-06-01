@@ -1,6 +1,7 @@
 # CookApps-SuperRookie7
 CookApps 슈퍼루키7기 지원 과제 전형으로 제출한 짧은 방치형 RPG입니다.   
-제작기간 : 24.05.13 ~ 24.05.20 (7일간)
+제작기간 : 24.05.13 ~ 24.05.20 (7일간)   
+apk다운로드 : https://drive.google.com/file/d/18yVbGOgJryOy100bzunV9tquEeZpjbf7/view?usp=sharing
 
 ## 구현사항
 2개의 스테이지가 있는 간단한 방치형 RPG 게임구현
